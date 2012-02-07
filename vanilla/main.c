@@ -99,29 +99,37 @@ int signed input_array[24][24] =
 	-706368, -1067968, 708480, -1382912, -1121280, -1104640, -298496, -1353792}
 };
 
-int printArray(int chunk[][8]) {
+int printArray(int* chunk) {
 	for (int i=0; i<8; i++) {
 		for (int j=0; j<8; j++) {
-			printf("%d\t", chunk[i][j]);
+			printf("%d\t", chunk[i*8+j]);
 		}
 		printf("\n");
 	}
 	printf("\n");
 }
 
+inline int get(int* array, int row, int col) {
+	return array[row*8 + col];
+}
+
+inline void set(int* array, int row, int col, int val) {
+	array[row*8 + col] = val;
+}
+
 int main() {
 	
-	int chunk[8][8];
+	int chunk[64];
 	
 	for (int i=0; i<8; i++) {
 		for (int j=0; j<8; j++) {
-			chunk[i][j] = input_array[i][j];
+			set(chunk, i, j, input_array[i][j]);
 		}
 	}
 	
 	int testData[8] =  {7,1,6,6,3,-5,4,2};
 	for (int i=0; i<8; i++)
-		chunk[0][i] = testData[i];
+		chunk[i] = testData[i];
 	
 	printArray(chunk);
 	
@@ -129,16 +137,19 @@ int main() {
 		
 		int avg[4];
 		for (int elem=0; elem<4; elem++) {
-			avg[elem] = (chunk[row][2*elem] + chunk[row][2*elem+1])/2;
+			int tmp = ( get(chunk,row,2*elem) + get(chunk,row,2*elem+1) )/2;
+			avg[elem] = tmp;
 		}
 		
 		for (int i=0; i<4; i++) {
-			printf("chunk %d, avg %d\n", chunk[row][i*2], avg[i]);
-			chunk[row][i+4] = chunk[row][i*2] - avg[i];
+			// printf("chunk %d, avg %d\n", chunk[row][i*2], avg[i]);
+			int tmp = get(chunk, row, i*2) - avg[i];
+			set(chunk, row, i+4, tmp);
 		}
 		
 		for (int i=0; i<4; i++) {
-			chunk[row][i] = avg[i];
+			
+			set(chunk,row,i, avg[i]);
 		}		
 	}
 
