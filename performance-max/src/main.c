@@ -116,12 +116,85 @@ inline void printArray(int* chunk) {
 	printf("\n");
 }
 
-inline int get(int* array, int row, int col) {
-	return array[row*8 + col];
-}
-
 inline void set(int* array, int row, int col, int val) {
 	array[row*8 + col] = val;
+}
+
+
+#define mean(a, b) (a + b) >> 1
+
+inline void calculateRow(int* array) {
+	
+	int a0 = array[0];
+	int a1 = array[1];
+	int a2 = array[2];
+	int a3 = array[3];
+	int a4 = array[4];
+	int a5 = array[5];
+	int a6 = array[6];
+	int a7 = array[7];
+
+	// first round
+	int b0 = mean(a0, a1);
+	int b1 = mean(a2, a3);
+	int b2 = mean(a4, a5);
+	int b3 = mean(a6, a7);
+	
+	array[4] = a0-b0;
+	array[5] = a2-b1;
+	array[6] = a4-b2;
+	array[7] = a6-b3;
+	
+	// second round
+	int c0 = mean(b0, b1);
+	int c1 = mean(b2, b3);
+	
+	array[2] = b0 - c0;
+	array[3] = b2 - c1;
+	
+	// third round
+	int d0 = mean(c0, c1);
+	
+	array[0] = d0;
+	array[1] = c0 - d0;
+
+}
+
+inline void calculateCol(int* array, int pitch) {
+
+	int a0 = array[0];
+	int a1 = array[pitch];
+	int a2 = array[pitch << 1];
+	int a3 = array[pitch * 3];
+	int a4 = array[pitch << 2];
+	int a5 = array[pitch * 5];
+	int a6 = array[pitch * 6];
+	int a7 = array[pitch * 7];
+
+	// first round
+	int b0 = mean(a0, a1);
+	int b1 = mean(a2, a3);
+	int b2 = mean(a4, a5);
+	int b3 = mean(a6, a7);
+	
+	array[pitch << 2] = a0-b0;
+	array[pitch * 5] = a2-b1;
+	array[pitch * 6] = a4-b2;
+	array[pitch * 7] = a6-b3;
+	
+	// second round
+	int c0 = mean(b0, b1);
+	int c1 = mean(b2, b3);
+	
+	array[pitch * 3] = b0 - c0;
+	array[pitch << 1] = b2 - c1;
+	
+	// third round
+	int d0 = mean(c0, c1);
+	
+	array[0] = d0;
+	array[pitch] = c0 - d0;
+
 }
 
 int main() {
@@ -136,36 +209,27 @@ int main() {
 		}
 	}
 		
-	int testData[8] =  {7,1,6,6,3,-5,4,2};
-	for (i=0; i<8; i++)
-		chunk[i] = testData[i];
+	// int testData[8] =  {7,1,6,6,3,-5,4,2};
+	// for (i=0; i<8; i++)
+		// chunk[i] = testData[i];
 	
-	printArray(chunk);
+	// printArray(chunk);
 	
-	int row;
-	for (row=0; row<8; row++) {
-		
-		int avg[4];
-		
-		int elem;
-		for (elem=0; elem<4; elem++) {
-			int tmp = ( get(chunk,row,2*elem) + get(chunk,row,2*elem+1) )/2;
-			avg[elem] = tmp;
-		}
-		
-		for (i=0; i<4; i++) {
-			// printf("chunk %d, avg %d\n", chunk[row][i*2], avg[i]);
-			int tmp = get(chunk, row, i*2) - avg[i];
-			set(chunk, row, i+4, tmp);
-		}
-		
-		for (i=0; i<4; i++) {
-			
-			set(chunk,row,i, avg[i]);
-		}		
+	// int row;
+	// for (row=0; row<8; row++) {
+		// calculateRow(&chunk[row*8]);
+	// }
+	
+	// printArray(chunk);
+	int col;	
+	for (col = 0; col<8; col++) {
+		calculateCol(&chunk[col], 8);
 	}
-
-	printArray(chunk);
+	
+	//printArray(chunk);
 
 	return 0;
 }
+
+
+
