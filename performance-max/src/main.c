@@ -1,6 +1,10 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+//
+// PERFORMANCE_MAX
+//
+
 // Das Eingabearray muss als 24x24 Short-Array unverändert bleiben.
 int signed input_array[24][24] =
 {
@@ -101,7 +105,67 @@ int signed input_array[24][24] =
 	-706368, -1067968, 708480, -1382912, -1121280, -1104640, -298496, -1353792}
 };
 
-// main function 
-int main(void) {
-	return(0);
+inline void printArray(int* chunk) {
+	int i, j;
+	for (i=0; i<8; i++) {
+		for (j=0; j<8; j++) {
+			printf("%d\t", chunk[i*8+j]);
+		}
+		printf("\n");
+	}
+	printf("\n");
+}
+
+inline int get(int* array, int row, int col) {
+	return array[row*8 + col];
+}
+
+inline void set(int* array, int row, int col, int val) {
+	array[row*8 + col] = val;
+}
+
+int main() {
+	
+	int chunk[64];
+	
+	int i;
+	for (i=0; i<8; i++) {
+		int j;
+		for (j=0; j<8; j++) {
+			set(chunk, i, j, input_array[i][j]);
+		}
+	}
+		
+	int testData[8] =  {7,1,6,6,3,-5,4,2};
+	for (i=0; i<8; i++)
+		chunk[i] = testData[i];
+	
+	printArray(chunk);
+	
+	int row;
+	for (row=0; row<8; row++) {
+		
+		int avg[4];
+		
+		int elem;
+		for (elem=0; elem<4; elem++) {
+			int tmp = ( get(chunk,row,2*elem) + get(chunk,row,2*elem+1) )/2;
+			avg[elem] = tmp;
+		}
+		
+		for (i=0; i<4; i++) {
+			// printf("chunk %d, avg %d\n", chunk[row][i*2], avg[i]);
+			int tmp = get(chunk, row, i*2) - avg[i];
+			set(chunk, row, i+4, tmp);
+		}
+		
+		for (i=0; i<4; i++) {
+			
+			set(chunk,row,i, avg[i]);
+		}		
+	}
+
+	printArray(chunk);
+
+	return 0;
 }
