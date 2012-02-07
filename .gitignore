@@ -16,3 +16,13 @@
 *.exe
 *.out
 *.app
+
+workplace.*
+stat.*
+bin.*
+arch
+hal
+params
+*.geany
+
+*~
