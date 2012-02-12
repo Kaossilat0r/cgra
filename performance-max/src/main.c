@@ -325,59 +325,45 @@ int main() {
 		// chunk[i*8] = testData[i];
 	
 	 // printArray2d(input_array);
-	int col, row;
+//	int col, row;
 	
-#define ROW_WORK WIDTH*HEIGHT
-	
+#define CELLS WIDTH*HEIGHT
+#define COL_JUMP (WIDTH * KERNEL_SIZE)
+#define COL_JUMP_2 (WIDTH * KERNEL_SIZE * 2)
+
 	int* base = &input_array[0][0];
 	
-	int a;
-	for(a = 0; a < ROW_WORK; a+=KERNEL_SIZE) {
-		calculateRow(&base[a]);
+	int cell;
+	for(cell = 0; cell < CELLS; cell+=KERNEL_SIZE) {
+		calculateRow(&base[cell]);
 	}
 	
-	// int i, j;
-	// for(i = 0; i < HEIGHT; i +=KERNEL_SIZE) {
-		// for(j = 0; j < WIDTH; j +=KERNEL_SIZE) {
-		
-		
-			// int* chunk = &input_array[i][j];
-		
-			// printArray2d(input_array);
+	for(cell = 0; cell < WIDTH; cell++) {
+		calculateCol(&base[cell], PITCH);
+	}
 	
-			// for (row=0; row<KERNEL_SIZE; row++) {
-				// calculateRow(&chunk[row*PITCH]);
-			// }
-			
-			// for (col = 0; col<KERNEL_SIZE; col++) {
-				// calculateCol(&chunk[col], PITCH);
-			// }
-		// }
-	// }
-	// printArray2d(input_array);
-
-	// for(i = 0; i < HEIGHT; i +=KERNEL_SIZE) {
-		// for(j = 0; j < WIDTH; j +=KERNEL_SIZE) {			
-		
-		
-		// int* chunk = &input_array[i][j];
-		
-			// printArray2d(chunk);
-			
-			// for (col = 0; col<KERNEL_SIZE; col++) {
-				// reverseCol(&chunk[col], PITCH);
-			// }
-			
-			// printArray(chunk);
-			
-			// for (row=0; row<KERNEL_SIZE; row++) {
-				// reverseRow(&chunk[row*PITCH]);
-			// }
-		// }
-	// }
+	for(cell = 0; cell < WIDTH; cell++) {
+		calculateCol(&base[cell + COL_JUMP], PITCH);
+	}
 	
-	for(a = 0; a < ROW_WORK; a+=KERNEL_SIZE) {
-		reverseRow(&base[a]);
+	for(cell = 0; cell < WIDTH; cell++) {
+		calculateCol(&base[cell + COL_JUMP_2], PITCH);
+	}
+	
+	for(cell = 0; cell < WIDTH; cell++) {
+		reverseCol(&base[cell], PITCH);
+	}
+	
+	for(cell = 0; cell < WIDTH; cell++) {		
+		reverseCol(&base[cell + COL_JUMP], PITCH);
+	}
+	
+	for(cell = 0; cell < WIDTH; cell++) {
+		reverseCol(&base[cell + COL_JUMP_2], PITCH);
+	}
+	
+	for(cell = 0; cell < CELLS; cell+=KERNEL_SIZE) {
+		reverseRow(&base[cell]);
 	}
 	
 	// printArray2d(input_array);
