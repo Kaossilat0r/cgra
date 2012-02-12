@@ -186,8 +186,8 @@ inline void calculateCol(int* array, int pitch) {
 	int c0 = mean(b0, b1);
 	int c1 = mean(b2, b3);
 	
-	array[pitch * 3] = b0 - c0;
-	array[pitch << 1] = b2 - c1;
+	array[pitch << 1] = b0 - c0;
+	array[pitch * 3] = b2 - c1;
 	
 	// third round
 	int d0 = mean(c0, c1);
@@ -195,6 +195,52 @@ inline void calculateCol(int* array, int pitch) {
 	array[0] = d0;
 	array[pitch] = c0 - d0;
 
+}
+
+inline void reverseCol(int* array, int pitch) {
+	int a0 = array[0];
+	int a1 = array[pitch];	
+	
+	// third round ^-1
+	int b0 = a0 + a1;
+	int b1 = a0 - a1;
+	
+	int b2 = array[pitch << 1];
+	int b3 = array[pitch * 3];
+	
+	// second round ^-1
+	int c0 = b0 + b2;
+	int c1 = b0 - b2;
+	
+	int c2 = b1 + b3;
+	int c3 = b1 - b3;
+	
+	int c4 = array[pitch << 2];
+	int c5 = array[pitch * 5];
+	int c6 = array[pitch * 6];
+	int c7 = array[pitch * 7];
+	
+	// first round ^-1
+	int d0 = c0 + c4;
+	int d1 = c0 - c4;
+	
+	int d2 = c1 + c5;
+	int d3 = c1 - c5;
+	
+	int d4 = c2 + c6;
+	int d5 = c2 - c6;
+	
+	int d6 = c3 + c7;
+	int d7 = c3 - c7;
+	
+	array[0] = d0;
+	array[pitch] = d1;
+	array[pitch << 1] = d2;
+	array[pitch * 3] = d3;
+	array[pitch << 2] = d4;
+	array[pitch * 5] = d5;
+	array[pitch * 6] = d6;
+	array[pitch * 7] = d7;
 }
 
 int main() {
@@ -209,11 +255,11 @@ int main() {
 		}
 	}
 		
-	// int testData[8] =  {7,1,6,6,3,-5,4,2};
-	// for (i=0; i<8; i++)
-		// chunk[i] = testData[i];
+	int testData[8] =  {7,1,6,6,3,-5,4,2};
+	for (i=0; i<8; i++)
+		chunk[i*8] = testData[i];
 	
-	// printArray(chunk);
+	printArray(chunk);
 	
 	// int row;
 	// for (row=0; row<8; row++) {
@@ -226,7 +272,13 @@ int main() {
 		calculateCol(&chunk[col], 8);
 	}
 	
-	//printArray(chunk);
+	printArray(chunk);
+	
+	for (col = 0; col<8; col++) {
+		reverseCol(&chunk[col], 8);
+	}
+	
+	printArray(chunk);
 
 	return 0;
 }
