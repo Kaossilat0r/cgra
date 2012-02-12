@@ -5,8 +5,14 @@
 // PERFORMANCE_MAX
 //
 
+#define WIDTH 24
+#define HEIGHT 24
+
+#define PITCH 24
+#define KERNEL_SIZE 8
+
 // Das Eingabearray muss als 24x24 Short-Array unverändert bleiben.
-int signed input_array[24][24] =
+int signed input_array[HEIGHT][WIDTH] =
 {
 	{-639040, -507968, -262144, 1151616, 1151552, 16384, 16448, 1179648,
 	1179648, 0, -589888, 1097728, -131072, 98624, 98752, 131392,
@@ -116,6 +122,17 @@ inline void printArray(int* chunk) {
 	printf("\n");
 }
 
+inline void printArray2d(signed int chunk[HEIGHT][WIDTH]) {
+	int i, j;
+	for (i=0; i<HEIGHT; i++) {
+		for (j=0; j<WIDTH; j++) {
+			printf("%d\t", input_array[i][j]);
+		}
+		printf("\n");
+	}
+	printf("\n");
+}
+
 inline void set(int* array, int row, int col, int val) {
 	array[row*8 + col] = val;
 }
@@ -197,6 +214,52 @@ inline void calculateCol(int* array, int pitch) {
 
 }
 
+inline void reverseRow(int* array) {
+	int a0 = array[0];
+	int a1 = array[1];	
+	
+	// third round ^-1
+	int b0 = a0 + a1;
+	int b1 = a0 - a1;
+	
+	int b2 = array[2];
+	int b3 = array[3];
+	
+	// second round ^-1
+	int c0 = b0 + b2;
+	int c1 = b0 - b2;
+	
+	int c2 = b1 + b3;
+	int c3 = b1 - b3;
+	
+	int c4 = array[4];
+	int c5 = array[5];
+	int c6 = array[6];
+	int c7 = array[7];
+	
+	// first round ^-1
+	int d0 = c0 + c4;
+	int d1 = c0 - c4;
+	
+	int d2 = c1 + c5;
+	int d3 = c1 - c5;
+	
+	int d4 = c2 + c6;
+	int d5 = c2 - c6;
+	
+	int d6 = c3 + c7;
+	int d7 = c3 - c7;
+	
+	array[0] = d0;
+	array[1] = d1;
+	array[2] = d2;
+	array[3] = d3;
+	array[4] = d4;
+	array[5] = d5;
+	array[6] = d6;
+	array[7] = d7;
+}
+
 inline void reverseCol(int* array, int pitch) {
 	int a0 = array[0];
 	int a1 = array[pitch];	
@@ -245,40 +308,67 @@ inline void reverseCol(int* array, int pitch) {
 
 int main() {
 	
-	int chunk[64];
+	//int* chunk = input_array[0];
 	
-	int i;
-	for (i=0; i<8; i++) {
-		int j;
-		for (j=0; j<8; j++) {
-			set(chunk, i, j, input_array[i][j]);
-		}
-	}
-		
-	int testData[8] =  {7,1,6,6,3,-5,4,2};
-	for (i=0; i<8; i++)
-		chunk[i*8] = testData[i];
 	
-	printArray(chunk);
-	
-	// int row;
-	// for (row=0; row<8; row++) {
-		// calculateRow(&chunk[row*8]);
+	// int i;
+	// for (i=0; i<8; i++) {
+		// int j;
+		// for (j=0; j<8; j++) {
+			// set(chunk, i, j, input_array[i][j]);
+		// }
 	// }
 	
-	// printArray(chunk);
-	int col;	
-	for (col = 0; col<8; col++) {
-		calculateCol(&chunk[col], 8);
+	// //set with example data
+	// int testData[8] =  {7,1,6,6,3,-5,4,2};
+	// for (i=0; i<8; i++)
+		// chunk[i*8] = testData[i];
+	
+	// printArray2d(input_array);
+	int col, row;
+	
+	int i, j;
+	for(i = 0; i < HEIGHT; i +=KERNEL_SIZE) {
+		for(j = 0; j < WIDTH; j +=KERNEL_SIZE) {
+		
+		
+			int* chunk = &input_array[i][j];
+		
+			// printArray2d(input_array);
+			
+			for (row=0; row<KERNEL_SIZE; row++) {
+				calculateRow(&chunk[row*PITCH]);
+			}
+			
+			for (col = 0; col<KERNEL_SIZE; col++) {
+				calculateCol(&chunk[col], PITCH);
+			}
+		// }
+	// }
+	// printArray2d(input_array);
+	
+	// for(i = 0; i < HEIGHT; i +=KERNEL_SIZE) {
+		// for(j = 0; j < WIDTH; j +=KERNEL_SIZE) {			
+		
+		
+		// int* chunk = &input_array[i][j];
+		
+			// printArray2d(chunk);
+			
+			for (col = 0; col<KERNEL_SIZE; col++) {
+				reverseCol(&chunk[col], PITCH);
+			}
+			
+		//	printArray(chunk);
+			
+			for (row=0; row<KERNEL_SIZE; row++) {
+				reverseRow(&chunk[row*PITCH]);
+			}
+		}
 	}
 	
-	printArray(chunk);
-	
-	for (col = 0; col<8; col++) {
-		reverseCol(&chunk[col], 8);
-	}
-	
-	printArray(chunk);
+	// printArray2d(input_array);
+		
 
 	return 0;
 }
