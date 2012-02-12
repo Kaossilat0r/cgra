@@ -324,29 +324,38 @@ int main() {
 	// for (i=0; i<8; i++)
 		// chunk[i*8] = testData[i];
 	
-	// printArray2d(input_array);
+	 // printArray2d(input_array);
 	int col, row;
 	
-	int i, j;
-	for(i = 0; i < HEIGHT; i +=KERNEL_SIZE) {
-		for(j = 0; j < WIDTH; j +=KERNEL_SIZE) {
+#define ROW_WORK WIDTH*HEIGHT
+	
+	int* base = &input_array[0][0];
+	
+	int a;
+	for(a = 0; a < ROW_WORK; a+=KERNEL_SIZE) {
+		calculateRow(&base[a]);
+	}
+	
+	// int i, j;
+	// for(i = 0; i < HEIGHT; i +=KERNEL_SIZE) {
+		// for(j = 0; j < WIDTH; j +=KERNEL_SIZE) {
 		
 		
-			int* chunk = &input_array[i][j];
+			// int* chunk = &input_array[i][j];
 		
 			// printArray2d(input_array);
+	
+			// for (row=0; row<KERNEL_SIZE; row++) {
+				// calculateRow(&chunk[row*PITCH]);
+			// }
 			
-			for (row=0; row<KERNEL_SIZE; row++) {
-				calculateRow(&chunk[row*PITCH]);
-			}
-			
-			for (col = 0; col<KERNEL_SIZE; col++) {
-				calculateCol(&chunk[col], PITCH);
-			}
+			// for (col = 0; col<KERNEL_SIZE; col++) {
+				// calculateCol(&chunk[col], PITCH);
+			// }
 		// }
 	// }
 	// printArray2d(input_array);
-	
+
 	// for(i = 0; i < HEIGHT; i +=KERNEL_SIZE) {
 		// for(j = 0; j < WIDTH; j +=KERNEL_SIZE) {			
 		
@@ -355,16 +364,20 @@ int main() {
 		
 			// printArray2d(chunk);
 			
-			for (col = 0; col<KERNEL_SIZE; col++) {
-				reverseCol(&chunk[col], PITCH);
-			}
+			// for (col = 0; col<KERNEL_SIZE; col++) {
+				// reverseCol(&chunk[col], PITCH);
+			// }
 			
-		//	printArray(chunk);
+			// printArray(chunk);
 			
-			for (row=0; row<KERNEL_SIZE; row++) {
-				reverseRow(&chunk[row*PITCH]);
-			}
-		}
+			// for (row=0; row<KERNEL_SIZE; row++) {
+				// reverseRow(&chunk[row*PITCH]);
+			// }
+		// }
+	// }
+	
+	for(a = 0; a < ROW_WORK; a+=KERNEL_SIZE) {
+		reverseRow(&base[a]);
 	}
 	
 	// printArray2d(input_array);
