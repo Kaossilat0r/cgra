@@ -320,16 +320,26 @@ inline void reverseCol(int* array) {
 	array[PITCH_7] = d7;
 }
 
+unsigned int e[72] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 192, 193, 194, 195, 196, 197, 198, 199, 200, 201, 202, 203, 204, 205, 206, 207, 208, 209, 210, 211, 212, 213, 214, 215, 192, 193, 194, 195, 196, 197, 198, 199, 200, 201, 202, 203, 204, 205, 206, 207, 208, 209, 210, 211, 212, 213, 214, 215};
 int main() {
 
 	int* base = &input_array[0][0];
+	
+	// printArray2d(input_array);
 	
 	int cell;
 	for(cell = 0; cell < CELLS; cell+=KERNEL_SIZE) {
 		calculateRow(&base[cell]);
 	}
 	
+	for(cell = 0; cell < 72; cell++) {
+		calculateCol(&base[ e[cell] ]);
+	}
 	
+	for(cell = 0; cell < 72; cell++) {
+		reverseCol(&base[ e[cell] ]);
+	}
+/*	
 	for(cell = COL_BLOCK_1_START; cell < COL_BLOCK_1_END; cell++) {
 		calculateCol(&base[cell]);
 	}
@@ -349,7 +359,7 @@ int main() {
 	for(cell = COL_BLOCK_3_START; cell < COL_BLOCK_3_END; cell++) {
 		reverseCol(&base[cell]);
 	}
-	
+	*/
 	
 	for(cell = 0; cell < CELLS; cell+=KERNEL_SIZE) {
 		reverseRow(&base[cell]);
