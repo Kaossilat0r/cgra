@@ -122,15 +122,56 @@ inline void printArray(int* chunk) {
 	printf("\n");
 }
 
-inline void printArray2d(signed int chunk[HEIGHT][WIDTH]) {
-	int i, j;
-	for (i=0; i<HEIGHT; i++) {
-		for (j=0; j<WIDTH; j++) {
-			printf("%d\t", input_array[i][j]);
-		}
-		printf("\n");
-	}
-	printf("\n");
+inline void printArray2d() {
+	printf("%d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d \n",
+input_array[0][0], input_array[0][1], input_array[0][2], input_array[0][3], input_array[0][4], input_array[0][5], input_array[0][6], input_array[0][7], input_array[0][8], input_array[0][9], input_array[0][10], input_array[0][11], input_array[0][12], input_array[0][13], input_array[0][14], input_array[0][15], input_array[0][16], input_array[0][17], input_array[0][18], input_array[0][19], input_array[0][20], input_array[0][21], input_array[0][22], input_array[0][23]); 
+	printf("%d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d \n",
+input_array[1][0], input_array[1][1], input_array[1][2], input_array[1][3], input_array[1][4], input_array[1][5], input_array[1][6], input_array[1][7], input_array[1][8], input_array[1][9], input_array[1][10], input_array[1][11], input_array[1][12], input_array[1][13], input_array[1][14], input_array[1][15], input_array[1][16], input_array[1][17], input_array[1][18], input_array[1][19], input_array[1][20], input_array[1][21], input_array[1][22], input_array[1][23]); 	
+	printf("%d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d \n",
+input_array[2][0], input_array[2][1], input_array[2][2], input_array[2][3], input_array[2][4], input_array[2][5], input_array[2][6], input_array[2][7], input_array[2][8], input_array[2][9], input_array[2][10], input_array[2][11], input_array[2][12], input_array[2][13], input_array[2][14], input_array[2][15], input_array[2][16], input_array[2][17], input_array[2][18], input_array[2][19], input_array[2][20], input_array[2][21], input_array[2][22], input_array[2][23]);
+	printf("%d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d \n",
+input_array[3][0], input_array[3][1], input_array[3][2], input_array[3][3], input_array[3][4], input_array[3][5], input_array[3][6], input_array[3][7], input_array[3][8], input_array[3][9], input_array[3][10], input_array[3][11], input_array[3][12], input_array[3][13], input_array[3][14], input_array[3][15], input_array[3][16], input_array[3][17], input_array[3][18], input_array[3][19], input_array[3][20], input_array[3][21], input_array[3][22], input_array[3][23]);
+	printf("%d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d \n",
+input_array[4][0], input_array[4][1], input_array[4][2], input_array[4][3], input_array[4][4], input_array[4][5], input_array[4][6], input_array[4][7], input_array[4][8], input_array[4][9], input_array[4][10], input_array[4][11], input_array[4][12], input_array[4][13], input_array[4][14], input_array[4][15], input_array[4][16], input_array[4][17], input_array[4][18], input_array[4][19], input_array[4][20], input_array[4][21], input_array[4][22], input_array[4][23]);
+	printf("%d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d \n",
+input_array[5][0], input_array[5][1], input_array[5][2], input_array[5][3], input_array[5][4], input_array[5][5], input_array[5][6], input_array[5][7], input_array[5][8], input_array[5][9], input_array[5][10], input_array[5][11], input_array[5][12], input_array[5][13], input_array[5][14], input_array[5][15], input_array[5][16], input_array[5][17], input_array[5][18], input_array[5][19], input_array[5][20], input_array[5][21], input_array[5][22], input_array[5][23]);
+	printf("%d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d \n",
+input_array[6][0], input_array[6][1], input_array[6][2], input_array[6][3], input_array[6][4], input_array[6][5], input_array[6][6], input_array[6][7], input_array[6][8], input_array[6][9], input_array[6][10], input_array[6][11], input_array[6][12], input_array[6][13], input_array[6][14], input_array[6][15], input_array[6][16], input_array[6][17], input_array[6][18], input_array[6][19], input_array[6][20], input_array[6][21], input_array[6][22], input_array[6][23]);
+	printf("%d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d \n",
+input_array[7][0], input_array[7][1], input_array[7][2], input_array[7][3], input_array[7][4], input_array[7][5], input_array[7][6], input_array[7][7], input_array[7][8], input_array[7][9], input_array[7][10], input_array[7][11], input_array[7][12], input_array[7][13], input_array[7][14], input_array[7][15], input_array[7][16], input_array[7][17], input_array[7][18], input_array[7][19], input_array[7][20], input_array[7][21], input_array[7][22], input_array[7][23]);
+	printf("%d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d \n",
+input_array[8][0], input_array[8][1], input_array[8][2], input_array[8][3], input_array[8][4], input_array[8][5], input_array[8][6], input_array[8][7], input_array[8][8], input_array[8][9], input_array[8][10], input_array[8][11], input_array[8][12], input_array[8][13], input_array[8][14], input_array[8][15], input_array[8][16], input_array[8][17], input_array[8][18], input_array[8][19], input_array[8][20], input_array[8][21], input_array[8][22], input_array[8][23]);
+	printf("%d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d \n",
+input_array[9][0], input_array[9][1], input_array[9][2], input_array[9][3], input_array[9][4], input_array[9][5], input_array[9][6], input_array[9][7], input_array[9][8], input_array[9][9], input_array[9][10], input_array[9][11], input_array[9][12], input_array[9][13], input_array[9][14], input_array[9][15], input_array[9][16], input_array[9][17], input_array[9][18], input_array[9][19], input_array[9][20], input_array[9][21], input_array[9][22], input_array[9][23]);
+	printf("%d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d \n",
+input_array[10][0], input_array[10][1], input_array[10][2], input_array[10][3], input_array[10][4], input_array[10][5], input_array[10][6], input_array[10][7], input_array[10][8], input_array[10][9], input_array[10][10], input_array[10][11], input_array[10][12], input_array[10][13], input_array[10][14], input_array[10][15], input_array[10][16], input_array[10][17], input_array[10][18], input_array[10][19], input_array[10][20], input_array[10][21], input_array[10][22], input_array[10][23]);
+	printf("%d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d \n",
+input_array[11][0], input_array[11][1], input_array[11][2], input_array[11][3], input_array[11][4], input_array[11][5], input_array[11][6], input_array[11][7], input_array[11][8], input_array[11][9], input_array[11][10], input_array[11][11], input_array[11][12], input_array[11][13], input_array[11][14], input_array[11][15], input_array[11][16], input_array[11][17], input_array[11][18], input_array[11][19], input_array[11][20], input_array[11][21], input_array[11][22], input_array[11][23]);
+	printf("%d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d \n",
+input_array[12][0], input_array[12][1], input_array[12][2], input_array[12][3], input_array[12][4], input_array[12][5], input_array[12][6], input_array[12][7], input_array[12][8], input_array[12][9], input_array[12][10], input_array[12][11], input_array[12][12], input_array[12][13], input_array[12][14], input_array[12][15], input_array[12][16], input_array[12][17], input_array[12][18], input_array[12][19], input_array[12][20], input_array[12][21], input_array[12][22], input_array[12][23]);
+	printf("%d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d \n",
+input_array[13][0], input_array[13][1], input_array[13][2], input_array[13][3], input_array[13][4], input_array[13][5], input_array[13][6], input_array[13][7], input_array[13][8], input_array[13][9], input_array[13][10], input_array[13][11], input_array[13][12], input_array[13][13], input_array[13][14], input_array[13][15], input_array[13][16], input_array[13][17], input_array[13][18], input_array[13][19], input_array[13][20], input_array[13][21], input_array[13][22], input_array[13][23]);
+	printf("%d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d \n",
+input_array[14][0], input_array[14][1], input_array[14][2], input_array[14][3], input_array[14][4], input_array[14][5], input_array[14][6], input_array[14][7], input_array[14][8], input_array[14][9], input_array[14][10], input_array[14][11], input_array[14][12], input_array[14][13], input_array[14][14], input_array[14][15], input_array[14][16], input_array[14][17], input_array[14][18], input_array[14][19], input_array[14][20], input_array[14][21], input_array[14][22], input_array[14][23]);
+	printf("%d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d \n",
+input_array[15][0], input_array[15][1], input_array[15][2], input_array[15][3], input_array[15][4], input_array[15][5], input_array[15][6], input_array[15][7], input_array[15][8], input_array[15][9], input_array[15][10], input_array[15][11], input_array[15][12], input_array[15][13], input_array[15][14], input_array[15][15], input_array[15][16], input_array[15][17], input_array[15][18], input_array[15][19], input_array[15][20], input_array[15][21], input_array[15][22], input_array[15][23]);
+	printf("%d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d \n",
+input_array[16][0], input_array[16][1], input_array[16][2], input_array[16][3], input_array[16][4], input_array[16][5], input_array[16][6], input_array[16][7], input_array[16][8], input_array[16][9], input_array[16][10], input_array[16][11], input_array[16][12], input_array[16][13], input_array[16][14], input_array[16][15], input_array[16][16], input_array[16][17], input_array[16][18], input_array[16][19], input_array[16][20], input_array[16][21], input_array[16][22], input_array[16][23]);
+	printf("%d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d \n",
+input_array[17][0], input_array[17][1], input_array[17][2], input_array[17][3], input_array[17][4], input_array[17][5], input_array[17][6], input_array[17][7], input_array[17][8], input_array[17][9], input_array[17][10], input_array[17][11], input_array[17][12], input_array[17][13], input_array[17][14], input_array[17][15], input_array[17][16], input_array[17][17], input_array[17][18], input_array[17][19], input_array[17][20], input_array[17][21], input_array[17][22], input_array[17][23]);
+	printf("%d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d \n",
+input_array[18][0], input_array[18][1], input_array[18][2], input_array[18][3], input_array[18][4], input_array[18][5], input_array[18][6], input_array[18][7], input_array[18][8], input_array[18][9], input_array[18][10], input_array[18][11], input_array[18][12], input_array[18][13], input_array[18][14], input_array[18][15], input_array[18][16], input_array[18][17], input_array[18][18], input_array[18][19], input_array[18][20], input_array[18][21], input_array[18][22], input_array[18][23]);
+	printf("%d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d \n",
+input_array[19][0], input_array[19][1], input_array[19][2], input_array[19][3], input_array[19][4], input_array[19][5], input_array[19][6], input_array[19][7], input_array[19][8], input_array[19][9], input_array[19][10], input_array[19][11], input_array[19][12], input_array[19][13], input_array[19][14], input_array[19][15], input_array[19][16], input_array[19][17], input_array[19][18], input_array[19][19], input_array[19][20], input_array[19][21], input_array[19][22], input_array[19][23]);
+	printf("%d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d \n",
+input_array[20][0], input_array[20][1], input_array[20][2], input_array[20][3], input_array[20][4], input_array[20][5], input_array[20][6], input_array[20][7], input_array[20][8], input_array[20][9], input_array[20][10], input_array[20][11], input_array[20][12], input_array[20][13], input_array[20][14], input_array[20][15], input_array[20][16], input_array[20][17], input_array[20][18], input_array[20][19], input_array[20][20], input_array[20][21], input_array[20][22], input_array[20][23]);
+	printf("%d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d \n",
+input_array[21][0], input_array[21][1], input_array[21][2], input_array[21][3], input_array[21][4], input_array[21][5], input_array[21][6], input_array[21][7], input_array[21][8], input_array[21][9], input_array[21][10], input_array[21][11], input_array[21][12], input_array[21][13], input_array[21][14], input_array[21][15], input_array[21][16], input_array[21][17], input_array[21][18], input_array[21][19], input_array[21][20], input_array[21][21], input_array[21][22], input_array[21][23]);
+	printf("%d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d \n",
+input_array[22][0], input_array[22][1], input_array[22][2], input_array[22][3], input_array[22][4], input_array[22][5], input_array[22][6], input_array[22][7], input_array[22][8], input_array[22][9], input_array[22][10], input_array[22][11], input_array[22][12], input_array[22][13], input_array[22][14], input_array[22][15], input_array[22][16], input_array[22][17], input_array[22][18], input_array[22][19], input_array[22][20], input_array[22][21], input_array[22][22], input_array[22][23]);
+	printf("%d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d \n",
+input_array[23][0], input_array[23][1], input_array[23][2], input_array[23][3], input_array[23][4], input_array[23][5], input_array[23][6], input_array[23][7], input_array[23][8], input_array[23][9], input_array[23][10], input_array[23][11], input_array[23][12], input_array[23][13], input_array[23][14], input_array[23][15], input_array[23][16], input_array[23][17], input_array[23][18], input_array[23][19], input_array[23][20], input_array[23][21], input_array[23][22], input_array[23][23]);
+
 }
 
 inline void set(int* array, int row, int col, int val) {
@@ -330,8 +371,8 @@ int main() {
 #define CELLS WIDTH*HEIGHT
 #define COL_JUMP (WIDTH * KERNEL_SIZE)
 #define COL_JUMP_2 (WIDTH * KERNEL_SIZE * 2)
-
-	int* base = &input_array[0][0];
+	printArray2d();
+	/*int* base = &input_array[0][0];
 	
 	int cell;
 	for(cell = 0; cell < CELLS; cell+=KERNEL_SIZE) {
@@ -349,7 +390,7 @@ int main() {
 	for(cell = 0; cell < WIDTH; cell++) {
 		calculateCol(&base[cell + COL_JUMP_2], PITCH);
 	}
-	
+	printArray2d(input_array);
 	for(cell = 0; cell < WIDTH; cell++) {
 		reverseCol(&base[cell], PITCH);
 	}
@@ -366,9 +407,9 @@ int main() {
 		reverseRow(&base[cell]);
 	}
 	
-	// printArray2d(input_array);
+	printArray2d(input_array);
 		
-
+*/
 	return 0;
 }
 
