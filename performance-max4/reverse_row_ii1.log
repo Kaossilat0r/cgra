@@ -1,0 +1,2595 @@
+dresc_gen_makefile native
+make hal/host/libhal_host.a hal/host/libhal_host_shared.so  \
+		hal/avm/stub/libavm_stub_rtl.so
+make[1]: Betrete Verzeichnis '/home/laboruser/student/rs2/adresc/workspace/performance-max4'
+ar cr hal/host/libhal_host.a   
+ranlib hal/host/libhal_host.a
+gcc -shared -Wl,-soname,libhal_host_shared.so -o hal/host/libhal_host_shared.so  
+g++ -shared -Wl,-soname,libavm_stub_rtl.so -o hal/avm/stub/libavm_stub_rtl.so 
+make[1]: Verlasse Verzeichnis '/home/laboruser/student/rs2/adresc/workspace/performance-max4'
+make -C workplace.native bin.native
+make[1]: Betrete Verzeichnis '/home/laboruser/student/rs2/adresc/workspace/performance-max4/workplace.native'
+dresc_klib_ld workplace.native 
+touch .klib
+ar cr libklib.a   
+ranlib libklib.a
+gcc -Wall -g  -I/home/laboruser/student/rs2/adresc/workspace/performance-max4/src -I/home/laboruser/student/rs2/adresc/workspace/performance-max4/hal/include -I/opt/dresc/include -c -o main.o ../src/main.c
+gcc -Wall -g  -I/home/laboruser/student/rs2/adresc/workspace/performance-max4/src -I/home/laboruser/student/rs2/adresc/workspace/performance-max4/hal/include -I/opt/dresc/include -o bin.native main.o -L. -lklib  -L/home/laboruser/student/rs2/adresc/workspace/performance-max4/hal/host -lhal_host -L/opt/dresc/lib -lmt_host -lpthread -lFLAI_intrinsics -l3MF_intrinsics -lbase_intrinsics   
+make[1]: Verlasse Verzeichnis '/home/laboruser/student/rs2/adresc/workspace/performance-max4/workplace.native'
+ln -fs workplace.native/bin.native bin.native
+dresc_gen_makefile lcode
+make -C workplace.lcode compile
+make[1]: Betrete Verzeichnis '/home/laboruser/student/rs2/adresc/workspace/performance-max4/workplace.lcode'
+dresc_compile_bench
+Using these settings to compile:
+  Project Name: performance-max4
+  USER_BENCH_PATH1: /home/laboruser/student/rs2/adresc/workspace
+  STD_PARMS_FILE: /home/laboruser/student/rs2/adresc/workspace/performance-max4/params/STD_PARMS
+  LOG_FILE: /home/laboruser/student/rs2/adresc/workspace/performance-max4/workplace.lcode/workspace/openimpact.log
+
+>> Sa 25. Feb 15:39:58 CET 2012: Setting up for performance-max4 in /home/laboruser/student/rs2/adresc/workspace/performance-max4/workplace.lcode/workspace
+>> Sa 25. Feb 15:39:58 CET 2012: c2gp 1/6: EDG frontend on the *.c in impactbenchsrc
+>> Sa 25. Feb 15:40:00 CET 2012: c2lc 2/6: Performing Pcode flattening
+>> Sa 25. Feb 15:40:00 CET 2012: c2lc 3/6: Pcode profiling using settings for performance-max4
+>> Sa 25. Feb 15:40:02 CET 2012: c2gp 5/6: Performing Pcode inlining
+>> Sa 25. Feb 15:40:03 CET 2012: c2gp 6/6: Converting Pcode to Lcode (w/ sync arcs)
+>> Sa 25. Feb 15:40:04 CET 2012: lc2O: Running Lopti on .lc files
+>> Sa 25. Feb 15:40:04 CET 2012: O2O_p: Profiling .O files
+>> Sa 25. Feb 15:40:04 CET 2012: O_p2H: Running Lblock on .O files to create hyperblocks
+>> Sa 25. Feb 15:40:05 CET 2012: H2HS: Running Lsuperscalar on .H files
+make[1]: Verlasse Verzeichnis '/home/laboruser/student/rs2/adresc/workspace/performance-max4/workplace.lcode'
+mkdir -p arch/
+[ -r arch/dresc_arch ] || ln -sf ../params/dresc_arch arch/dresc_arch
+for xml in ; do [ -r arch//$xml ] || ln -sf ../params/$xml arch/; done
+dresc_gen_makefile unsched
+make -C workplace.unsched compile
+make[1]: Betrete Verzeichnis '/home/laboruser/student/rs2/adresc/workspace/performance-max4/workplace.unsched'
+dresc_klib_ld workplace.unsched 
+touch .klib
+lc2dre --arch=../arch/dresc_arch --parm=../params/dresc_parms_v3 -i ../workplace.lcode/main.HS  -o main.DRE -l main.log
+make[1]: Verlasse Verzeichnis '/home/laboruser/student/rs2/adresc/workspace/performance-max4/workplace.unsched'
+dresc_gen_makefile cloned
+make -C workplace.cloned compile
+make[1]: Betrete Verzeichnis '/home/laboruser/student/rs2/adresc/workspace/performance-max4/workplace.cloned'
+dresc_klib_ld workplace.cloned 
+touch .klib
+dresc_mt_clone --arch=../arch/dresc_arch --parm=../params/dresc_parms_v3  -I ../workplace.unsched -O . -i ../workplace.unsched/main.DRE  -o main.DRE -l main.log
+make[1]: Verlasse Verzeichnis '/home/laboruser/student/rs2/adresc/workspace/performance-max4/workplace.cloned'
+dresc_gen_makefile assign
+make -C workplace.assign compile
+make[1]: Betrete Verzeichnis '/home/laboruser/student/rs2/adresc/workspace/performance-max4/workplace.assign'
+dresc_klib_ld workplace.assign 
+touch .klib
+dresc_mem_assign --arch=../arch/dresc_arch --parm=../params/dresc_parms_v3   -I ../workplace.cloned -O . -i ../workplace.cloned/main.DRE  -o main.DRE -l main.log
+make[1]: Verlasse Verzeichnis '/home/laboruser/student/rs2/adresc/workspace/performance-max4/workplace.assign'
+dresc_gen_makefile precga
+make -C workplace.precga compile
+make[1]: Betrete Verzeichnis '/home/laboruser/student/rs2/adresc/workspace/performance-max4/workplace.precga'
+dresc_klib_ld workplace.precga 
+touch .klib
+dresc_cga_prep --arch=../arch/dresc_arch --parm=../params/dresc_parms_v3 -i ../workplace.assign/main.DRE  -o main.DRE -l main.log
+Found software pipelineable loop (lcode cb 5 src line 319) in function main
+Creating REG_BIDIR since reg vr32[158] is loop livein
+Creating REG_BIDIR since reg vr32[158] satisfies bdd_lastdef & bdd_lastuse0 = 0
+Creating REG_BIDIR since reg vr32[410] is loop livein
+Creating REG_BIDIR since reg vr32[410] satisfies bdd_lastdef & bdd_lastuse0 = 0
+Performing predicate speculation ... 
+Total 0 predicates are optimized
+
+Found software pipelineable loop (lcode cb 8 src line 326) in function main
+Creating REG_BIDIR since reg vr32[403] is loop livein
+Creating REG_BIDIR since reg vr32[403] satisfies bdd_lastdef & bdd_lastuse0 = 0
+Creating REG_BIDIR since reg vr32[411] is loop livein
+Creating REG_BIDIR since reg vr32[411] satisfies bdd_lastdef & bdd_lastuse0 = 0
+Performing predicate speculation ... 
+Total 0 predicates are optimized
+
+Found software pipelineable loop (lcode cb 11 src line 330) in function main
+Creating REG_BIDIR since reg vr32[404] is loop livein
+Creating REG_BIDIR since reg vr32[404] satisfies bdd_lastdef & bdd_lastuse0 = 0
+Creating REG_BIDIR since reg vr32[412] is loop livein
+Creating REG_BIDIR since reg vr32[412] satisfies bdd_lastdef & bdd_lastuse0 = 0
+Performing predicate speculation ... 
+Total 0 predicates are optimized
+
+Found software pipelineable loop (lcode cb 14 src line 334) in function main
+Creating REG_BIDIR since reg vr32[405] is loop livein
+Creating REG_BIDIR since reg vr32[405] satisfies bdd_lastdef & bdd_lastuse0 = 0
+Creating REG_BIDIR since reg vr32[413] is loop livein
+Creating REG_BIDIR since reg vr32[413] satisfies bdd_lastdef & bdd_lastuse0 = 0
+Performing predicate speculation ... 
+Total 0 predicates are optimized
+
+Found software pipelineable loop (lcode cb 17 src line 343) in function main
+Creating REG_BIDIR since reg vr32[406] is loop livein
+Creating REG_BIDIR since reg vr32[406] satisfies bdd_lastdef & bdd_lastuse0 = 0
+Creating REG_BIDIR since reg vr32[414] is loop livein
+Creating REG_BIDIR since reg vr32[414] satisfies bdd_lastdef & bdd_lastuse0 = 0
+Performing predicate speculation ... 
+Total 0 predicates are optimized
+
+Found software pipelineable loop (lcode cb 20 src line 347) in function main
+Creating REG_BIDIR since reg vr32[407] is loop livein
+Creating REG_BIDIR since reg vr32[407] satisfies bdd_lastdef & bdd_lastuse0 = 0
+Creating REG_BIDIR since reg vr32[415] is loop livein
+Creating REG_BIDIR since reg vr32[415] satisfies bdd_lastdef & bdd_lastuse0 = 0
+Performing predicate speculation ... 
+Total 0 predicates are optimized
+
+Found software pipelineable loop (lcode cb 23 src line 351) in function main
+Creating REG_BIDIR since reg vr32[408] is loop livein
+Creating REG_BIDIR since reg vr32[408] satisfies bdd_lastdef & bdd_lastuse0 = 0
+Creating REG_BIDIR since reg vr32[416] is loop livein
+Creating REG_BIDIR since reg vr32[416] satisfies bdd_lastdef & bdd_lastuse0 = 0
+Performing predicate speculation ... 
+Total 0 predicates are optimized
+
+Found software pipelineable loop (lcode cb 26 src line 358) in function main
+Creating REG_BIDIR since reg vr32[409] is loop livein
+Creating REG_BIDIR since reg vr32[409] satisfies bdd_lastdef & bdd_lastuse0 = 0
+Creating REG_BIDIR since reg vr32[417] is loop livein
+Creating REG_BIDIR since reg vr32[417] satisfies bdd_lastdef & bdd_lastuse0 = 0
+Performing predicate speculation ... 
+Total 0 predicates are optimized
+
+make[1]: Verlasse Verzeichnis '/home/laboruser/student/rs2/adresc/workspace/performance-max4/workplace.precga'
+dresc_gen_makefile cga
+make -C workplace.cga compile
+make[1]: Betrete Verzeichnis '/home/laboruser/student/rs2/adresc/workspace/performance-max4/workplace.cga'
+dresc_klib_ld workplace.cga 
+touch .klib
+dresc_cga_sched --arch=../arch/dresc_arch --parm=../params/dresc_parms_v3 -i ../workplace.precga/main.DRE  -o main.DRE -l main.log
+Processing file ../workplace.precga/main.DRE
+
+Function printArray2d skipped by parameters
+Function calculateRow skipped by parameters
+Function calculateCol skipped by parameters
+Function reverseRow skipped by parameters
+Function reverseCol skipped by parameters
+Processing function main...
+
+Detected loop cb 5 src line 319
+Building routability matrix ...
+Performing copy propagation ... 
+Total 0 MOV operations are optimized corresponding to 0 dependences
+
+Scheduling loop 5...
+MII = 2, density = 55.56% (ResMII= 2, RecMII = 1, upper_density = 95.00%)
+Try II = 2; random_seed = 2006; relax_factor = 1.300
+Performing initial placement and routing ...
+Succeeded in scheduling operations in circuits
+Succeeded to schedule other operations
+Starting iterative improvement ...
+(you may interrupt scheduling process by typing q<RETURN>,
+ or continue directly to the next random_seed/relax_factor/II by typing s/r/i<return>)
+1: cost = 1410.6; overuse = 181 ; min_overuse = 181 ; moves = 42(24); length = 20
+2: cost = 1690.8; overuse = 168 ; min_overuse = 168 ; moves = 37(11); length = 20
+3: cost = 1931.3; overuse = 167 ; min_overuse = 167 ; moves = 38(9); length = 20
+4: cost = 1973.7; overuse = 162 ; min_overuse = 162 ; moves = 39(16); length = 20
+5: cost = 1896.7; overuse = 122 ; min_overuse = 122 ; moves = 40(18); length = 20
+6: cost = 2457.6; overuse = 165 ; min_overuse = 122 ; moves = 39(21); length = 20
+7: cost = 2290.2; overuse = 148 ; min_overuse = 122 ; moves = 40(10); length = 20
+8: cost = 2422.8; overuse = 123 ; min_overuse = 122 ; moves = 35(14); length = 20
+9: cost = 2362.3; overuse = 126 ; min_overuse = 122 ; moves = 33(10); length = 20
+10: cost = 2596.8; overuse = 123 ; min_overuse = 122 ; moves = 36(17); length = 20
+11: cost = 2392.3; overuse = 98 ; min_overuse = 98 ; moves = 39(12); length = 20
+12: cost = 3164.6; overuse = 127 ; min_overuse = 98 ; moves = 38(16); length = 20
+13: cost = 3393.6; overuse = 128 ; min_overuse = 98 ; moves = 39(14); length = 20
+14: cost = 3713.4; overuse = 133 ; min_overuse = 98 ; moves = 39(11); length = 20
+15: cost = 3944.2; overuse = 146 ; min_overuse = 98 ; moves = 34(13); length = 20
+16: cost = 4629.2; overuse = 134 ; min_overuse = 98 ; moves = 34(12); length = 20
+17: cost = 4669.8; overuse = 121 ; min_overuse = 98 ; moves = 36(13); length = 20
+18: cost = 5092.7; overuse = 114 ; min_overuse = 98 ; moves = 39(14); length = 20
+19: cost = 5264.5; overuse = 110 ; min_overuse = 98 ; moves = 35(11); length = 20
+20: cost = 4657.1; overuse = 96 ; min_overuse = 96 ; moves = 27(2); length = 20
+21: cost = 4294.9; overuse = 73 ; min_overuse = 73 ; moves = 25(1); length = 20
+22: cost = 4618.8; overuse = 84 ; min_overuse = 73 ; moves = 19(0); length = 20
+23: cost = 4525.6; overuse = 74 ; min_overuse = 73 ; moves = 25(3); length = 20
+24: cost = 4670.5; overuse = 64 ; min_overuse = 64 ; moves = 25(2); length = 20
+25: cost = 4477.0; overuse = 61 ; min_overuse = 61 ; moves = 25(2); length = 20
+26: cost = 4671.6; overuse = 59 ; min_overuse = 59 ; moves = 21(1); length = 20
+27: cost = 3922.9; overuse = 33 ; min_overuse = 33 ; moves = 21(0); length = 20
+28: cost = 3895.7; overuse = 34 ; min_overuse = 33 ; moves = 19(5); length = 20
+29: cost = 4253.5; overuse = 34 ; min_overuse = 33 ; moves = 14(1); length = 20
+30: cost = 4391.2; overuse = 32 ; min_overuse = 32 ; moves = 13(3); length = 20
+31: cost = 4702.6; overuse = 36 ; min_overuse = 32 ; moves = 13(0); length = 20
+32: cost = 5059.9; overuse = 36 ; min_overuse = 32 ; moves = 15(0); length = 20
+33: cost = 5812.6; overuse = 28 ; min_overuse = 28 ; moves = 11(1); length = 20
+34: cost = 6318.2; overuse = 40 ; min_overuse = 28 ; moves = 18(3); length = 20
+35: cost = 6571.8; overuse = 38 ; min_overuse = 28 ; moves = 18(1); length = 20
+36: cost = 6360.5; overuse = 31 ; min_overuse = 28 ; moves = 16(2); length = 20
+37: cost = 6344.4; overuse = 27 ; min_overuse = 27 ; moves = 10(1); length = 20
+38: cost = 6390.3; overuse = 23 ; min_overuse = 23 ; moves = 9(1); length = 20
+39: cost = 7483.0; overuse = 26 ; min_overuse = 23 ; moves = 11(2); length = 20
+40: cost = 8713.3; overuse = 44 ; min_overuse = 23 ; moves = 17(0); length = 20
+41: cost = 9156.4; overuse = 41 ; min_overuse = 23 ; moves = 17(0); length = 20
+42: cost = 7831.4; overuse = 27 ; min_overuse = 23 ; moves = 18(2); length = 20
+43: cost = 7158.7; overuse = 22 ; min_overuse = 22 ; moves = 11(0); length = 20
+44: cost = 6908.1; overuse = 16 ; min_overuse = 16 ; moves = 5(0); length = 20
+45: cost = 6843.0; overuse = 19 ; min_overuse = 16 ; moves = 14(2); length = 20
+46: cost = 6928.1; overuse = 26 ; min_overuse = 16 ; moves = 10(3); length = 20
+47: cost = 7382.9; overuse = 28 ; min_overuse = 16 ; moves = 13(2); length = 20
+48: cost = 6635.2; overuse = 20 ; min_overuse = 16 ; moves = 16(0); length = 20
+49: cost = 6907.4; overuse = 19 ; min_overuse = 16 ; moves = 9(3); length = 20
+50: cost = 6847.2; overuse = 18 ; min_overuse = 16 ; moves = 9(2); length = 20
+51: cost = 6642.5; overuse = 19 ; min_overuse = 16 ; moves = 9(1); length = 20
+52: cost = 6576.4; overuse = 18 ; min_overuse = 16 ; moves = 14(1); length = 20
+53: cost = 5791.2; overuse = 12 ; min_overuse = 12 ; moves = 7(1); length = 20
+54: cost = 5563.1; overuse = 14 ; min_overuse = 12 ; moves = 6(1); length = 20
+55: cost = 5330.3; overuse = 11 ; min_overuse = 11 ; moves = 8(3); length = 20
+56: cost = 6028.9; overuse = 18 ; min_overuse = 11 ; moves = 9(1); length = 20
+57: cost = 6240.2; overuse = 20 ; min_overuse = 11 ; moves = 8(1); length = 20
+58: cost = 6300.5; overuse = 23 ; min_overuse = 11 ; moves = 15(1); length = 20
+59: cost = 6063.5; overuse = 22 ; min_overuse = 11 ; moves = 10(1); length = 20
+60: cost = 6063.9; overuse = 20 ; min_overuse = 11 ; moves = 12(3); length = 20
+61: cost = 5224.0; overuse = 17 ; min_overuse = 11 ; moves = 9(1); length = 20
+62: cost = 4679.8; overuse = 12 ; min_overuse = 11 ; moves = 7(1); length = 20
+63: cost = 4087.3; overuse = 6 ; min_overuse = 6 ; moves = 5(1); length = 20
+OVERUSE: node 51 [fu_6::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 143 [fu_row_extended_1::src2],  modulo cycle: 0, overuse: 1
+OVERUSE: node 232 [fu_col_extended_4::src1],  modulo cycle: 0, overuse: 2
+OVERUSE: node 239 [data_pseudo[fu_col_extended_4]],  modulo cycle: 0, overuse: 1
+OVERUSE: node 490 [ireg_col_extended_4::in1],  modulo cycle: 1, overuse: 1
+total_overuse = 6, total_occpuancy = 649
+64: cost = 4119.8; overuse = 6 ; min_overuse = 6 ; moves = 1(1); length = 20
+OVERUSE: node 51 [fu_6::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 143 [fu_row_extended_1::src2],  modulo cycle: 0, overuse: 1
+OVERUSE: node 232 [fu_col_extended_4::src1],  modulo cycle: 0, overuse: 2
+OVERUSE: node 239 [data_pseudo[fu_col_extended_4]],  modulo cycle: 0, overuse: 1
+OVERUSE: node 490 [ireg_col_extended_4::in1],  modulo cycle: 1, overuse: 1
+total_overuse = 6, total_occpuancy = 649
+65: cost = 3925.2; overuse = 6 ; min_overuse = 6 ; moves = 6(2); length = 20
+OVERUSE: node 51 [fu_6::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 143 [fu_row_extended_1::src2],  modulo cycle: 0, overuse: 1
+OVERUSE: node 304 [vliw_int_rf::out2],  modulo cycle: 0, overuse: 1
+OVERUSE: node 306 [vliw_int_rf::out4],  modulo cycle: 1, overuse: 1
+OVERUSE: node 1032 [vliw_out4_delay::in],  modulo cycle: 1, overuse: 1
+OVERUSE: node 1033 [vliw_out4_delay::out],  modulo cycle: 0, overuse: 1
+total_overuse = 6, total_occpuancy = 647
+66: cost = 3972.4; overuse = 8 ; min_overuse = 6 ; moves = 6(1); length = 20
+OVERUSE: node 143 [fu_row_extended_1::src2],  modulo cycle: 0, overuse: 1
+OVERUSE: node 265 [fu_row_col_extended_0::src1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 266 [fu_row_col_extended_0::src2],  modulo cycle: 1, overuse: 1
+OVERUSE: node 272 [data_pseudo[fu_row_col_extended_0]],  modulo cycle: 1, overuse: 1
+OVERUSE: node 630 [outireg2_5::in],  modulo cycle: 1, overuse: 1
+OVERUSE: node 631 [outireg2_5::out],  modulo cycle: 0, overuse: 1
+OVERUSE: node 974 [outbuf2_row_col_extended_2::in],  modulo cycle: 0, overuse: 1
+OVERUSE: node 975 [outbuf2_row_col_extended_2::out],  modulo cycle: 0, overuse: 1
+total_overuse = 8, total_occpuancy = 709
+67: cost = 3755.9; overuse = 5 ; min_overuse = 5 ; moves = 6(1); length = 20
+OVERUSE: node 59 [fu_7::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 61 [fu_7::dst1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 65 [data_pseudo[fu_7]],  modulo cycle: 0, overuse: 1
+OVERUSE: node 143 [fu_row_extended_1::src2],  modulo cycle: 0, overuse: 1
+OVERUSE: node 250 [fu_col_extended_6::src2],  modulo cycle: 1, overuse: 1
+total_overuse = 5, total_occpuancy = 701
+68: cost = 3419.2; overuse = 4 ; min_overuse = 4 ; moves = 4(0); length = 20
+OVERUSE: node 28 [fu_3::src2],  modulo cycle: 0, overuse: 1
+OVERUSE: node 143 [fu_row_extended_1::src2],  modulo cycle: 0, overuse: 1
+OVERUSE: node 233 [fu_col_extended_4::src2],  modulo cycle: 0, overuse: 1
+OVERUSE: node 298 [vliw_int_rf::in2],  modulo cycle: 0, overuse: 1
+total_overuse = 4, total_occpuancy = 680
+69: cost = 3398.9; overuse = 4 ; min_overuse = 4 ; moves = 2(0); length = 20
+OVERUSE: node 143 [fu_row_extended_1::src2],  modulo cycle: 0, overuse: 1
+OVERUSE: node 257 [fu_col_extended_7::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 259 [fu_col_extended_7::dst1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 263 [data_pseudo[fu_col_extended_7]],  modulo cycle: 0, overuse: 1
+total_overuse = 4, total_occpuancy = 683
+70: cost = 3023.8; overuse = 1 ; min_overuse = 1 ; moves = 2(0); length = 20
+OVERUSE: node 143 [fu_row_extended_1::src2],  modulo cycle: 0, overuse: 1
+total_overuse = 1, total_occpuancy = 685
+71: cost = 2684.8; overuse = 1 ; min_overuse = 1 ; moves = 2(0); length = 20
+OVERUSE: node 143 [fu_row_extended_1::src2],  modulo cycle: 0, overuse: 1
+total_overuse = 1, total_occpuancy = 693
+72: cost = 2546.0; overuse = 1 ; min_overuse = 1 ; moves = 0(0); length = 20
+OVERUSE: node 143 [fu_row_extended_1::src2],  modulo cycle: 0, overuse: 1
+total_overuse = 1, total_occpuancy = 693
+73: cost = 2795.2; overuse = 7 ; min_overuse = 1 ; moves = 2(0); length = 20
+OVERUSE: node 109 [fu_13::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 111 [fu_13::dst1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 115 [data_pseudo[fu_13]],  modulo cycle: 0, overuse: 1
+OVERUSE: node 436 [ireg_13::in1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 438 [ireg_13::out1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 724 [outireg1_13::in],  modulo cycle: 0, overuse: 1
+OVERUSE: node 725 [outireg1_13::out],  modulo cycle: 1, overuse: 1
+total_overuse = 7, total_occpuancy = 687
+74: cost = 2646.9; overuse = 5 ; min_overuse = 1 ; moves = 2(0); length = 20
+OVERUSE: node 109 [fu_13::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 436 [ireg_13::in1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 438 [ireg_13::out1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 724 [outireg1_13::in],  modulo cycle: 0, overuse: 1
+OVERUSE: node 725 [outireg1_13::out],  modulo cycle: 1, overuse: 1
+total_overuse = 5, total_occpuancy = 696
+75: cost = 2688.3; overuse = 5 ; min_overuse = 1 ; moves = 2(1); length = 20
+OVERUSE: node 109 [fu_13::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 436 [ireg_13::in1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 438 [ireg_13::out1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 750 [outireg2_15::in],  modulo cycle: 1, overuse: 1
+OVERUSE: node 751 [outireg2_15::out],  modulo cycle: 0, overuse: 1
+total_overuse = 5, total_occpuancy = 696
+76: cost = 2643.8; overuse = 5 ; min_overuse = 1 ; moves = 2(0); length = 20
+OVERUSE: node 109 [fu_13::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 436 [ireg_13::in1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 438 [ireg_13::out1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 702 [outireg2_11::in],  modulo cycle: 0, overuse: 1
+OVERUSE: node 703 [outireg2_11::out],  modulo cycle: 1, overuse: 1
+total_overuse = 5, total_occpuancy = 696
+77: cost = 2528.4; overuse = 3 ; min_overuse = 1 ; moves = 4(1); length = 20
+OVERUSE: node 109 [fu_13::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 436 [ireg_13::in1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 438 [ireg_13::out1],  modulo cycle: 0, overuse: 1
+total_overuse = 3, total_occpuancy = 697
+78: cost = 2502.6; overuse = 3 ; min_overuse = 1 ; moves = 1(0); length = 20
+OVERUSE: node 109 [fu_13::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 436 [ireg_13::in1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 438 [ireg_13::out1],  modulo cycle: 0, overuse: 1
+total_overuse = 3, total_occpuancy = 687
+79: cost = 1996.6; overuse = 5 ; min_overuse = 1 ; moves = 1(0); length = 20
+OVERUSE: node 117 [fu_14::src1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 150 [fu_row_extended_2::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 151 [fu_row_extended_2::src2],  modulo cycle: 0, overuse: 1
+OVERUSE: node 157 [data_pseudo[fu_row_extended_2]],  modulo cycle: 0, overuse: 1
+OVERUSE: node 457 [ireg_row_extended_2::in1],  modulo cycle: 1, overuse: 1
+total_overuse = 5, total_occpuancy = 688
+80: cost = 1982.8; overuse = 3 ; min_overuse = 1 ; moves = 3(1); length = 20
+OVERUSE: node 117 [fu_14::src1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 143 [fu_row_extended_1::src2],  modulo cycle: 0, overuse: 1
+OVERUSE: node 470 [ireg_row_extended_5::in1],  modulo cycle: 1, overuse: 1
+total_overuse = 3, total_occpuancy = 685
+81: cost = 1982.5; overuse = 3 ; min_overuse = 1 ; moves = 1(0); length = 20
+OVERUSE: node 143 [fu_row_extended_1::src2],  modulo cycle: 0, overuse: 1
+OVERUSE: node 175 [fu_row_extended_5::src1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 470 [ireg_row_extended_5::in1],  modulo cycle: 1, overuse: 1
+total_overuse = 3, total_occpuancy = 686
+82: cost = 1823.8; overuse = 2 ; min_overuse = 1 ; moves = 1(0); length = 20
+OVERUSE: node 51 [fu_6::src1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 143 [fu_row_extended_1::src2],  modulo cycle: 0, overuse: 1
+total_overuse = 2, total_occpuancy = 705
+83: cost = 1767.6; overuse = 2 ; min_overuse = 1 ; moves = 1(0); length = 20
+OVERUSE: node 51 [fu_6::src1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 143 [fu_row_extended_1::src2],  modulo cycle: 0, overuse: 1
+total_overuse = 2, total_occpuancy = 703
+84: cost = 1771.9; overuse = 2 ; min_overuse = 1 ; moves = 2(1); length = 20
+OVERUSE: node 51 [fu_6::src1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 143 [fu_row_extended_1::src2],  modulo cycle: 0, overuse: 1
+total_overuse = 2, total_occpuancy = 697
+85: cost = 1800.3; overuse = 3 ; min_overuse = 1 ; moves = 2(0); length = 20
+OVERUSE: node 143 [fu_row_extended_1::src2],  modulo cycle: 0, overuse: 1
+OVERUSE: node 150 [fu_row_extended_2::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 157 [data_pseudo[fu_row_extended_2]],  modulo cycle: 0, overuse: 1
+total_overuse = 3, total_occpuancy = 701
+86: cost = 1569.9; overuse = 1 ; min_overuse = 1 ; moves = 1(0); length = 20
+OVERUSE: node 143 [fu_row_extended_1::src2],  modulo cycle: 0, overuse: 1
+total_overuse = 1, total_occpuancy = 690
+87: cost = 1538.7; overuse = 1 ; min_overuse = 1 ; moves = 2(0); length = 20
+OVERUSE: node 143 [fu_row_extended_1::src2],  modulo cycle: 0, overuse: 1
+total_overuse = 1, total_occpuancy = 689
+88: cost = 1517.7; overuse = 1 ; min_overuse = 1 ; moves = 2(2); length = 20
+OVERUSE: node 143 [fu_row_extended_1::src2],  modulo cycle: 0, overuse: 1
+total_overuse = 1, total_occpuancy = 690
+89: cost = 1495.5; overuse = 1 ; min_overuse = 1 ; moves = 0(0); length = 20
+OVERUSE: node 143 [fu_row_extended_1::src2],  modulo cycle: 0, overuse: 1
+total_overuse = 1, total_occpuancy = 690
+90: cost = 1525.9; overuse = 2 ; min_overuse = 1 ; moves = 2(2); length = 20
+OVERUSE: node 143 [fu_row_extended_1::src2],  modulo cycle: 0, overuse: 1
+OVERUSE: node 305 [vliw_int_rf::out3],  modulo cycle: 0, overuse: 1
+total_overuse = 2, total_occpuancy = 651
+91: cost = 1554.6; overuse = 2 ; min_overuse = 1 ; moves = 3(2); length = 20
+OVERUSE: node 143 [fu_row_extended_1::src2],  modulo cycle: 0, overuse: 1
+OVERUSE: node 305 [vliw_int_rf::out3],  modulo cycle: 0, overuse: 1
+total_overuse = 2, total_occpuancy = 652
+92: cost = 1718.6; overuse = 7 ; min_overuse = 1 ; moves = 3(1); length = 20
+OVERUSE: node 150 [fu_row_extended_2::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 151 [fu_row_extended_2::src2],  modulo cycle: 0, overuse: 1
+OVERUSE: node 157 [data_pseudo[fu_row_extended_2]],  modulo cycle: 0, overuse: 1
+OVERUSE: node 305 [vliw_int_rf::out3],  modulo cycle: 0, overuse: 1
+OVERUSE: node 457 [ireg_row_extended_2::in1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 784 [outireg1_row_extended_2::in],  modulo cycle: 0, overuse: 1
+OVERUSE: node 785 [outireg1_row_extended_2::out],  modulo cycle: 1, overuse: 1
+total_overuse = 7, total_occpuancy = 644
+93: cost = 1628.4; overuse = 5 ; min_overuse = 1 ; moves = 3(0); length = 20
+OVERUSE: node 175 [fu_row_extended_5::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 184 [fu_row_extended_6::src2],  modulo cycle: 1, overuse: 1
+OVERUSE: node 305 [vliw_int_rf::out3],  modulo cycle: 0, overuse: 1
+OVERUSE: node 470 [ireg_row_extended_5::in1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 472 [ireg_row_extended_5::out1],  modulo cycle: 0, overuse: 1
+total_overuse = 5, total_occpuancy = 636
+94: cost = 1804.1; overuse = 5 ; min_overuse = 1 ; moves = 1(1); length = 20
+OVERUSE: node 175 [fu_row_extended_5::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 184 [fu_row_extended_6::src2],  modulo cycle: 1, overuse: 1
+OVERUSE: node 305 [vliw_int_rf::out3],  modulo cycle: 0, overuse: 1
+OVERUSE: node 470 [ireg_row_extended_5::in1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 472 [ireg_row_extended_5::out1],  modulo cycle: 0, overuse: 1
+total_overuse = 5, total_occpuancy = 639
+95: cost = 1674.7; overuse = 3 ; min_overuse = 1 ; moves = 4(0); length = 20
+OVERUSE: node 143 [fu_row_extended_1::src2],  modulo cycle: 0, overuse: 1
+OVERUSE: node 191 [fu_row_extended_7::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 305 [vliw_int_rf::out3],  modulo cycle: 0, overuse: 1
+total_overuse = 3, total_occpuancy = 631
+96: cost = 1708.6; overuse = 5 ; min_overuse = 1 ; moves = 3(1); length = 20
+OVERUSE: node 10 [fu_1::src2],  modulo cycle: 0, overuse: 1
+OVERUSE: node 143 [fu_row_extended_1::src2],  modulo cycle: 0, overuse: 1
+OVERUSE: node 304 [vliw_int_rf::out2],  modulo cycle: 1, overuse: 1
+OVERUSE: node 1028 [vliw_out2_delay::in],  modulo cycle: 1, overuse: 1
+OVERUSE: node 1029 [vliw_out2_delay::out],  modulo cycle: 0, overuse: 1
+total_overuse = 5, total_occpuancy = 654
+97: cost = 1786.0; overuse = 6 ; min_overuse = 1 ; moves = 6(1); length = 20
+OVERUSE: node 10 [fu_1::src2],  modulo cycle: 0, overuse: 1
+OVERUSE: node 133 [fu_row_extended_0::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 143 [fu_row_extended_1::src2],  modulo cycle: 0, overuse: 1
+OVERUSE: node 304 [vliw_int_rf::out2],  modulo cycle: 0, overuse: 1
+OVERUSE: node 996 [pred_col_bus0::in],  modulo cycle: 1, overuse: 1
+OVERUSE: node 997 [pred_col_bus0::out],  modulo cycle: 0, overuse: 1
+total_overuse = 6, total_occpuancy = 634
+98: cost = 2067.0; overuse = 9 ; min_overuse = 1 ; moves = 6(2); length = 20
+OVERUSE: node 8 [fu_1::pred],  modulo cycle: 1, overuse: 1
+OVERUSE: node 10 [fu_1::src2],  modulo cycle: 0, overuse: 1
+OVERUSE: node 17 [fu_2::pred],  modulo cycle: 1, overuse: 1
+OVERUSE: node 19 [fu_2::src2],  modulo cycle: 1, overuse: 1
+OVERUSE: node 21 [fu_2::dst1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 25 [data_pseudo[fu_2]],  modulo cycle: 1, overuse: 1
+OVERUSE: node 305 [vliw_int_rf::out3],  modulo cycle: 1, overuse: 1
+OVERUSE: node 361 [vliw_pred::out2],  modulo cycle: 1, overuse: 1
+OVERUSE: node 526 [const_2::out],  modulo cycle: 1, overuse: 1
+total_overuse = 9, total_occpuancy = 620
+99: cost = 2498.0; overuse = 9 ; min_overuse = 1 ; moves = 2(2); length = 20
+OVERUSE: node 8 [fu_1::pred],  modulo cycle: 1, overuse: 1
+OVERUSE: node 10 [fu_1::src2],  modulo cycle: 0, overuse: 1
+OVERUSE: node 17 [fu_2::pred],  modulo cycle: 1, overuse: 1
+OVERUSE: node 19 [fu_2::src2],  modulo cycle: 1, overuse: 1
+OVERUSE: node 21 [fu_2::dst1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 25 [data_pseudo[fu_2]],  modulo cycle: 1, overuse: 1
+OVERUSE: node 305 [vliw_int_rf::out3],  modulo cycle: 1, overuse: 1
+OVERUSE: node 361 [vliw_pred::out2],  modulo cycle: 1, overuse: 1
+OVERUSE: node 526 [const_2::out],  modulo cycle: 1, overuse: 1
+total_overuse = 9, total_occpuancy = 632
+100: cost = 2845.4; overuse = 10 ; min_overuse = 1 ; moves = 2(0); length = 20
+OVERUSE: node 8 [fu_1::pred],  modulo cycle: 1, overuse: 1
+OVERUSE: node 10 [fu_1::src2],  modulo cycle: 0, overuse: 1
+OVERUSE: node 17 [fu_2::pred],  modulo cycle: 1, overuse: 1
+OVERUSE: node 19 [fu_2::src2],  modulo cycle: 1, overuse: 1
+OVERUSE: node 21 [fu_2::dst1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 25 [data_pseudo[fu_2]],  modulo cycle: 1, overuse: 1
+OVERUSE: node 134 [fu_row_extended_0::src2],  modulo cycle: 0, overuse: 1
+OVERUSE: node 143 [fu_row_extended_1::src2],  modulo cycle: 1, overuse: 1
+OVERUSE: node 361 [vliw_pred::out2],  modulo cycle: 1, overuse: 1
+OVERUSE: node 526 [const_2::out],  modulo cycle: 1, overuse: 1
+total_overuse = 10, total_occpuancy = 626
+101: cost = 3212.2; overuse = 11 ; min_overuse = 1 ; moves = 5(2); length = 20
+102: cost = 2677.6; overuse = 17 ; min_overuse = 1 ; moves = 9(1); length = 20
+103: cost = 2916.3; overuse = 13 ; min_overuse = 1 ; moves = 11(1); length = 20
+104: cost = 2377.5; overuse = 10 ; min_overuse = 1 ; moves = 9(1); length = 20
+OVERUSE: node 35 [fu_4::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 59 [fu_7::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 160 [fu_row_extended_3::src2],  modulo cycle: 0, overuse: 1
+OVERUSE: node 200 [fu_col_extended_0::src2],  modulo cycle: 1, overuse: 1
+OVERUSE: node 216 [fu_col_extended_2::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 400 [ireg_4::out1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 410 [ireg_7::in1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 412 [ireg_7::out1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 918 [outireg2_col_extended_5::in],  modulo cycle: 1, overuse: 1
+OVERUSE: node 919 [outireg2_col_extended_5::out],  modulo cycle: 0, overuse: 1
+total_overuse = 10, total_occpuancy = 668
+105: cost = 2292.4; overuse = 6 ; min_overuse = 1 ; moves = 6(1); length = 20
+OVERUSE: node 35 [fu_4::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 51 [fu_6::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 109 [fu_13::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 160 [fu_row_extended_3::src2],  modulo cycle: 0, overuse: 1
+OVERUSE: node 216 [fu_col_extended_2::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 400 [ireg_4::out1],  modulo cycle: 0, overuse: 1
+total_overuse = 6, total_occpuancy = 650
+106: cost = 2360.0; overuse = 8 ; min_overuse = 1 ; moves = 5(1); length = 20
+OVERUSE: node 35 [fu_4::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 51 [fu_6::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 160 [fu_row_extended_3::src2],  modulo cycle: 0, overuse: 1
+OVERUSE: node 224 [fu_col_extended_3::src1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 232 [fu_col_extended_4::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 233 [fu_col_extended_4::src2],  modulo cycle: 0, overuse: 1
+OVERUSE: node 239 [data_pseudo[fu_col_extended_4]],  modulo cycle: 0, overuse: 1
+OVERUSE: node 400 [ireg_4::out1],  modulo cycle: 0, overuse: 1
+total_overuse = 8, total_occpuancy = 642
+107: cost = 2836.8; overuse = 11 ; min_overuse = 1 ; moves = 5(3); length = 20
+108: cost = 3043.4; overuse = 13 ; min_overuse = 1 ; moves = 9(0); length = 20
+109: cost = 2725.5; overuse = 5 ; min_overuse = 1 ; moves = 7(2); length = 20
+OVERUSE: node 94 [fu_11::src2],  modulo cycle: 1, overuse: 1
+OVERUSE: node 160 [fu_row_extended_3::src2],  modulo cycle: 1, overuse: 1
+OVERUSE: node 265 [fu_row_col_extended_0::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 266 [fu_row_col_extended_0::src2],  modulo cycle: 0, overuse: 1
+OVERUSE: node 272 [data_pseudo[fu_row_col_extended_0]],  modulo cycle: 0, overuse: 1
+total_overuse = 5, total_occpuancy = 651
+110: cost = 2591.4; overuse = 8 ; min_overuse = 1 ; moves = 8(0); length = 20
+OVERUSE: node 85 [fu_10::src2],  modulo cycle: 0, overuse: 2
+OVERUSE: node 91 [data_pseudo[fu_10]],  modulo cycle: 0, overuse: 1
+OVERUSE: node 94 [fu_11::src2],  modulo cycle: 1, overuse: 1
+OVERUSE: node 150 [fu_row_extended_2::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 151 [fu_row_extended_2::src2],  modulo cycle: 0, overuse: 1
+OVERUSE: node 157 [data_pseudo[fu_row_extended_2]],  modulo cycle: 0, overuse: 1
+OVERUSE: node 457 [ireg_row_extended_2::in1],  modulo cycle: 1, overuse: 1
+total_overuse = 8, total_occpuancy = 658
+111: cost = 2760.4; overuse = 7 ; min_overuse = 1 ; moves = 3(1); length = 20
+OVERUSE: node 85 [fu_10::src2],  modulo cycle: 0, overuse: 2
+OVERUSE: node 91 [data_pseudo[fu_10]],  modulo cycle: 0, overuse: 1
+OVERUSE: node 94 [fu_11::src2],  modulo cycle: 1, overuse: 1
+OVERUSE: node 150 [fu_row_extended_2::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 151 [fu_row_extended_2::src2],  modulo cycle: 0, overuse: 1
+OVERUSE: node 157 [data_pseudo[fu_row_extended_2]],  modulo cycle: 0, overuse: 1
+total_overuse = 7, total_occpuancy = 664
+112: cost = 2988.8; overuse = 8 ; min_overuse = 1 ; moves = 3(0); length = 20
+OVERUSE: node 76 [fu_9::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 85 [fu_10::src2],  modulo cycle: 0, overuse: 2
+OVERUSE: node 91 [data_pseudo[fu_10]],  modulo cycle: 0, overuse: 1
+OVERUSE: node 94 [fu_11::src2],  modulo cycle: 1, overuse: 1
+OVERUSE: node 150 [fu_row_extended_2::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 151 [fu_row_extended_2::src2],  modulo cycle: 0, overuse: 1
+OVERUSE: node 157 [data_pseudo[fu_row_extended_2]],  modulo cycle: 0, overuse: 1
+total_overuse = 8, total_occpuancy = 668
+113: cost = 3177.8; overuse = 7 ; min_overuse = 1 ; moves = 2(1); length = 20
+OVERUSE: node 85 [fu_10::src2],  modulo cycle: 0, overuse: 2
+OVERUSE: node 91 [data_pseudo[fu_10]],  modulo cycle: 0, overuse: 1
+OVERUSE: node 94 [fu_11::src2],  modulo cycle: 1, overuse: 1
+OVERUSE: node 150 [fu_row_extended_2::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 151 [fu_row_extended_2::src2],  modulo cycle: 0, overuse: 1
+OVERUSE: node 157 [data_pseudo[fu_row_extended_2]],  modulo cycle: 0, overuse: 1
+total_overuse = 7, total_occpuancy = 668
+114: cost = 3354.3; overuse = 7 ; min_overuse = 1 ; moves = 3(1); length = 20
+OVERUSE: node 85 [fu_10::src2],  modulo cycle: 0, overuse: 2
+OVERUSE: node 91 [data_pseudo[fu_10]],  modulo cycle: 0, overuse: 1
+OVERUSE: node 94 [fu_11::src2],  modulo cycle: 1, overuse: 1
+OVERUSE: node 150 [fu_row_extended_2::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 151 [fu_row_extended_2::src2],  modulo cycle: 0, overuse: 1
+OVERUSE: node 157 [data_pseudo[fu_row_extended_2]],  modulo cycle: 0, overuse: 1
+total_overuse = 7, total_occpuancy = 655
+115: cost = 3800.9; overuse = 13 ; min_overuse = 1 ; moves = 7(1); length = 20
+116: cost = 3873.0; overuse = 19 ; min_overuse = 1 ; moves = 11(0); length = 20
+117: cost = 3632.8; overuse = 12 ; min_overuse = 1 ; moves = 14(1); length = 20
+118: cost = 3313.4; overuse = 13 ; min_overuse = 1 ; moves = 10(2); length = 20
+119: cost = 3389.4; overuse = 12 ; min_overuse = 1 ; moves = 12(2); length = 20
+120: cost = 2962.3; overuse = 7 ; min_overuse = 1 ; moves = 8(1); length = 20
+OVERUSE: node 17 [fu_2::pred],  modulo cycle: 1, overuse: 1
+OVERUSE: node 232 [fu_col_extended_4::src1],  modulo cycle: 1, overuse: 2
+OVERUSE: node 235 [fu_col_extended_4::dst1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 239 [data_pseudo[fu_col_extended_4]],  modulo cycle: 1, overuse: 1
+OVERUSE: node 448 [ireg_row_extended_0::in1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 552 [const_col_extended_4::out],  modulo cycle: 1, overuse: 1
+total_overuse = 7, total_occpuancy = 689
+121: cost = 3450.4; overuse = 11 ; min_overuse = 1 ; moves = 3(1); length = 20
+122: cost = 3560.2; overuse = 10 ; min_overuse = 1 ; moves = 4(0); length = 20
+OVERUSE: node 17 [fu_2::pred],  modulo cycle: 1, overuse: 1
+OVERUSE: node 83 [fu_10::pred],  modulo cycle: 1, overuse: 1
+OVERUSE: node 84 [fu_10::src1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 91 [data_pseudo[fu_10]],  modulo cycle: 1, overuse: 1
+OVERUSE: node 235 [fu_col_extended_4::dst1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 426 [ireg_10::out2],  modulo cycle: 1, overuse: 1
+OVERUSE: node 448 [ireg_row_extended_0::in1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 534 [const_10::out],  modulo cycle: 1, overuse: 1
+OVERUSE: node 642 [outireg2_6::in],  modulo cycle: 1, overuse: 1
+OVERUSE: node 643 [outireg2_6::out],  modulo cycle: 0, overuse: 1
+total_overuse = 10, total_occpuancy = 672
+123: cost = 3535.2; overuse = 13 ; min_overuse = 1 ; moves = 9(2); length = 20
+124: cost = 3456.4; overuse = 12 ; min_overuse = 1 ; moves = 10(2); length = 20
+125: cost = 3787.4; overuse = 14 ; min_overuse = 1 ; moves = 8(1); length = 20
+126: cost = 4177.4; overuse = 18 ; min_overuse = 1 ; moves = 11(1); length = 20
+127: cost = 3791.4; overuse = 11 ; min_overuse = 1 ; moves = 13(3); length = 20
+128: cost = 3640.4; overuse = 9 ; min_overuse = 1 ; moves = 11(2); length = 20
+OVERUSE: node 51 [fu_6::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 217 [fu_col_extended_2::src2],  modulo cycle: 0, overuse: 1
+OVERUSE: node 233 [fu_col_extended_4::src2],  modulo cycle: 0, overuse: 2
+OVERUSE: node 239 [data_pseudo[fu_col_extended_4]],  modulo cycle: 0, overuse: 1
+OVERUSE: node 241 [fu_col_extended_5::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 241 [fu_col_extended_5::src1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 854 [outbuf2_col_extended_0::in],  modulo cycle: 0, overuse: 1
+OVERUSE: node 855 [outbuf2_col_extended_0::out],  modulo cycle: 0, overuse: 1
+total_overuse = 9, total_occpuancy = 820
+129: cost = 3635.8; overuse = 7 ; min_overuse = 1 ; moves = 3(1); length = 20
+OVERUSE: node 51 [fu_6::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 217 [fu_col_extended_2::src2],  modulo cycle: 0, overuse: 1
+OVERUSE: node 241 [fu_col_extended_5::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 241 [fu_col_extended_5::src1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 265 [fu_row_col_extended_0::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 854 [outbuf2_col_extended_0::in],  modulo cycle: 0, overuse: 1
+OVERUSE: node 855 [outbuf2_col_extended_0::out],  modulo cycle: 0, overuse: 1
+total_overuse = 7, total_occpuancy = 812
+130: cost = 2738.8; overuse = 2 ; min_overuse = 1 ; moves = 12(2); length = 20
+OVERUSE: node 1 [fu_0::src1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 241 [fu_col_extended_5::src1],  modulo cycle: 0, overuse: 1
+total_overuse = 2, total_occpuancy = 788
+131: cost = 2551.2; overuse = 2 ; min_overuse = 1 ; moves = 8(2); length = 20
+OVERUSE: node 59 [fu_7::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 183 [fu_row_extended_6::src1],  modulo cycle: 0, overuse: 1
+total_overuse = 2, total_occpuancy = 723
+132: cost = 2459.3; overuse = 2 ; min_overuse = 1 ; moves = 5(1); length = 20
+OVERUSE: node 59 [fu_7::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 183 [fu_row_extended_6::src1],  modulo cycle: 0, overuse: 1
+total_overuse = 2, total_occpuancy = 759
+133: cost = 2353.0; overuse = 2 ; min_overuse = 1 ; moves = 5(0); length = 20
+OVERUSE: node 59 [fu_7::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 183 [fu_row_extended_6::src1],  modulo cycle: 0, overuse: 1
+total_overuse = 2, total_occpuancy = 732
+134: cost = 2099.9; overuse = 2 ; min_overuse = 1 ; moves = 5(0); length = 20
+OVERUSE: node 580 [outireg1_1::in],  modulo cycle: 1, overuse: 1
+OVERUSE: node 581 [outireg1_1::out],  modulo cycle: 0, overuse: 1
+total_overuse = 2, total_occpuancy = 742
+135: cost = 1967.8; overuse = 1 ; min_overuse = 1 ; moves = 7(1); length = 20
+OVERUSE: node 266 [fu_row_col_extended_0::src2],  modulo cycle: 0, overuse: 1
+total_overuse = 1, total_occpuancy = 729
+136: cost = 1892.2; overuse = 1 ; min_overuse = 1 ; moves = 3(2); length = 20
+OVERUSE: node 266 [fu_row_col_extended_0::src2],  modulo cycle: 0, overuse: 1
+total_overuse = 1, total_occpuancy = 729
+137: cost = 1848.4; overuse = 2 ; min_overuse = 1 ; moves = 3(1); length = 20
+OVERUSE: node 117 [fu_14::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 159 [fu_row_extended_3::src1],  modulo cycle: 1, overuse: 1
+total_overuse = 2, total_occpuancy = 733
+138: cost = 1759.1; overuse = 1 ; min_overuse = 1 ; moves = 4(2); length = 20
+OVERUSE: node 266 [fu_row_col_extended_0::src2],  modulo cycle: 0, overuse: 1
+total_overuse = 1, total_occpuancy = 724
+139: cost = 1692.4; overuse = 1 ; min_overuse = 1 ; moves = 6(2); length = 20
+OVERUSE: node 266 [fu_row_col_extended_0::src2],  modulo cycle: 0, overuse: 1
+total_overuse = 1, total_occpuancy = 717
+140: cost = 1774.7; overuse = 3 ; min_overuse = 1 ; moves = 3(2); length = 20
+OVERUSE: node 150 [fu_row_extended_2::src1],  modulo cycle: 0, overuse: 2
+OVERUSE: node 157 [data_pseudo[fu_row_extended_2]],  modulo cycle: 0, overuse: 1
+total_overuse = 3, total_occpuancy = 725
+141: cost = 1886.2; overuse = 3 ; min_overuse = 1 ; moves = 1(1); length = 20
+OVERUSE: node 150 [fu_row_extended_2::src1],  modulo cycle: 0, overuse: 2
+OVERUSE: node 157 [data_pseudo[fu_row_extended_2]],  modulo cycle: 0, overuse: 1
+total_overuse = 3, total_occpuancy = 725
+142: cost = 1936.5; overuse = 4 ; min_overuse = 1 ; moves = 2(1); length = 20
+OVERUSE: node 159 [fu_row_extended_3::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 159 [fu_row_extended_3::src1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 161 [fu_row_extended_3::dst1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 165 [data_pseudo[fu_row_extended_3]],  modulo cycle: 0, overuse: 1
+total_overuse = 4, total_occpuancy = 721
+143: cost = 1567.1; overuse = 1 ; min_overuse = 1 ; moves = 3(0); length = 20
+OVERUSE: node 266 [fu_row_col_extended_0::src2],  modulo cycle: 0, overuse: 1
+total_overuse = 1, total_occpuancy = 718
+144: cost = 1557.1; overuse = 2 ; min_overuse = 1 ; moves = 2(1); length = 20
+OVERUSE: node 117 [fu_14::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 159 [fu_row_extended_3::src1],  modulo cycle: 1, overuse: 1
+total_overuse = 2, total_occpuancy = 724
+145: cost = 1497.4; overuse = 1 ; min_overuse = 1 ; moves = 2(0); length = 20
+OVERUSE: node 266 [fu_row_col_extended_0::src2],  modulo cycle: 0, overuse: 1
+total_overuse = 1, total_occpuancy = 718
+146: cost = 1479.4; overuse = 1 ; min_overuse = 1 ; moves = 1(0); length = 20
+OVERUSE: node 266 [fu_row_col_extended_0::src2],  modulo cycle: 0, overuse: 1
+total_overuse = 1, total_occpuancy = 718
+147: cost = 1470.2; overuse = 2 ; min_overuse = 1 ; moves = 2(1); length = 20
+OVERUSE: node 117 [fu_14::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 159 [fu_row_extended_3::src1],  modulo cycle: 1, overuse: 1
+total_overuse = 2, total_occpuancy = 724
+148: cost = 1540.3; overuse = 3 ; min_overuse = 1 ; moves = 4(2); length = 20
+OVERUSE: node 303 [vliw_int_rf::out1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 1026 [vliw_out1_delay::in],  modulo cycle: 1, overuse: 1
+OVERUSE: node 1027 [vliw_out1_delay::out],  modulo cycle: 0, overuse: 1
+total_overuse = 3, total_occpuancy = 725
+149: cost = 1408.4; overuse = 1 ; min_overuse = 1 ; moves = 4(0); length = 20
+OVERUSE: node 93 [fu_11::src1],  modulo cycle: 0, overuse: 1
+total_overuse = 1, total_occpuancy = 720
+150: cost = 1401.8; overuse = 1 ; min_overuse = 1 ; moves = 2(2); length = 20
+OVERUSE: node 93 [fu_11::src1],  modulo cycle: 0, overuse: 1
+total_overuse = 1, total_occpuancy = 719
+151: cost = 1323.8; overuse = 0 ; min_overuse = 0 ; moves = 3(1); length = 20
+total_overuse = 0, total_occpuancy = 714
+Successfully found a valid schedule for loop cb 5 src line 319 func main with II = 2; random_seed = 2006; relax_factor = 1.300
+
+total_overuse = 0, total_occpuancy = 714
+elapsed time = 200 seconds
+
+total elapsed time for all parameters = 200 seconds
+Performing CGA rotating RF allocation...
+Detected loop cb 26 src line 358
+Building routability matrix ...
+Performing copy propagation ... 
+Total 0 MOV operations are optimized corresponding to 0 dependences
+
+Scheduling loop 26...
+MII = 2, density = 45.83% (ResMII= 2, RecMII = 1, upper_density = 95.00%)
+Try II = 2; random_seed = 2008; relax_factor = 1.300
+Performing initial placement and routing ...
+Succeeded in scheduling operations in circuits
+Succeeded to schedule other operations
+Starting iterative improvement ...
+(you may interrupt scheduling process by typing q<RETURN>,
+ or continue directly to the next random_seed/relax_factor/II by typing s/r/i<return>)
+1: cost = 1046.6; overuse = 154 ; min_overuse = 154 ; moves = 34(15); length = 14
+2: cost = 1356.1; overuse = 140 ; min_overuse = 140 ; moves = 35(16); length = 15
+3: cost = 1205.1; overuse = 102 ; min_overuse = 102 ; moves = 31(7); length = 15
+4: cost = 1298.2; overuse = 106 ; min_overuse = 102 ; moves = 34(10); length = 15
+5: cost = 1288.9; overuse = 105 ; min_overuse = 102 ; moves = 33(12); length = 15
+6: cost = 1404.3; overuse = 103 ; min_overuse = 102 ; moves = 31(14); length = 15
+7: cost = 1455.9; overuse = 79 ; min_overuse = 79 ; moves = 27(9); length = 15
+8: cost = 1562.0; overuse = 89 ; min_overuse = 79 ; moves = 28(12); length = 15
+9: cost = 1837.4; overuse = 108 ; min_overuse = 79 ; moves = 28(14); length = 15
+10: cost = 1961.3; overuse = 86 ; min_overuse = 79 ; moves = 23(8); length = 15
+11: cost = 2168.5; overuse = 85 ; min_overuse = 79 ; moves = 25(11); length = 15
+12: cost = 2479.8; overuse = 101 ; min_overuse = 79 ; moves = 29(12); length = 15
+13: cost = 2453.6; overuse = 85 ; min_overuse = 79 ; moves = 25(9); length = 15
+14: cost = 2886.5; overuse = 97 ; min_overuse = 79 ; moves = 28(15); length = 15
+15: cost = 3055.1; overuse = 94 ; min_overuse = 79 ; moves = 24(10); length = 15
+16: cost = 3134.7; overuse = 75 ; min_overuse = 75 ; moves = 25(12); length = 15
+17: cost = 3296.2; overuse = 89 ; min_overuse = 75 ; moves = 27(11); length = 15
+18: cost = 3168.6; overuse = 75 ; min_overuse = 75 ; moves = 23(10); length = 15
+19: cost = 3185.6; overuse = 75 ; min_overuse = 75 ; moves = 20(8); length = 15
+20: cost = 3039.0; overuse = 64 ; min_overuse = 64 ; moves = 17(2); length = 15
+21: cost = 3179.5; overuse = 68 ; min_overuse = 64 ; moves = 20(1); length = 15
+22: cost = 3283.9; overuse = 50 ; min_overuse = 50 ; moves = 18(3); length = 15
+23: cost = 3383.4; overuse = 52 ; min_overuse = 50 ; moves = 14(1); length = 15
+24: cost = 3233.4; overuse = 49 ; min_overuse = 49 ; moves = 22(2); length = 15
+25: cost = 3069.2; overuse = 32 ; min_overuse = 32 ; moves = 15(1); length = 15
+26: cost = 3076.8; overuse = 32 ; min_overuse = 32 ; moves = 17(1); length = 15
+27: cost = 2803.5; overuse = 19 ; min_overuse = 19 ; moves = 12(1); length = 15
+28: cost = 3172.3; overuse = 30 ; min_overuse = 19 ; moves = 18(1); length = 15
+29: cost = 3256.2; overuse = 21 ; min_overuse = 19 ; moves = 17(5); length = 15
+30: cost = 2975.5; overuse = 11 ; min_overuse = 11 ; moves = 10(1); length = 15
+31: cost = 2932.4; overuse = 12 ; min_overuse = 11 ; moves = 9(1); length = 15
+32: cost = 2881.8; overuse = 9 ; min_overuse = 9 ; moves = 7(2); length = 15
+OVERUSE: node 111 [fu_13::dst1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 115 [data_pseudo[fu_13]],  modulo cycle: 1, overuse: 1
+OVERUSE: node 191 [fu_row_extended_7::src1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 231 [fu_col_extended_4::pred],  modulo cycle: 0, overuse: 1
+OVERUSE: node 232 [fu_col_extended_4::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 239 [data_pseudo[fu_col_extended_4]],  modulo cycle: 0, overuse: 1
+OVERUSE: node 490 [ireg_col_extended_4::in1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 493 [ireg_col_extended_4::out2],  modulo cycle: 0, overuse: 1
+OVERUSE: node 552 [const_col_extended_4::out],  modulo cycle: 0, overuse: 1
+total_overuse = 9, total_occpuancy = 577
+33: cost = 2631.2; overuse = 7 ; min_overuse = 7 ; moves = 5(1); length = 15
+OVERUSE: node 67 [fu_8::src1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 149 [fu_row_extended_2::pred],  modulo cycle: 0, overuse: 1
+OVERUSE: node 151 [fu_row_extended_2::src2],  modulo cycle: 0, overuse: 1
+OVERUSE: node 157 [data_pseudo[fu_row_extended_2]],  modulo cycle: 0, overuse: 1
+OVERUSE: node 457 [ireg_row_extended_2::in1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 460 [ireg_row_extended_2::out2],  modulo cycle: 0, overuse: 1
+OVERUSE: node 542 [const_row_extended_2::out],  modulo cycle: 0, overuse: 1
+total_overuse = 7, total_occpuancy = 568
+34: cost = 2587.7; overuse = 7 ; min_overuse = 7 ; moves = 7(1); length = 15
+OVERUSE: node 67 [fu_8::src1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 264 [fu_row_col_extended_0::pred],  modulo cycle: 0, overuse: 1
+OVERUSE: node 265 [fu_row_col_extended_0::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 272 [data_pseudo[fu_row_col_extended_0]],  modulo cycle: 0, overuse: 1
+OVERUSE: node 507 [ireg_row_col_extended_0::in1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 510 [ireg_row_col_extended_0::out2],  modulo cycle: 0, overuse: 1
+OVERUSE: node 556 [const_row_col_extended_0::out],  modulo cycle: 0, overuse: 1
+total_overuse = 7, total_occpuancy = 568
+35: cost = 2634.8; overuse = 8 ; min_overuse = 7 ; moves = 6(2); length = 15
+OVERUSE: node 231 [fu_col_extended_4::pred],  modulo cycle: 0, overuse: 1
+OVERUSE: node 233 [fu_col_extended_4::src2],  modulo cycle: 0, overuse: 1
+OVERUSE: node 239 [data_pseudo[fu_col_extended_4]],  modulo cycle: 0, overuse: 1
+OVERUSE: node 490 [ireg_col_extended_4::in1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 493 [ireg_col_extended_4::out2],  modulo cycle: 0, overuse: 1
+OVERUSE: node 552 [const_col_extended_4::out],  modulo cycle: 0, overuse: 1
+OVERUSE: node 578 [outbuf2_1::in],  modulo cycle: 1, overuse: 1
+OVERUSE: node 579 [outbuf2_1::out],  modulo cycle: 1, overuse: 1
+total_overuse = 8, total_occpuancy = 557
+36: cost = 2406.9; overuse = 6 ; min_overuse = 6 ; moves = 10(2); length = 15
+OVERUSE: node 149 [fu_row_extended_2::pred],  modulo cycle: 0, overuse: 1
+OVERUSE: node 150 [fu_row_extended_2::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 157 [data_pseudo[fu_row_extended_2]],  modulo cycle: 0, overuse: 1
+OVERUSE: node 457 [ireg_row_extended_2::in1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 460 [ireg_row_extended_2::out2],  modulo cycle: 0, overuse: 1
+OVERUSE: node 542 [const_row_extended_2::out],  modulo cycle: 0, overuse: 1
+total_overuse = 6, total_occpuancy = 541
+37: cost = 2174.8; overuse = 3 ; min_overuse = 3 ; moves = 5(3); length = 15
+OVERUSE: node 70 [fu_8::dst1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 74 [data_pseudo[fu_8]],  modulo cycle: 1, overuse: 1
+OVERUSE: node 297 [vliw_int_rf::in1],  modulo cycle: 1, overuse: 1
+total_overuse = 3, total_occpuancy = 554
+38: cost = 2229.5; overuse = 3 ; min_overuse = 3 ; moves = 3(0); length = 15
+OVERUSE: node 70 [fu_8::dst1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 74 [data_pseudo[fu_8]],  modulo cycle: 1, overuse: 1
+OVERUSE: node 307 [vliw_int_rf::out5],  modulo cycle: 0, overuse: 1
+total_overuse = 3, total_occpuancy = 564
+39: cost = 2310.2; overuse = 3 ; min_overuse = 3 ; moves = 4(1); length = 15
+OVERUSE: node 70 [fu_8::dst1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 74 [data_pseudo[fu_8]],  modulo cycle: 1, overuse: 1
+OVERUSE: node 307 [vliw_int_rf::out5],  modulo cycle: 0, overuse: 1
+total_overuse = 3, total_occpuancy = 558
+40: cost = 2203.0; overuse = 5 ; min_overuse = 3 ; moves = 8(4); length = 15
+OVERUSE: node 19 [fu_2::src2],  modulo cycle: 0, overuse: 1
+OVERUSE: node 151 [fu_row_extended_2::src2],  modulo cycle: 1, overuse: 2
+OVERUSE: node 157 [data_pseudo[fu_row_extended_2]],  modulo cycle: 1, overuse: 1
+OVERUSE: node 175 [fu_row_extended_5::src1],  modulo cycle: 1, overuse: 1
+total_overuse = 5, total_occpuancy = 540
+41: cost = 1819.2; overuse = 0 ; min_overuse = 0 ; moves = 2(0); length = 15
+total_overuse = 0, total_occpuancy = 559
+Successfully found a valid schedule for loop cb 26 src line 358 func main with II = 2; random_seed = 2008; relax_factor = 1.300
+
+total_overuse = 0, total_occpuancy = 559
+elapsed time = 23 seconds
+
+total elapsed time for all parameters = 23 seconds
+Performing CGA rotating RF allocation...
+Detected loop cb 8 src line 326
+Building routability matrix ...
+Performing copy propagation ... 
+Total 0 MOV operations are optimized corresponding to 0 dependences
+
+Scheduling loop 8...
+MII = 2, density = 55.56% (ResMII= 2, RecMII = 1, upper_density = 95.00%)
+Try II = 2; random_seed = 2006; relax_factor = 1.300
+Performing initial placement and routing ...
+Succeeded in scheduling operations in circuits
+Succeeded to schedule other operations
+Starting iterative improvement ...
+(you may interrupt scheduling process by typing q<RETURN>,
+ or continue directly to the next random_seed/relax_factor/II by typing s/r/i<return>)
+1: cost = 1494.5; overuse = 186 ; min_overuse = 186 ; moves = 44(20); length = 20
+2: cost = 1527.9; overuse = 145 ; min_overuse = 145 ; moves = 40(10); length = 20
+3: cost = 1615.1; overuse = 151 ; min_overuse = 145 ; moves = 40(16); length = 20
+4: cost = 1784.4; overuse = 123 ; min_overuse = 123 ; moves = 40(16); length = 20
+5: cost = 1897.5; overuse = 128 ; min_overuse = 123 ; moves = 39(15); length = 20
+6: cost = 2005.2; overuse = 140 ; min_overuse = 123 ; moves = 38(13); length = 20
+7: cost = 1970.5; overuse = 112 ; min_overuse = 112 ; moves = 39(13); length = 20
+8: cost = 2122.9; overuse = 131 ; min_overuse = 112 ; moves = 40(16); length = 20
+9: cost = 2369.6; overuse = 118 ; min_overuse = 112 ; moves = 40(18); length = 20
+10: cost = 2389.5; overuse = 107 ; min_overuse = 107 ; moves = 42(14); length = 20
+11: cost = 2583.7; overuse = 118 ; min_overuse = 107 ; moves = 37(13); length = 20
+12: cost = 2774.2; overuse = 121 ; min_overuse = 107 ; moves = 39(14); length = 20
+13: cost = 2810.9; overuse = 103 ; min_overuse = 103 ; moves = 38(14); length = 20
+14: cost = 2785.1; overuse = 83 ; min_overuse = 83 ; moves = 40(15); length = 20
+15: cost = 3583.9; overuse = 116 ; min_overuse = 83 ; moves = 38(17); length = 20
+16: cost = 4160.3; overuse = 113 ; min_overuse = 83 ; moves = 40(18); length = 20
+17: cost = 3716.9; overuse = 113 ; min_overuse = 83 ; moves = 38(10); length = 20
+18: cost = 4787.9; overuse = 106 ; min_overuse = 83 ; moves = 38(19); length = 20
+19: cost = 5263.9; overuse = 127 ; min_overuse = 83 ; moves = 34(16); length = 20
+20: cost = 3612.4; overuse = 74 ; min_overuse = 74 ; moves = 34(1); length = 20
+21: cost = 3169.7; overuse = 68 ; min_overuse = 68 ; moves = 29(5); length = 20
+22: cost = 3251.5; overuse = 63 ; min_overuse = 63 ; moves = 22(0); length = 20
+23: cost = 3440.4; overuse = 55 ; min_overuse = 55 ; moves = 18(1); length = 20
+24: cost = 3631.0; overuse = 54 ; min_overuse = 54 ; moves = 23(4); length = 20
+25: cost = 3569.4; overuse = 40 ; min_overuse = 40 ; moves = 20(4); length = 20
+26: cost = 3327.4; overuse = 36 ; min_overuse = 36 ; moves = 19(2); length = 20
+27: cost = 3842.9; overuse = 37 ; min_overuse = 36 ; moves = 14(3); length = 20
+28: cost = 4584.9; overuse = 57 ; min_overuse = 36 ; moves = 19(1); length = 20
+29: cost = 3868.4; overuse = 28 ; min_overuse = 28 ; moves = 17(0); length = 20
+30: cost = 3825.1; overuse = 32 ; min_overuse = 28 ; moves = 15(2); length = 20
+31: cost = 3941.7; overuse = 25 ; min_overuse = 25 ; moves = 14(1); length = 20
+32: cost = 4090.9; overuse = 23 ; min_overuse = 23 ; moves = 12(2); length = 20
+33: cost = 4293.1; overuse = 27 ; min_overuse = 23 ; moves = 13(2); length = 20
+34: cost = 3786.2; overuse = 17 ; min_overuse = 17 ; moves = 14(1); length = 20
+35: cost = 3819.9; overuse = 17 ; min_overuse = 17 ; moves = 8(1); length = 20
+36: cost = 4263.3; overuse = 21 ; min_overuse = 17 ; moves = 8(1); length = 20
+37: cost = 3950.2; overuse = 16 ; min_overuse = 16 ; moves = 15(3); length = 20
+38: cost = 3552.9; overuse = 9 ; min_overuse = 9 ; moves = 12(2); length = 20
+OVERUSE: node 83 [fu_10::pred],  modulo cycle: 1, overuse: 1
+OVERUSE: node 84 [fu_10::src1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 91 [data_pseudo[fu_10]],  modulo cycle: 1, overuse: 1
+OVERUSE: node 150 [fu_row_extended_2::src1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 157 [data_pseudo[fu_row_extended_2]],  modulo cycle: 1, overuse: 1
+OVERUSE: node 297 [vliw_int_rf::in1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 423 [ireg_10::in1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 426 [ireg_10::out2],  modulo cycle: 1, overuse: 1
+OVERUSE: node 534 [const_10::out],  modulo cycle: 1, overuse: 1
+total_overuse = 9, total_occpuancy = 679
+39: cost = 3435.2; overuse = 7 ; min_overuse = 7 ; moves = 10(3); length = 20
+OVERUSE: node 264 [fu_row_col_extended_0::pred],  modulo cycle: 1, overuse: 1
+OVERUSE: node 266 [fu_row_col_extended_0::src2],  modulo cycle: 1, overuse: 1
+OVERUSE: node 272 [data_pseudo[fu_row_col_extended_0]],  modulo cycle: 1, overuse: 1
+OVERUSE: node 297 [vliw_int_rf::in1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 507 [ireg_row_col_extended_0::in1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 510 [ireg_row_col_extended_0::out2],  modulo cycle: 1, overuse: 1
+OVERUSE: node 556 [const_row_col_extended_0::out],  modulo cycle: 1, overuse: 1
+total_overuse = 7, total_occpuancy = 671
+40: cost = 3245.2; overuse = 5 ; min_overuse = 5 ; moves = 10(2); length = 20
+OVERUSE: node 17 [fu_2::pred],  modulo cycle: 0, overuse: 1
+OVERUSE: node 18 [fu_2::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 19 [fu_2::src2],  modulo cycle: 0, overuse: 1
+OVERUSE: node 25 [data_pseudo[fu_2]],  modulo cycle: 0, overuse: 1
+OVERUSE: node 526 [const_2::out],  modulo cycle: 0, overuse: 1
+total_overuse = 5, total_occpuancy = 691
+41: cost = 3362.7; overuse = 8 ; min_overuse = 5 ; moves = 5(0); length = 20
+OVERUSE: node 83 [fu_10::pred],  modulo cycle: 0, overuse: 1
+OVERUSE: node 85 [fu_10::src2],  modulo cycle: 0, overuse: 2
+OVERUSE: node 91 [data_pseudo[fu_10]],  modulo cycle: 0, overuse: 1
+OVERUSE: node 308 [vliw_int_rf::out6],  modulo cycle: 1, overuse: 1
+OVERUSE: node 423 [ireg_10::in1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 1036 [vliw_out6_delay::in],  modulo cycle: 1, overuse: 1
+OVERUSE: node 1037 [vliw_out6_delay::out],  modulo cycle: 0, overuse: 1
+total_overuse = 8, total_occpuancy = 677
+42: cost = 2831.6; overuse = 2 ; min_overuse = 2 ; moves = 7(2); length = 20
+OVERUSE: node 84 [fu_10::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 117 [fu_14::src1],  modulo cycle: 0, overuse: 1
+total_overuse = 2, total_occpuancy = 672
+43: cost = 2762.5; overuse = 3 ; min_overuse = 2 ; moves = 3(1); length = 20
+OVERUSE: node 84 [fu_10::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 117 [fu_14::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 448 [ireg_row_extended_0::in1],  modulo cycle: 1, overuse: 1
+total_overuse = 3, total_occpuancy = 665
+44: cost = 2707.2; overuse = 3 ; min_overuse = 2 ; moves = 5(0); length = 20
+OVERUSE: node 167 [fu_row_extended_4::src1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 169 [fu_row_extended_4::dst1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 173 [data_pseudo[fu_row_extended_4]],  modulo cycle: 1, overuse: 1
+total_overuse = 3, total_occpuancy = 677
+45: cost = 2455.7; overuse = 2 ; min_overuse = 2 ; moves = 4(2); length = 20
+OVERUSE: node 133 [fu_row_extended_0::src1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 140 [data_pseudo[fu_row_extended_0]],  modulo cycle: 1, overuse: 1
+total_overuse = 2, total_occpuancy = 719
+46: cost = 2145.2; overuse = 0 ; min_overuse = 0 ; moves = 3(0); length = 20
+total_overuse = 0, total_occpuancy = 671
+Successfully found a valid schedule for loop cb 8 src line 326 func main with II = 2; random_seed = 2006; relax_factor = 1.300
+
+total_overuse = 0, total_occpuancy = 671
+elapsed time = 39 seconds
+
+total elapsed time for all parameters = 39 seconds
+Performing CGA rotating RF allocation...
+Detected loop cb 11 src line 330
+Building routability matrix ...
+Performing copy propagation ... 
+Total 0 MOV operations are optimized corresponding to 0 dependences
+
+Scheduling loop 11...
+MII = 2, density = 55.56% (ResMII= 2, RecMII = 1, upper_density = 95.00%)
+Try II = 2; random_seed = 2006; relax_factor = 1.300
+Performing initial placement and routing ...
+Succeeded in scheduling operations in circuits
+Succeeded to schedule other operations
+Starting iterative improvement ...
+(you may interrupt scheduling process by typing q<RETURN>,
+ or continue directly to the next random_seed/relax_factor/II by typing s/r/i<return>)
+1: cost = 1494.5; overuse = 186 ; min_overuse = 186 ; moves = 44(20); length = 20
+2: cost = 1527.9; overuse = 145 ; min_overuse = 145 ; moves = 40(10); length = 20
+3: cost = 1615.1; overuse = 151 ; min_overuse = 145 ; moves = 40(16); length = 20
+4: cost = 1784.4; overuse = 123 ; min_overuse = 123 ; moves = 40(16); length = 20
+5: cost = 1897.5; overuse = 128 ; min_overuse = 123 ; moves = 39(15); length = 20
+6: cost = 2005.2; overuse = 140 ; min_overuse = 123 ; moves = 38(13); length = 20
+7: cost = 1970.5; overuse = 112 ; min_overuse = 112 ; moves = 39(13); length = 20
+8: cost = 2122.9; overuse = 131 ; min_overuse = 112 ; moves = 40(16); length = 20
+9: cost = 2369.6; overuse = 118 ; min_overuse = 112 ; moves = 40(18); length = 20
+10: cost = 2389.5; overuse = 107 ; min_overuse = 107 ; moves = 42(14); length = 20
+11: cost = 2583.7; overuse = 118 ; min_overuse = 107 ; moves = 37(13); length = 20
+12: cost = 2774.2; overuse = 121 ; min_overuse = 107 ; moves = 39(14); length = 20
+13: cost = 2810.9; overuse = 103 ; min_overuse = 103 ; moves = 38(14); length = 20
+14: cost = 2785.1; overuse = 83 ; min_overuse = 83 ; moves = 40(15); length = 20
+15: cost = 3583.9; overuse = 116 ; min_overuse = 83 ; moves = 38(17); length = 20
+16: cost = 4160.3; overuse = 113 ; min_overuse = 83 ; moves = 40(18); length = 20
+17: cost = 3716.9; overuse = 113 ; min_overuse = 83 ; moves = 38(10); length = 20
+18: cost = 4787.9; overuse = 106 ; min_overuse = 83 ; moves = 38(19); length = 20
+19: cost = 5263.9; overuse = 127 ; min_overuse = 83 ; moves = 34(16); length = 20
+20: cost = 3612.4; overuse = 74 ; min_overuse = 74 ; moves = 34(1); length = 20
+21: cost = 3169.7; overuse = 68 ; min_overuse = 68 ; moves = 29(5); length = 20
+22: cost = 3251.5; overuse = 63 ; min_overuse = 63 ; moves = 22(0); length = 20
+23: cost = 3440.4; overuse = 55 ; min_overuse = 55 ; moves = 18(1); length = 20
+24: cost = 3631.0; overuse = 54 ; min_overuse = 54 ; moves = 23(4); length = 20
+25: cost = 3569.4; overuse = 40 ; min_overuse = 40 ; moves = 20(4); length = 20
+26: cost = 3327.4; overuse = 36 ; min_overuse = 36 ; moves = 19(2); length = 20
+27: cost = 3842.9; overuse = 37 ; min_overuse = 36 ; moves = 14(3); length = 20
+28: cost = 4584.9; overuse = 57 ; min_overuse = 36 ; moves = 19(1); length = 20
+29: cost = 3868.4; overuse = 28 ; min_overuse = 28 ; moves = 17(0); length = 20
+30: cost = 3825.1; overuse = 32 ; min_overuse = 28 ; moves = 15(2); length = 20
+31: cost = 3941.7; overuse = 25 ; min_overuse = 25 ; moves = 14(1); length = 20
+32: cost = 4090.9; overuse = 23 ; min_overuse = 23 ; moves = 12(2); length = 20
+33: cost = 4293.1; overuse = 27 ; min_overuse = 23 ; moves = 13(2); length = 20
+34: cost = 3786.2; overuse = 17 ; min_overuse = 17 ; moves = 14(1); length = 20
+35: cost = 3819.9; overuse = 17 ; min_overuse = 17 ; moves = 8(1); length = 20
+36: cost = 4263.3; overuse = 21 ; min_overuse = 17 ; moves = 8(1); length = 20
+37: cost = 3950.2; overuse = 16 ; min_overuse = 16 ; moves = 15(3); length = 20
+38: cost = 3552.9; overuse = 9 ; min_overuse = 9 ; moves = 12(2); length = 20
+OVERUSE: node 83 [fu_10::pred],  modulo cycle: 1, overuse: 1
+OVERUSE: node 84 [fu_10::src1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 91 [data_pseudo[fu_10]],  modulo cycle: 1, overuse: 1
+OVERUSE: node 150 [fu_row_extended_2::src1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 157 [data_pseudo[fu_row_extended_2]],  modulo cycle: 1, overuse: 1
+OVERUSE: node 297 [vliw_int_rf::in1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 423 [ireg_10::in1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 426 [ireg_10::out2],  modulo cycle: 1, overuse: 1
+OVERUSE: node 534 [const_10::out],  modulo cycle: 1, overuse: 1
+total_overuse = 9, total_occpuancy = 679
+39: cost = 3435.2; overuse = 7 ; min_overuse = 7 ; moves = 10(3); length = 20
+OVERUSE: node 264 [fu_row_col_extended_0::pred],  modulo cycle: 1, overuse: 1
+OVERUSE: node 266 [fu_row_col_extended_0::src2],  modulo cycle: 1, overuse: 1
+OVERUSE: node 272 [data_pseudo[fu_row_col_extended_0]],  modulo cycle: 1, overuse: 1
+OVERUSE: node 297 [vliw_int_rf::in1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 507 [ireg_row_col_extended_0::in1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 510 [ireg_row_col_extended_0::out2],  modulo cycle: 1, overuse: 1
+OVERUSE: node 556 [const_row_col_extended_0::out],  modulo cycle: 1, overuse: 1
+total_overuse = 7, total_occpuancy = 671
+40: cost = 3245.2; overuse = 5 ; min_overuse = 5 ; moves = 10(2); length = 20
+OVERUSE: node 17 [fu_2::pred],  modulo cycle: 0, overuse: 1
+OVERUSE: node 18 [fu_2::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 19 [fu_2::src2],  modulo cycle: 0, overuse: 1
+OVERUSE: node 25 [data_pseudo[fu_2]],  modulo cycle: 0, overuse: 1
+OVERUSE: node 526 [const_2::out],  modulo cycle: 0, overuse: 1
+total_overuse = 5, total_occpuancy = 691
+41: cost = 3362.7; overuse = 8 ; min_overuse = 5 ; moves = 5(0); length = 20
+OVERUSE: node 83 [fu_10::pred],  modulo cycle: 0, overuse: 1
+OVERUSE: node 85 [fu_10::src2],  modulo cycle: 0, overuse: 2
+OVERUSE: node 91 [data_pseudo[fu_10]],  modulo cycle: 0, overuse: 1
+OVERUSE: node 308 [vliw_int_rf::out6],  modulo cycle: 1, overuse: 1
+OVERUSE: node 423 [ireg_10::in1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 1036 [vliw_out6_delay::in],  modulo cycle: 1, overuse: 1
+OVERUSE: node 1037 [vliw_out6_delay::out],  modulo cycle: 0, overuse: 1
+total_overuse = 8, total_occpuancy = 677
+42: cost = 2831.6; overuse = 2 ; min_overuse = 2 ; moves = 7(2); length = 20
+OVERUSE: node 84 [fu_10::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 117 [fu_14::src1],  modulo cycle: 0, overuse: 1
+total_overuse = 2, total_occpuancy = 672
+43: cost = 2762.5; overuse = 3 ; min_overuse = 2 ; moves = 3(1); length = 20
+OVERUSE: node 84 [fu_10::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 117 [fu_14::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 448 [ireg_row_extended_0::in1],  modulo cycle: 1, overuse: 1
+total_overuse = 3, total_occpuancy = 665
+44: cost = 2707.2; overuse = 3 ; min_overuse = 2 ; moves = 5(0); length = 20
+OVERUSE: node 167 [fu_row_extended_4::src1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 169 [fu_row_extended_4::dst1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 173 [data_pseudo[fu_row_extended_4]],  modulo cycle: 1, overuse: 1
+total_overuse = 3, total_occpuancy = 677
+45: cost = 2455.7; overuse = 2 ; min_overuse = 2 ; moves = 4(2); length = 20
+OVERUSE: node 133 [fu_row_extended_0::src1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 140 [data_pseudo[fu_row_extended_0]],  modulo cycle: 1, overuse: 1
+total_overuse = 2, total_occpuancy = 719
+46: cost = 2145.2; overuse = 0 ; min_overuse = 0 ; moves = 3(0); length = 20
+total_overuse = 0, total_occpuancy = 671
+Successfully found a valid schedule for loop cb 11 src line 330 func main with II = 2; random_seed = 2006; relax_factor = 1.300
+
+total_overuse = 0, total_occpuancy = 671
+elapsed time = 37 seconds
+
+total elapsed time for all parameters = 37 seconds
+Performing CGA rotating RF allocation...
+Detected loop cb 14 src line 334
+Building routability matrix ...
+Performing copy propagation ... 
+Total 0 MOV operations are optimized corresponding to 0 dependences
+
+Scheduling loop 14...
+MII = 2, density = 55.56% (ResMII= 2, RecMII = 1, upper_density = 95.00%)
+Try II = 2; random_seed = 2006; relax_factor = 1.300
+Performing initial placement and routing ...
+Succeeded in scheduling operations in circuits
+Succeeded to schedule other operations
+Starting iterative improvement ...
+(you may interrupt scheduling process by typing q<RETURN>,
+ or continue directly to the next random_seed/relax_factor/II by typing s/r/i<return>)
+1: cost = 1499.8; overuse = 191 ; min_overuse = 191 ; moves = 43(21); length = 20
+2: cost = 1644.9; overuse = 157 ; min_overuse = 157 ; moves = 40(15); length = 20
+3: cost = 2017.4; overuse = 172 ; min_overuse = 157 ; moves = 42(12); length = 20
+4: cost = 2311.6; overuse = 172 ; min_overuse = 157 ; moves = 42(18); length = 20
+5: cost = 2179.7; overuse = 131 ; min_overuse = 131 ; moves = 40(14); length = 20
+6: cost = 2754.1; overuse = 165 ; min_overuse = 131 ; moves = 37(18); length = 20
+7: cost = 2808.1; overuse = 125 ; min_overuse = 125 ; moves = 39(14); length = 20
+8: cost = 2669.5; overuse = 148 ; min_overuse = 125 ; moves = 40(13); length = 20
+9: cost = 2657.6; overuse = 137 ; min_overuse = 125 ; moves = 38(17); length = 20
+10: cost = 2770.5; overuse = 123 ; min_overuse = 123 ; moves = 39(14); length = 20
+11: cost = 2988.6; overuse = 131 ; min_overuse = 123 ; moves = 40(18); length = 20
+12: cost = 3188.5; overuse = 124 ; min_overuse = 123 ; moves = 38(17); length = 20
+13: cost = 3719.2; overuse = 144 ; min_overuse = 123 ; moves = 36(19); length = 20
+14: cost = 4450.6; overuse = 149 ; min_overuse = 123 ; moves = 40(18); length = 20
+15: cost = 3974.7; overuse = 104 ; min_overuse = 104 ; moves = 41(15); length = 20
+16: cost = 4432.7; overuse = 111 ; min_overuse = 104 ; moves = 36(17); length = 20
+17: cost = 4990.2; overuse = 114 ; min_overuse = 104 ; moves = 38(16); length = 20
+18: cost = 4571.6; overuse = 95 ; min_overuse = 95 ; moves = 36(11); length = 20
+19: cost = 5591.6; overuse = 117 ; min_overuse = 95 ; moves = 35(15); length = 20
+20: cost = 4342.8; overuse = 95 ; min_overuse = 95 ; moves = 30(2); length = 20
+21: cost = 3741.9; overuse = 68 ; min_overuse = 68 ; moves = 28(1); length = 20
+22: cost = 3609.5; overuse = 75 ; min_overuse = 68 ; moves = 23(4); length = 20
+23: cost = 3292.4; overuse = 43 ; min_overuse = 43 ; moves = 17(1); length = 20
+24: cost = 3606.2; overuse = 64 ; min_overuse = 43 ; moves = 27(3); length = 20
+25: cost = 3226.8; overuse = 30 ; min_overuse = 30 ; moves = 18(2); length = 20
+26: cost = 3639.1; overuse = 40 ; min_overuse = 30 ; moves = 17(3); length = 20
+27: cost = 3405.9; overuse = 24 ; min_overuse = 24 ; moves = 17(4); length = 20
+28: cost = 3162.7; overuse = 16 ; min_overuse = 16 ; moves = 8(0); length = 20
+29: cost = 3221.5; overuse = 22 ; min_overuse = 16 ; moves = 13(1); length = 20
+30: cost = 3085.9; overuse = 12 ; min_overuse = 12 ; moves = 14(1); length = 20
+31: cost = 3183.4; overuse = 13 ; min_overuse = 12 ; moves = 6(2); length = 20
+32: cost = 3093.3; overuse = 13 ; min_overuse = 12 ; moves = 9(2); length = 20
+33: cost = 2831.4; overuse = 7 ; min_overuse = 7 ; moves = 5(1); length = 20
+OVERUSE: node 35 [fu_4::src1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 101 [fu_12::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 126 [fu_15::src2],  modulo cycle: 1, overuse: 1
+OVERUSE: node 232 [fu_col_extended_4::src1],  modulo cycle: 1, overuse: 2
+OVERUSE: node 239 [data_pseudo[fu_col_extended_4]],  modulo cycle: 1, overuse: 1
+OVERUSE: node 457 [ireg_row_extended_2::in1],  modulo cycle: 1, overuse: 1
+total_overuse = 7, total_occpuancy = 667
+34: cost = 2875.8; overuse = 12 ; min_overuse = 7 ; moves = 9(1); length = 20
+35: cost = 3013.2; overuse = 12 ; min_overuse = 7 ; moves = 4(1); length = 20
+36: cost = 3225.3; overuse = 11 ; min_overuse = 7 ; moves = 6(1); length = 20
+37: cost = 3322.2; overuse = 12 ; min_overuse = 7 ; moves = 5(0); length = 20
+38: cost = 2958.7; overuse = 5 ; min_overuse = 5 ; moves = 6(0); length = 20
+OVERUSE: node 51 [fu_6::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 101 [fu_12::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 126 [fu_15::src2],  modulo cycle: 1, overuse: 1
+OVERUSE: node 233 [fu_col_extended_4::src2],  modulo cycle: 1, overuse: 1
+OVERUSE: node 406 [ireg_6::in1],  modulo cycle: 1, overuse: 1
+total_overuse = 5, total_occpuancy = 683
+39: cost = 2824.6; overuse = 4 ; min_overuse = 4 ; moves = 7(3); length = 20
+OVERUSE: node 51 [fu_6::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 101 [fu_12::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 126 [fu_15::src2],  modulo cycle: 1, overuse: 1
+OVERUSE: node 249 [fu_col_extended_6::src1],  modulo cycle: 0, overuse: 1
+total_overuse = 4, total_occpuancy = 673
+40: cost = 2696.8; overuse = 3 ; min_overuse = 3 ; moves = 4(2); length = 20
+OVERUSE: node 51 [fu_6::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 101 [fu_12::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 126 [fu_15::src2],  modulo cycle: 1, overuse: 1
+total_overuse = 3, total_occpuancy = 693
+41: cost = 2628.5; overuse = 3 ; min_overuse = 3 ; moves = 4(1); length = 20
+OVERUSE: node 51 [fu_6::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 101 [fu_12::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 126 [fu_15::src2],  modulo cycle: 1, overuse: 1
+total_overuse = 3, total_occpuancy = 652
+42: cost = 2420.4; overuse = 3 ; min_overuse = 3 ; moves = 6(1); length = 20
+OVERUSE: node 101 [fu_12::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 126 [fu_15::src2],  modulo cycle: 1, overuse: 1
+OVERUSE: node 216 [fu_col_extended_2::src1],  modulo cycle: 1, overuse: 1
+total_overuse = 3, total_occpuancy = 654
+43: cost = 2376.6; overuse = 3 ; min_overuse = 3 ; moves = 5(1); length = 20
+OVERUSE: node 101 [fu_12::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 109 [fu_13::src1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 126 [fu_15::src2],  modulo cycle: 1, overuse: 1
+total_overuse = 3, total_occpuancy = 650
+44: cost = 2258.7; overuse = 2 ; min_overuse = 2 ; moves = 4(1); length = 20
+OVERUSE: node 101 [fu_12::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 126 [fu_15::src2],  modulo cycle: 1, overuse: 1
+total_overuse = 2, total_occpuancy = 645
+45: cost = 1983.8; overuse = 1 ; min_overuse = 1 ; moves = 10(4); length = 20
+OVERUSE: node 126 [fu_15::src2],  modulo cycle: 1, overuse: 1
+total_overuse = 1, total_occpuancy = 639
+46: cost = 1879.1; overuse = 1 ; min_overuse = 1 ; moves = 5(1); length = 20
+OVERUSE: node 126 [fu_15::src2],  modulo cycle: 1, overuse: 1
+total_overuse = 1, total_occpuancy = 634
+47: cost = 1859.3; overuse = 3 ; min_overuse = 1 ; moves = 4(1); length = 20
+OVERUSE: node 77 [fu_9::src2],  modulo cycle: 0, overuse: 1
+OVERUSE: node 117 [fu_14::src1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 126 [fu_15::src2],  modulo cycle: 1, overuse: 1
+total_overuse = 3, total_occpuancy = 628
+48: cost = 1881.8; overuse = 3 ; min_overuse = 1 ; moves = 4(3); length = 20
+OVERUSE: node 77 [fu_9::src2],  modulo cycle: 0, overuse: 1
+OVERUSE: node 117 [fu_14::src1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 126 [fu_15::src2],  modulo cycle: 1, overuse: 1
+total_overuse = 3, total_occpuancy = 624
+49: cost = 1671.5; overuse = 1 ; min_overuse = 1 ; moves = 6(0); length = 20
+OVERUSE: node 126 [fu_15::src2],  modulo cycle: 1, overuse: 1
+total_overuse = 1, total_occpuancy = 628
+50: cost = 1640.6; overuse = 2 ; min_overuse = 1 ; moves = 2(0); length = 20
+OVERUSE: node 109 [fu_13::src1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 126 [fu_15::src2],  modulo cycle: 1, overuse: 1
+total_overuse = 2, total_occpuancy = 625
+51: cost = 1496.9; overuse = 1 ; min_overuse = 1 ; moves = 5(1); length = 20
+OVERUSE: node 126 [fu_15::src2],  modulo cycle: 1, overuse: 1
+total_overuse = 1, total_occpuancy = 627
+52: cost = 1470.1; overuse = 1 ; min_overuse = 1 ; moves = 4(3); length = 20
+OVERUSE: node 126 [fu_15::src2],  modulo cycle: 1, overuse: 1
+total_overuse = 1, total_occpuancy = 626
+53: cost = 1131.7; overuse = 2 ; min_overuse = 1 ; moves = 6(2); length = 20
+OVERUSE: node 150 [fu_row_extended_2::src1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 507 [ireg_row_col_extended_0::in1],  modulo cycle: 0, overuse: 1
+total_overuse = 2, total_occpuancy = 607
+54: cost = 1178.7; overuse = 2 ; min_overuse = 1 ; moves = 3(0); length = 20
+OVERUSE: node 150 [fu_row_extended_2::src1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 507 [ireg_row_col_extended_0::in1],  modulo cycle: 1, overuse: 1
+total_overuse = 2, total_occpuancy = 611
+55: cost = 1234.2; overuse = 2 ; min_overuse = 1 ; moves = 5(4); length = 20
+OVERUSE: node 150 [fu_row_extended_2::src1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 507 [ireg_row_col_extended_0::in1],  modulo cycle: 0, overuse: 1
+total_overuse = 2, total_occpuancy = 612
+56: cost = 1216.3; overuse = 1 ; min_overuse = 1 ; moves = 3(0); length = 20
+OVERUSE: node 507 [ireg_row_col_extended_0::in1],  modulo cycle: 0, overuse: 1
+total_overuse = 1, total_occpuancy = 612
+57: cost = 1136.3; overuse = 1 ; min_overuse = 1 ; moves = 4(1); length = 20
+OVERUSE: node 507 [ireg_row_col_extended_0::in1],  modulo cycle: 1, overuse: 1
+total_overuse = 1, total_occpuancy = 615
+58: cost = 1133.1; overuse = 1 ; min_overuse = 1 ; moves = 3(2); length = 20
+OVERUSE: node 507 [ireg_row_col_extended_0::in1],  modulo cycle: 1, overuse: 1
+total_overuse = 1, total_occpuancy = 615
+59: cost = 1128.4; overuse = 1 ; min_overuse = 1 ; moves = 3(2); length = 20
+OVERUSE: node 507 [ireg_row_col_extended_0::in1],  modulo cycle: 0, overuse: 1
+total_overuse = 1, total_occpuancy = 616
+60: cost = 1123.8; overuse = 1 ; min_overuse = 1 ; moves = 4(0); length = 20
+OVERUSE: node 507 [ireg_row_col_extended_0::in1],  modulo cycle: 1, overuse: 1
+total_overuse = 1, total_occpuancy = 622
+61: cost = 1123.6; overuse = 1 ; min_overuse = 1 ; moves = 3(1); length = 20
+OVERUSE: node 507 [ireg_row_col_extended_0::in1],  modulo cycle: 0, overuse: 1
+total_overuse = 1, total_occpuancy = 618
+62: cost = 1058.7; overuse = 1 ; min_overuse = 1 ; moves = 5(1); length = 20
+OVERUSE: node 305 [vliw_int_rf::out3],  modulo cycle: 1, overuse: 1
+total_overuse = 1, total_occpuancy = 618
+63: cost = 1070.6; overuse = 1 ; min_overuse = 1 ; moves = 4(3); length = 20
+OVERUSE: node 305 [vliw_int_rf::out3],  modulo cycle: 1, overuse: 1
+total_overuse = 1, total_occpuancy = 619
+64: cost = 1130.3; overuse = 2 ; min_overuse = 1 ; moves = 3(0); length = 20
+OVERUSE: node 308 [vliw_int_rf::out6],  modulo cycle: 1, overuse: 1
+OVERUSE: node 323 [vliw_int_rf],  modulo cycle: 1, overuse: 1
+total_overuse = 2, total_occpuancy = 618
+65: cost = 1047.7; overuse = 1 ; min_overuse = 1 ; moves = 3(1); length = 20
+OVERUSE: node 306 [vliw_int_rf::out4],  modulo cycle: 1, overuse: 1
+total_overuse = 1, total_occpuancy = 627
+66: cost = 1051.7; overuse = 1 ; min_overuse = 1 ; moves = 5(1); length = 20
+OVERUSE: node 306 [vliw_int_rf::out4],  modulo cycle: 1, overuse: 1
+total_overuse = 1, total_occpuancy = 614
+67: cost = 1069.8; overuse = 1 ; min_overuse = 1 ; moves = 3(2); length = 20
+OVERUSE: node 305 [vliw_int_rf::out3],  modulo cycle: 1, overuse: 1
+total_overuse = 1, total_occpuancy = 624
+68: cost = 1088.8; overuse = 1 ; min_overuse = 1 ; moves = 3(2); length = 20
+OVERUSE: node 305 [vliw_int_rf::out3],  modulo cycle: 1, overuse: 1
+total_overuse = 1, total_occpuancy = 627
+69: cost = 1102.0; overuse = 1 ; min_overuse = 1 ; moves = 2(1); length = 20
+OVERUSE: node 305 [vliw_int_rf::out3],  modulo cycle: 1, overuse: 1
+total_overuse = 1, total_occpuancy = 627
+70: cost = 1062.6; overuse = 1 ; min_overuse = 1 ; moves = 2(0); length = 20
+OVERUSE: node 306 [vliw_int_rf::out4],  modulo cycle: 1, overuse: 1
+total_overuse = 1, total_occpuancy = 627
+71: cost = 1134.5; overuse = 2 ; min_overuse = 1 ; moves = 3(2); length = 20
+OVERUSE: node 18 [fu_2::src1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 332 [vliw_int_rf],  modulo cycle: 1, overuse: 1
+total_overuse = 2, total_occpuancy = 642
+72: cost = 1300.7; overuse = 4 ; min_overuse = 1 ; moves = 4(2); length = 20
+OVERUSE: node 2 [fu_0::src2],  modulo cycle: 1, overuse: 1
+OVERUSE: node 7 [data_pseudo[fu_0]],  modulo cycle: 1, overuse: 1
+OVERUSE: node 297 [vliw_int_rf::in1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 304 [vliw_int_rf::out2],  modulo cycle: 1, overuse: 1
+total_overuse = 4, total_occpuancy = 630
+73: cost = 1147.5; overuse = 1 ; min_overuse = 1 ; moves = 3(0); length = 20
+OVERUSE: node 305 [vliw_int_rf::out3],  modulo cycle: 1, overuse: 1
+total_overuse = 1, total_occpuancy = 625
+74: cost = 1072.6; overuse = 2 ; min_overuse = 1 ; moves = 4(1); length = 20
+OVERUSE: node 10 [fu_1::src2],  modulo cycle: 1, overuse: 1
+OVERUSE: node 67 [fu_8::src1],  modulo cycle: 0, overuse: 1
+total_overuse = 2, total_occpuancy = 644
+75: cost = 1081.5; overuse = 1 ; min_overuse = 1 ; moves = 2(1); length = 20
+OVERUSE: node 299 [vliw_int_rf::in3],  modulo cycle: 1, overuse: 1
+total_overuse = 1, total_occpuancy = 632
+76: cost = 1092.5; overuse = 1 ; min_overuse = 1 ; moves = 4(2); length = 20
+OVERUSE: node 299 [vliw_int_rf::in3],  modulo cycle: 1, overuse: 1
+total_overuse = 1, total_occpuancy = 630
+77: cost = 1072.1; overuse = 1 ; min_overuse = 1 ; moves = 3(0); length = 20
+OVERUSE: node 51 [fu_6::src1],  modulo cycle: 0, overuse: 1
+total_overuse = 1, total_occpuancy = 634
+78: cost = 988.9; overuse = 0 ; min_overuse = 0 ; moves = 1(0); length = 20
+total_overuse = 0, total_occpuancy = 646
+Successfully found a valid schedule for loop cb 14 src line 334 func main with II = 2; random_seed = 2006; relax_factor = 1.300
+
+total_overuse = 0, total_occpuancy = 646
+elapsed time = 69 seconds
+
+total elapsed time for all parameters = 69 seconds
+Performing CGA rotating RF allocation...
+Detected loop cb 17 src line 343
+Building routability matrix ...
+Performing copy propagation ... 
+Total 0 MOV operations are optimized corresponding to 0 dependences
+
+Scheduling loop 17...
+MII = 2, density = 45.83% (ResMII= 2, RecMII = 1, upper_density = 95.00%)
+Try II = 2; random_seed = 2006; relax_factor = 1.300
+Performing initial placement and routing ...
+Succeeded in scheduling operations in circuits
+Succeeded to schedule other operations
+Starting iterative improvement ...
+(you may interrupt scheduling process by typing q<RETURN>,
+ or continue directly to the next random_seed/relax_factor/II by typing s/r/i<return>)
+1: cost = 957.1; overuse = 125 ; min_overuse = 125 ; moves = 36(18); length = 15
+2: cost = 1121.3; overuse = 128 ; min_overuse = 125 ; moves = 34(15); length = 15
+3: cost = 1261.4; overuse = 120 ; min_overuse = 120 ; moves = 33(11); length = 15
+4: cost = 1253.8; overuse = 87 ; min_overuse = 87 ; moves = 30(11); length = 15
+5: cost = 1260.3; overuse = 92 ; min_overuse = 87 ; moves = 32(10); length = 15
+6: cost = 1164.2; overuse = 77 ; min_overuse = 77 ; moves = 30(11); length = 15
+7: cost = 1419.8; overuse = 91 ; min_overuse = 77 ; moves = 31(13); length = 15
+8: cost = 1456.8; overuse = 86 ; min_overuse = 77 ; moves = 26(9); length = 15
+9: cost = 1668.0; overuse = 78 ; min_overuse = 77 ; moves = 28(12); length = 15
+10: cost = 2118.2; overuse = 109 ; min_overuse = 77 ; moves = 26(11); length = 15
+11: cost = 2221.5; overuse = 92 ; min_overuse = 77 ; moves = 27(10); length = 15
+12: cost = 2066.0; overuse = 84 ; min_overuse = 77 ; moves = 25(10); length = 15
+13: cost = 2481.5; overuse = 93 ; min_overuse = 77 ; moves = 27(15); length = 15
+14: cost = 2491.1; overuse = 90 ; min_overuse = 77 ; moves = 23(10); length = 15
+15: cost = 2598.6; overuse = 75 ; min_overuse = 75 ; moves = 26(11); length = 15
+16: cost = 3039.4; overuse = 107 ; min_overuse = 75 ; moves = 25(14); length = 15
+17: cost = 3295.0; overuse = 87 ; min_overuse = 75 ; moves = 24(10); length = 15
+18: cost = 4607.0; overuse = 89 ; min_overuse = 75 ; moves = 21(11); length = 15
+19: cost = 4168.2; overuse = 97 ; min_overuse = 75 ; moves = 26(11); length = 15
+20: cost = 3075.2; overuse = 55 ; min_overuse = 55 ; moves = 18(1); length = 15
+21: cost = 3190.7; overuse = 57 ; min_overuse = 55 ; moves = 15(2); length = 15
+22: cost = 2939.7; overuse = 38 ; min_overuse = 38 ; moves = 13(1); length = 15
+23: cost = 3083.3; overuse = 39 ; min_overuse = 38 ; moves = 12(2); length = 15
+24: cost = 3264.4; overuse = 35 ; min_overuse = 35 ; moves = 10(2); length = 15
+25: cost = 3177.7; overuse = 28 ; min_overuse = 28 ; moves = 10(1); length = 15
+26: cost = 3271.1; overuse = 35 ; min_overuse = 28 ; moves = 12(1); length = 15
+27: cost = 3470.0; overuse = 32 ; min_overuse = 28 ; moves = 9(3); length = 15
+28: cost = 3402.8; overuse = 31 ; min_overuse = 28 ; moves = 12(1); length = 15
+29: cost = 3737.7; overuse = 36 ; min_overuse = 28 ; moves = 11(3); length = 15
+30: cost = 3822.8; overuse = 30 ; min_overuse = 28 ; moves = 6(0); length = 15
+31: cost = 4510.6; overuse = 32 ; min_overuse = 28 ; moves = 4(0); length = 15
+32: cost = 5469.4; overuse = 41 ; min_overuse = 28 ; moves = 11(2); length = 15
+33: cost = 6218.0; overuse = 43 ; min_overuse = 28 ; moves = 14(1); length = 15
+34: cost = 6088.4; overuse = 35 ; min_overuse = 28 ; moves = 13(1); length = 15
+35: cost = 6905.6; overuse = 38 ; min_overuse = 28 ; moves = 8(1); length = 15
+36: cost = 7575.1; overuse = 32 ; min_overuse = 28 ; moves = 10(0); length = 15
+37: cost = 7597.2; overuse = 36 ; min_overuse = 28 ; moves = 12(2); length = 15
+38: cost = 7416.2; overuse = 25 ; min_overuse = 25 ; moves = 10(1); length = 15
+39: cost = 6959.5; overuse = 20 ; min_overuse = 20 ; moves = 9(1); length = 15
+40: cost = 7102.9; overuse = 19 ; min_overuse = 19 ; moves = 8(2); length = 15
+41: cost = 7053.8; overuse = 20 ; min_overuse = 19 ; moves = 7(1); length = 15
+42: cost = 7688.1; overuse = 25 ; min_overuse = 19 ; moves = 4(0); length = 15
+43: cost = 8023.0; overuse = 24 ; min_overuse = 19 ; moves = 4(0); length = 15
+44: cost = 8490.4; overuse = 27 ; min_overuse = 19 ; moves = 7(1); length = 15
+45: cost = 8836.8; overuse = 30 ; min_overuse = 19 ; moves = 6(0); length = 15
+46: cost = 7691.9; overuse = 19 ; min_overuse = 19 ; moves = 9(1); length = 15
+47: cost = 8003.7; overuse = 23 ; min_overuse = 19 ; moves = 8(1); length = 15
+48: cost = 8754.4; overuse = 31 ; min_overuse = 19 ; moves = 5(0); length = 15
+49: cost = 8205.8; overuse = 25 ; min_overuse = 19 ; moves = 8(0); length = 15
+50: cost = 7935.1; overuse = 28 ; min_overuse = 19 ; moves = 10(0); length = 15
+51: cost = 8564.8; overuse = 26 ; min_overuse = 19 ; moves = 2(1); length = 15
+52: cost = 9395.6; overuse = 26 ; min_overuse = 19 ; moves = 1(1); length = 15
+53: cost = 9952.0; overuse = 38 ; min_overuse = 19 ; moves = 11(1); length = 15
+54: cost = 9686.7; overuse = 29 ; min_overuse = 19 ; moves = 9(2); length = 15
+55: cost = 10517.8; overuse = 35 ; min_overuse = 19 ; moves = 8(1); length = 15
+56: cost = 10373.4; overuse = 31 ; min_overuse = 19 ; moves = 12(3); length = 15
+57: cost = 10343.1; overuse = 34 ; min_overuse = 19 ; moves = 10(0); length = 15
+58: cost = 10749.4; overuse = 54 ; min_overuse = 19 ; moves = 18(1); length = 15
+59: cost = 11915.4; overuse = 44 ; min_overuse = 19 ; moves = 9(0); length = 15
+60: cost = 12876.0; overuse = 40 ; min_overuse = 19 ; moves = 9(0); length = 15
+61: cost = 12308.0; overuse = 36 ; min_overuse = 19 ; moves = 13(0); length = 15
+62: cost = 13632.9; overuse = 43 ; min_overuse = 19 ; moves = 9(0); length = 15
+63: cost = 12856.1; overuse = 54 ; min_overuse = 19 ; moves = 15(0); length = 15
+64: cost = 13667.4; overuse = 49 ; min_overuse = 19 ; moves = 11(0); length = 15
+65: cost = 14167.5; overuse = 46 ; min_overuse = 19 ; moves = 12(1); length = 15
+66: cost = 14422.5; overuse = 49 ; min_overuse = 19 ; moves = 13(0); length = 15
+67: cost = 12124.5; overuse = 25 ; min_overuse = 19 ; moves = 13(1); length = 15
+68: cost = 12016.5; overuse = 28 ; min_overuse = 19 ; moves = 9(2); length = 15
+69: cost = 11600.8; overuse = 28 ; min_overuse = 19 ; moves = 10(0); length = 15
+70: cost = 12066.2; overuse = 32 ; min_overuse = 19 ; moves = 4(1); length = 15
+71: cost = 10674.6; overuse = 30 ; min_overuse = 19 ; moves = 15(1); length = 15
+72: cost = 10895.4; overuse = 26 ; min_overuse = 19 ; moves = 7(2); length = 15
+73: cost = 10941.7; overuse = 28 ; min_overuse = 19 ; moves = 5(1); length = 15
+74: cost = 10643.7; overuse = 25 ; min_overuse = 19 ; moves = 6(2); length = 15
+75: cost = 10666.3; overuse = 31 ; min_overuse = 19 ; moves = 8(0); length = 15
+76: cost = 10312.0; overuse = 28 ; min_overuse = 19 ; moves = 8(1); length = 15
+77: cost = 11047.8; overuse = 33 ; min_overuse = 19 ; moves = 10(1); length = 15
+78: cost = 11300.6; overuse = 29 ; min_overuse = 19 ; moves = 9(1); length = 15
+79: cost = 10731.8; overuse = 27 ; min_overuse = 19 ; moves = 8(1); length = 15
+80: cost = 10263.0; overuse = 23 ; min_overuse = 19 ; moves = 8(1); length = 15
+81: cost = 10239.7; overuse = 26 ; min_overuse = 19 ; moves = 7(1); length = 15
+82: cost = 9354.6; overuse = 22 ; min_overuse = 19 ; moves = 10(1); length = 15
+83: cost = 8967.5; overuse = 19 ; min_overuse = 19 ; moves = 7(0); length = 15
+84: cost = 8665.2; overuse = 17 ; min_overuse = 17 ; moves = 9(2); length = 15
+85: cost = 8889.5; overuse = 25 ; min_overuse = 17 ; moves = 8(1); length = 15
+86: cost = 8452.7; overuse = 19 ; min_overuse = 17 ; moves = 9(0); length = 15
+87: cost = 7512.2; overuse = 15 ; min_overuse = 15 ; moves = 7(2); length = 15
+88: cost = 7179.0; overuse = 10 ; min_overuse = 10 ; moves = 4(0); length = 15
+OVERUSE: node 1 [fu_0::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 17 [fu_2::pred],  modulo cycle: 0, overuse: 1
+OVERUSE: node 19 [fu_2::src2],  modulo cycle: 0, overuse: 1
+OVERUSE: node 25 [data_pseudo[fu_2]],  modulo cycle: 0, overuse: 1
+OVERUSE: node 67 [fu_8::src1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 68 [fu_8::src2],  modulo cycle: 1, overuse: 1
+OVERUSE: node 74 [data_pseudo[fu_8]],  modulo cycle: 1, overuse: 1
+OVERUSE: node 193 [fu_row_extended_7::dst1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 197 [data_pseudo[fu_row_extended_7]],  modulo cycle: 1, overuse: 1
+OVERUSE: node 303 [vliw_int_rf::out1],  modulo cycle: 0, overuse: 1
+total_overuse = 10, total_occpuancy = 494
+89: cost = 7040.3; overuse = 9 ; min_overuse = 9 ; moves = 1(0); length = 15
+OVERUSE: node 17 [fu_2::pred],  modulo cycle: 0, overuse: 1
+OVERUSE: node 19 [fu_2::src2],  modulo cycle: 0, overuse: 1
+OVERUSE: node 25 [data_pseudo[fu_2]],  modulo cycle: 0, overuse: 1
+OVERUSE: node 67 [fu_8::src1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 68 [fu_8::src2],  modulo cycle: 1, overuse: 1
+OVERUSE: node 74 [data_pseudo[fu_8]],  modulo cycle: 1, overuse: 1
+OVERUSE: node 193 [fu_row_extended_7::dst1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 197 [data_pseudo[fu_row_extended_7]],  modulo cycle: 1, overuse: 1
+OVERUSE: node 304 [vliw_int_rf::out2],  modulo cycle: 0, overuse: 1
+total_overuse = 9, total_occpuancy = 494
+90: cost = 7079.9; overuse = 10 ; min_overuse = 9 ; moves = 3(2); length = 15
+OVERUSE: node 17 [fu_2::pred],  modulo cycle: 0, overuse: 1
+OVERUSE: node 19 [fu_2::src2],  modulo cycle: 0, overuse: 1
+OVERUSE: node 25 [data_pseudo[fu_2]],  modulo cycle: 0, overuse: 1
+OVERUSE: node 43 [fu_5::src1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 44 [fu_5::src2],  modulo cycle: 1, overuse: 1
+OVERUSE: node 45 [fu_5::dst1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 49 [data_pseudo[fu_5]],  modulo cycle: 1, overuse: 1
+OVERUSE: node 133 [fu_row_extended_0::src1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 193 [fu_row_extended_7::dst1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 197 [data_pseudo[fu_row_extended_7]],  modulo cycle: 1, overuse: 1
+total_overuse = 10, total_occpuancy = 506
+91: cost = 6736.3; overuse = 8 ; min_overuse = 8 ; moves = 3(0); length = 15
+OVERUSE: node 17 [fu_2::pred],  modulo cycle: 0, overuse: 1
+OVERUSE: node 19 [fu_2::src2],  modulo cycle: 0, overuse: 1
+OVERUSE: node 25 [data_pseudo[fu_2]],  modulo cycle: 0, overuse: 1
+OVERUSE: node 84 [fu_10::src1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 85 [fu_10::src2],  modulo cycle: 1, overuse: 1
+OVERUSE: node 91 [data_pseudo[fu_10]],  modulo cycle: 1, overuse: 1
+OVERUSE: node 193 [fu_row_extended_7::dst1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 197 [data_pseudo[fu_row_extended_7]],  modulo cycle: 1, overuse: 1
+total_overuse = 8, total_occpuancy = 508
+92: cost = 6624.5; overuse = 10 ; min_overuse = 8 ; moves = 2(0); length = 15
+OVERUSE: node 17 [fu_2::pred],  modulo cycle: 0, overuse: 1
+OVERUSE: node 19 [fu_2::src2],  modulo cycle: 0, overuse: 1
+OVERUSE: node 25 [data_pseudo[fu_2]],  modulo cycle: 0, overuse: 1
+OVERUSE: node 84 [fu_10::src1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 85 [fu_10::src2],  modulo cycle: 1, overuse: 1
+OVERUSE: node 91 [data_pseudo[fu_10]],  modulo cycle: 1, overuse: 1
+OVERUSE: node 150 [fu_row_extended_2::src1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 151 [fu_row_extended_2::src2],  modulo cycle: 1, overuse: 1
+OVERUSE: node 157 [data_pseudo[fu_row_extended_2]],  modulo cycle: 1, overuse: 1
+OVERUSE: node 457 [ireg_row_extended_2::in1],  modulo cycle: 0, overuse: 1
+total_overuse = 10, total_occpuancy = 517
+93: cost = 6881.8; overuse = 18 ; min_overuse = 8 ; moves = 8(2); length = 15
+94: cost = 7708.3; overuse = 23 ; min_overuse = 8 ; moves = 7(1); length = 15
+95: cost = 6845.0; overuse = 15 ; min_overuse = 8 ; moves = 7(1); length = 15
+96: cost = 6739.0; overuse = 14 ; min_overuse = 8 ; moves = 8(1); length = 15
+97: cost = 6263.4; overuse = 12 ; min_overuse = 8 ; moves = 6(0); length = 15
+98: cost = 5916.6; overuse = 9 ; min_overuse = 8 ; moves = 6(2); length = 15
+OVERUSE: node 1 [fu_0::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 17 [fu_2::pred],  modulo cycle: 0, overuse: 1
+OVERUSE: node 18 [fu_2::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 25 [data_pseudo[fu_2]],  modulo cycle: 0, overuse: 1
+OVERUSE: node 67 [fu_8::src1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 150 [fu_row_extended_2::src1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 151 [fu_row_extended_2::src2],  modulo cycle: 1, overuse: 1
+OVERUSE: node 157 [data_pseudo[fu_row_extended_2]],  modulo cycle: 1, overuse: 1
+OVERUSE: node 307 [vliw_int_rf::out5],  modulo cycle: 0, overuse: 1
+total_overuse = 9, total_occpuancy = 483
+99: cost = 5450.6; overuse = 9 ; min_overuse = 8 ; moves = 5(1); length = 15
+OVERUSE: node 17 [fu_2::pred],  modulo cycle: 0, overuse: 1
+OVERUSE: node 19 [fu_2::src2],  modulo cycle: 0, overuse: 1
+OVERUSE: node 25 [data_pseudo[fu_2]],  modulo cycle: 0, overuse: 1
+OVERUSE: node 67 [fu_8::src1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 83 [fu_10::pred],  modulo cycle: 0, overuse: 1
+OVERUSE: node 85 [fu_10::src2],  modulo cycle: 0, overuse: 1
+OVERUSE: node 91 [data_pseudo[fu_10]],  modulo cycle: 0, overuse: 1
+OVERUSE: node 109 [fu_13::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 175 [fu_row_extended_5::src1],  modulo cycle: 0, overuse: 1
+total_overuse = 9, total_occpuancy = 478
+100: cost = 5533.0; overuse = 11 ; min_overuse = 8 ; moves = 3(1); length = 15
+101: cost = 5922.2; overuse = 15 ; min_overuse = 8 ; moves = 5(1); length = 15
+102: cost = 6342.4; overuse = 20 ; min_overuse = 8 ; moves = 6(2); length = 15
+103: cost = 7155.3; overuse = 30 ; min_overuse = 8 ; moves = 14(3); length = 15
+104: cost = 7267.8; overuse = 22 ; min_overuse = 8 ; moves = 13(0); length = 15
+105: cost = 7785.1; overuse = 29 ; min_overuse = 8 ; moves = 12(0); length = 15
+106: cost = 7180.4; overuse = 17 ; min_overuse = 8 ; moves = 8(1); length = 15
+107: cost = 7665.4; overuse = 25 ; min_overuse = 8 ; moves = 8(2); length = 15
+108: cost = 6553.2; overuse = 12 ; min_overuse = 8 ; moves = 10(1); length = 15
+109: cost = 6666.1; overuse = 12 ; min_overuse = 8 ; moves = 3(2); length = 15
+110: cost = 6780.7; overuse = 12 ; min_overuse = 8 ; moves = 1(0); length = 15
+111: cost = 6745.9; overuse = 19 ; min_overuse = 8 ; moves = 6(2); length = 15
+112: cost = 6399.7; overuse = 18 ; min_overuse = 8 ; moves = 9(0); length = 15
+113: cost = 6924.6; overuse = 20 ; min_overuse = 8 ; moves = 3(1); length = 15
+114: cost = 7518.6; overuse = 21 ; min_overuse = 8 ; moves = 7(2); length = 15
+115: cost = 8031.5; overuse = 26 ; min_overuse = 8 ; moves = 9(0); length = 15
+116: cost = 7654.4; overuse = 29 ; min_overuse = 8 ; moves = 10(0); length = 15
+117: cost = 7460.1; overuse = 21 ; min_overuse = 8 ; moves = 8(1); length = 15
+118: cost = 7439.1; overuse = 27 ; min_overuse = 8 ; moves = 9(0); length = 15
+119: cost = 7445.1; overuse = 19 ; min_overuse = 8 ; moves = 5(0); length = 15
+120: cost = 7728.0; overuse = 19 ; min_overuse = 8 ; moves = 2(1); length = 15
+121: cost = 7822.4; overuse = 18 ; min_overuse = 8 ; moves = 4(0); length = 15
+122: cost = 7846.5; overuse = 18 ; min_overuse = 8 ; moves = 5(0); length = 15
+123: cost = 8152.2; overuse = 18 ; min_overuse = 8 ; moves = 4(2); length = 15
+124: cost = 7858.4; overuse = 12 ; min_overuse = 8 ; moves = 2(0); length = 15
+125: cost = 8047.1; overuse = 14 ; min_overuse = 8 ; moves = 3(0); length = 15
+126: cost = 8942.7; overuse = 28 ; min_overuse = 8 ; moves = 4(1); length = 15
+127: cost = 8408.5; overuse = 21 ; min_overuse = 8 ; moves = 9(1); length = 15
+128: cost = 8089.0; overuse = 14 ; min_overuse = 8 ; moves = 6(1); length = 15
+129: cost = 8204.3; overuse = 13 ; min_overuse = 8 ; moves = 3(1); length = 15
+130: cost = 8238.2; overuse = 13 ; min_overuse = 8 ; moves = 3(0); length = 15
+131: cost = 8018.8; overuse = 13 ; min_overuse = 8 ; moves = 6(0); length = 15
+132: cost = 7755.7; overuse = 13 ; min_overuse = 8 ; moves = 9(0); length = 15
+133: cost = 7598.1; overuse = 10 ; min_overuse = 8 ; moves = 7(2); length = 15
+OVERUSE: node 17 [fu_2::pred],  modulo cycle: 0, overuse: 1
+OVERUSE: node 18 [fu_2::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 21 [fu_2::dst1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 25 [data_pseudo[fu_2]],  modulo cycle: 0, overuse: 1
+OVERUSE: node 51 [fu_6::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 117 [fu_14::src1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 183 [fu_row_extended_6::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 526 [const_2::out],  modulo cycle: 0, overuse: 1
+OVERUSE: node 592 [outireg1_2::in],  modulo cycle: 1, overuse: 1
+OVERUSE: node 593 [outireg1_2::out],  modulo cycle: 0, overuse: 1
+total_overuse = 10, total_occpuancy = 526
+134: cost = 7655.8; overuse = 15 ; min_overuse = 8 ; moves = 10(1); length = 15
+135: cost = 7749.5; overuse = 16 ; min_overuse = 8 ; moves = 4(1); length = 15
+136: cost = 7972.2; overuse = 20 ; min_overuse = 8 ; moves = 6(1); length = 15
+137: cost = 8132.0; overuse = 23 ; min_overuse = 8 ; moves = 8(2); length = 15
+138: cost = 7970.5; overuse = 18 ; min_overuse = 8 ; moves = 8(0); length = 15
+139: cost = 8137.2; overuse = 15 ; min_overuse = 8 ; moves = 5(1); length = 15
+140: cost = 8399.3; overuse = 19 ; min_overuse = 8 ; moves = 7(1); length = 15
+141: cost = 8360.8; overuse = 17 ; min_overuse = 8 ; moves = 8(0); length = 15
+142: cost = 8636.7; overuse = 17 ; min_overuse = 8 ; moves = 1(0); length = 15
+143: cost = 8783.7; overuse = 22 ; min_overuse = 8 ; moves = 8(1); length = 15
+144: cost = 8388.2; overuse = 18 ; min_overuse = 8 ; moves = 5(0); length = 15
+145: cost = 8564.6; overuse = 19 ; min_overuse = 8 ; moves = 3(0); length = 15
+146: cost = 8925.2; overuse = 21 ; min_overuse = 8 ; moves = 9(3); length = 15
+147: cost = 9379.5; overuse = 26 ; min_overuse = 8 ; moves = 10(3); length = 15
+148: cost = 9904.6; overuse = 25 ; min_overuse = 8 ; moves = 8(0); length = 15
+149: cost = 9460.0; overuse = 26 ; min_overuse = 8 ; moves = 10(2); length = 15
+150: cost = 9506.2; overuse = 24 ; min_overuse = 8 ; moves = 6(1); length = 15
+151: cost = 9445.1; overuse = 23 ; min_overuse = 8 ; moves = 8(2); length = 15
+152: cost = 9542.3; overuse = 23 ; min_overuse = 8 ; moves = 8(1); length = 15
+153: cost = 9761.6; overuse = 24 ; min_overuse = 8 ; moves = 6(1); length = 15
+154: cost = 9725.9; overuse = 21 ; min_overuse = 8 ; moves = 4(1); length = 15
+155: cost = 9416.6; overuse = 22 ; min_overuse = 8 ; moves = 9(2); length = 15
+156: cost = 9287.8; overuse = 27 ; min_overuse = 8 ; moves = 9(1); length = 15
+157: cost = 9051.3; overuse = 23 ; min_overuse = 8 ; moves = 11(1); length = 15
+158: cost = 8518.7; overuse = 15 ; min_overuse = 8 ; moves = 6(0); length = 15
+159: cost = 8323.4; overuse = 13 ; min_overuse = 8 ; moves = 4(1); length = 15
+160: cost = 8358.7; overuse = 13 ; min_overuse = 8 ; moves = 2(0); length = 15
+161: cost = 8363.2; overuse = 12 ; min_overuse = 8 ; moves = 1(0); length = 15
+162: cost = 8389.4; overuse = 12 ; min_overuse = 8 ; moves = 0(0); length = 15
+163: cost = 8413.0; overuse = 12 ; min_overuse = 8 ; moves = 0(0); length = 15
+164: cost = 8407.2; overuse = 18 ; min_overuse = 8 ; moves = 3(0); length = 15
+165: cost = 7481.6; overuse = 21 ; min_overuse = 8 ; moves = 6(1); length = 15
+166: cost = 7499.3; overuse = 15 ; min_overuse = 8 ; moves = 2(0); length = 15
+167: cost = 8098.1; overuse = 42 ; min_overuse = 8 ; moves = 10(1); length = 15
+168: cost = 7241.1; overuse = 33 ; min_overuse = 8 ; moves = 12(1); length = 15
+169: cost = 7594.4; overuse = 33 ; min_overuse = 8 ; moves = 13(1); length = 15
+170: cost = 7537.8; overuse = 29 ; min_overuse = 8 ; moves = 11(3); length = 15
+171: cost = 7426.3; overuse = 19 ; min_overuse = 8 ; moves = 7(0); length = 15
+172: cost = 7963.6; overuse = 27 ; min_overuse = 8 ; moves = 7(2); length = 15
+173: cost = 8507.7; overuse = 30 ; min_overuse = 8 ; moves = 7(2); length = 15
+174: cost = 8680.8; overuse = 27 ; min_overuse = 8 ; moves = 12(2); length = 15
+175: cost = 8228.7; overuse = 19 ; min_overuse = 8 ; moves = 9(0); length = 15
+176: cost = 6946.9; overuse = 16 ; min_overuse = 8 ; moves = 12(1); length = 15
+177: cost = 6083.2; overuse = 19 ; min_overuse = 8 ; moves = 10(2); length = 15
+178: cost = 5720.4; overuse = 17 ; min_overuse = 8 ; moves = 12(1); length = 15
+179: cost = 5423.7; overuse = 12 ; min_overuse = 8 ; moves = 5(1); length = 15
+180: cost = 5300.7; overuse = 8 ; min_overuse = 8 ; moves = 7(1); length = 15
+OVERUSE: node 43 [fu_5::src1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 44 [fu_5::src2],  modulo cycle: 1, overuse: 1
+OVERUSE: node 45 [fu_5::dst1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 49 [data_pseudo[fu_5]],  modulo cycle: 1, overuse: 1
+OVERUSE: node 126 [fu_15::src2],  modulo cycle: 1, overuse: 1
+OVERUSE: node 209 [fu_col_extended_1::src2],  modulo cycle: 1, overuse: 1
+OVERUSE: node 307 [vliw_int_rf::out5],  modulo cycle: 1, overuse: 1
+OVERUSE: node 402 [ireg_5::in1],  modulo cycle: 1, overuse: 1
+total_overuse = 8, total_occpuancy = 583
+181: cost = 5126.8; overuse = 10 ; min_overuse = 8 ; moves = 8(1); length = 15
+OVERUSE: node 8 [fu_1::pred],  modulo cycle: 0, overuse: 1
+OVERUSE: node 9 [fu_1::src1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 10 [fu_1::src2],  modulo cycle: 0, overuse: 1
+OVERUSE: node 16 [data_pseudo[fu_1]],  modulo cycle: 0, overuse: 1
+OVERUSE: node 111 [fu_13::dst1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 115 [data_pseudo[fu_13]],  modulo cycle: 0, overuse: 1
+OVERUSE: node 209 [fu_col_extended_1::src2],  modulo cycle: 1, overuse: 1
+OVERUSE: node 307 [vliw_int_rf::out5],  modulo cycle: 1, overuse: 1
+OVERUSE: node 402 [ireg_5::in1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 457 [ireg_row_extended_2::in1],  modulo cycle: 0, overuse: 1
+total_overuse = 10, total_occpuancy = 550
+182: cost = 4862.5; overuse = 11 ; min_overuse = 8 ; moves = 13(3); length = 15
+183: cost = 4892.6; overuse = 10 ; min_overuse = 8 ; moves = 1(0); length = 15
+OVERUSE: node 60 [fu_7::src2],  modulo cycle: 0, overuse: 1
+OVERUSE: node 67 [fu_8::src1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 68 [fu_8::src2],  modulo cycle: 1, overuse: 1
+OVERUSE: node 74 [data_pseudo[fu_8]],  modulo cycle: 1, overuse: 1
+OVERUSE: node 231 [fu_col_extended_4::pred],  modulo cycle: 1, overuse: 1
+OVERUSE: node 232 [fu_col_extended_4::src1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 233 [fu_col_extended_4::src2],  modulo cycle: 1, overuse: 1
+OVERUSE: node 239 [data_pseudo[fu_col_extended_4]],  modulo cycle: 1, overuse: 1
+OVERUSE: node 297 [vliw_int_rf::in1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 552 [const_col_extended_4::out],  modulo cycle: 1, overuse: 1
+total_overuse = 10, total_occpuancy = 569
+184: cost = 4926.2; overuse = 11 ; min_overuse = 8 ; moves = 2(0); length = 15
+185: cost = 5058.3; overuse = 11 ; min_overuse = 8 ; moves = 2(1); length = 15
+186: cost = 5245.6; overuse = 12 ; min_overuse = 8 ; moves = 1(0); length = 15
+187: cost = 5346.9; overuse = 13 ; min_overuse = 8 ; moves = 1(0); length = 15
+188: cost = 4519.5; overuse = 16 ; min_overuse = 8 ; moves = 9(3); length = 15
+189: cost = 4566.0; overuse = 13 ; min_overuse = 8 ; moves = 3(0); length = 15
+190: cost = 4428.4; overuse = 14 ; min_overuse = 8 ; moves = 6(1); length = 15
+191: cost = 4579.4; overuse = 12 ; min_overuse = 8 ; moves = 3(0); length = 15
+192: cost = 4921.8; overuse = 19 ; min_overuse = 8 ; moves = 10(1); length = 15
+193: cost = 4171.7; overuse = 15 ; min_overuse = 8 ; moves = 13(0); length = 15
+194: cost = 3719.3; overuse = 9 ; min_overuse = 8 ; moves = 9(2); length = 15
+OVERUSE: node 43 [fu_5::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 249 [fu_col_extended_6::src1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 264 [fu_row_col_extended_0::pred],  modulo cycle: 0, overuse: 1
+OVERUSE: node 265 [fu_row_col_extended_0::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 266 [fu_row_col_extended_0::src2],  modulo cycle: 0, overuse: 1
+OVERUSE: node 272 [data_pseudo[fu_row_col_extended_0]],  modulo cycle: 0, overuse: 1
+OVERUSE: node 305 [vliw_int_rf::out3],  modulo cycle: 0, overuse: 1
+OVERUSE: node 470 [ireg_row_extended_5::in1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 556 [const_row_col_extended_0::out],  modulo cycle: 0, overuse: 1
+total_overuse = 9, total_occpuancy = 566
+195: cost = 3601.1; overuse = 7 ; min_overuse = 7 ; moves = 5(0); length = 15
+OVERUSE: node 249 [fu_col_extended_6::src1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 264 [fu_row_col_extended_0::pred],  modulo cycle: 0, overuse: 1
+OVERUSE: node 265 [fu_row_col_extended_0::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 266 [fu_row_col_extended_0::src2],  modulo cycle: 0, overuse: 1
+OVERUSE: node 272 [data_pseudo[fu_row_col_extended_0]],  modulo cycle: 0, overuse: 1
+OVERUSE: node 308 [vliw_int_rf::out6],  modulo cycle: 0, overuse: 1
+OVERUSE: node 556 [const_row_col_extended_0::out],  modulo cycle: 0, overuse: 1
+total_overuse = 7, total_occpuancy = 551
+196: cost = 3223.1; overuse = 7 ; min_overuse = 7 ; moves = 7(2); length = 15
+OVERUSE: node 132 [fu_row_extended_0::pred],  modulo cycle: 0, overuse: 1
+OVERUSE: node 133 [fu_row_extended_0::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 140 [data_pseudo[fu_row_extended_0]],  modulo cycle: 0, overuse: 1
+OVERUSE: node 308 [vliw_int_rf::out6],  modulo cycle: 0, overuse: 1
+OVERUSE: node 448 [ireg_row_extended_0::in1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 451 [ireg_row_extended_0::out2],  modulo cycle: 0, overuse: 1
+OVERUSE: node 540 [const_row_extended_0::out],  modulo cycle: 0, overuse: 1
+total_overuse = 7, total_occpuancy = 544
+197: cost = 3302.5; overuse = 8 ; min_overuse = 7 ; moves = 3(1); length = 15
+OVERUSE: node 27 [fu_3::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 149 [fu_row_extended_2::pred],  modulo cycle: 0, overuse: 1
+OVERUSE: node 151 [fu_row_extended_2::src2],  modulo cycle: 0, overuse: 1
+OVERUSE: node 157 [data_pseudo[fu_row_extended_2]],  modulo cycle: 0, overuse: 1
+OVERUSE: node 307 [vliw_int_rf::out5],  modulo cycle: 0, overuse: 1
+OVERUSE: node 457 [ireg_row_extended_2::in1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 460 [ireg_row_extended_2::out2],  modulo cycle: 0, overuse: 1
+OVERUSE: node 542 [const_row_extended_2::out],  modulo cycle: 0, overuse: 1
+total_overuse = 8, total_occpuancy = 542
+198: cost = 3180.2; overuse = 6 ; min_overuse = 6 ; moves = 6(1); length = 15
+OVERUSE: node 231 [fu_col_extended_4::pred],  modulo cycle: 0, overuse: 1
+OVERUSE: node 233 [fu_col_extended_4::src2],  modulo cycle: 0, overuse: 1
+OVERUSE: node 239 [data_pseudo[fu_col_extended_4]],  modulo cycle: 0, overuse: 1
+OVERUSE: node 308 [vliw_int_rf::out6],  modulo cycle: 0, overuse: 1
+OVERUSE: node 493 [ireg_col_extended_4::out2],  modulo cycle: 0, overuse: 1
+OVERUSE: node 552 [const_col_extended_4::out],  modulo cycle: 0, overuse: 1
+total_overuse = 6, total_occpuancy = 535
+199: cost = 3358.2; overuse = 11 ; min_overuse = 6 ; moves = 9(3); length = 15
+200: cost = 2953.4; overuse = 4 ; min_overuse = 4 ; moves = 6(1); length = 15
+OVERUSE: node 59 [fu_7::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 151 [fu_row_extended_2::src2],  modulo cycle: 1, overuse: 1
+OVERUSE: node 308 [vliw_int_rf::out6],  modulo cycle: 1, overuse: 1
+OVERUSE: node 360 [vliw_pred::out1],  modulo cycle: 0, overuse: 1
+total_overuse = 4, total_occpuancy = 569
+201: cost = 2984.2; overuse = 5 ; min_overuse = 4 ; moves = 1(0); length = 15
+OVERUSE: node 59 [fu_7::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 151 [fu_row_extended_2::src2],  modulo cycle: 1, overuse: 1
+OVERUSE: node 214 [data_pseudo[fu_col_extended_1]],  modulo cycle: 0, overuse: 1
+OVERUSE: node 309 [vliw_int_rf],  modulo cycle: 1, overuse: 1
+OVERUSE: node 360 [vliw_pred::out1],  modulo cycle: 1, overuse: 1
+total_overuse = 5, total_occpuancy = 581
+202: cost = 2523.3; overuse = 1 ; min_overuse = 1 ; moves = 7(0); length = 15
+OVERUSE: node 308 [vliw_int_rf::out6],  modulo cycle: 1, overuse: 1
+total_overuse = 1, total_occpuancy = 538
+203: cost = 2414.8; overuse = 2 ; min_overuse = 1 ; moves = 4(1); length = 15
+OVERUSE: node 60 [fu_7::src2],  modulo cycle: 0, overuse: 1
+OVERUSE: node 214 [data_pseudo[fu_col_extended_1]],  modulo cycle: 0, overuse: 1
+total_overuse = 2, total_occpuancy = 539
+204: cost = 2211.6; overuse = 1 ; min_overuse = 1 ; moves = 4(1); length = 15
+OVERUSE: node 308 [vliw_int_rf::out6],  modulo cycle: 1, overuse: 1
+total_overuse = 1, total_occpuancy = 534
+205: cost = 2088.6; overuse = 1 ; min_overuse = 1 ; moves = 4(1); length = 15
+OVERUSE: node 307 [vliw_int_rf::out5],  modulo cycle: 0, overuse: 1
+total_overuse = 1, total_occpuancy = 563
+206: cost = 1999.3; overuse = 2 ; min_overuse = 1 ; moves = 4(3); length = 15
+OVERUSE: node 76 [fu_9::src1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 307 [vliw_int_rf::out5],  modulo cycle: 0, overuse: 1
+total_overuse = 2, total_occpuancy = 567
+207: cost = 1852.0; overuse = 1 ; min_overuse = 1 ; moves = 5(0); length = 15
+OVERUSE: node 76 [fu_9::src1],  modulo cycle: 1, overuse: 1
+total_overuse = 1, total_occpuancy = 564
+208: cost = 1657.5; overuse = 0 ; min_overuse = 0 ; moves = 2(0); length = 15
+total_overuse = 0, total_occpuancy = 565
+Successfully found a valid schedule for loop cb 17 src line 343 func main with II = 2; random_seed = 2006; relax_factor = 1.300
+
+total_overuse = 0, total_occpuancy = 565
+elapsed time = 118 seconds
+
+total elapsed time for all parameters = 118 seconds
+Performing CGA rotating RF allocation...
+Detected loop cb 20 src line 347
+Building routability matrix ...
+Performing copy propagation ... 
+Total 0 MOV operations are optimized corresponding to 0 dependences
+
+Scheduling loop 20...
+MII = 2, density = 45.83% (ResMII= 2, RecMII = 1, upper_density = 95.00%)
+Try II = 2; random_seed = 2006; relax_factor = 1.300
+Performing initial placement and routing ...
+Succeeded in scheduling operations in circuits
+Succeeded to schedule other operations
+Starting iterative improvement ...
+(you may interrupt scheduling process by typing q<RETURN>,
+ or continue directly to the next random_seed/relax_factor/II by typing s/r/i<return>)
+1: cost = 957.1; overuse = 125 ; min_overuse = 125 ; moves = 36(18); length = 15
+2: cost = 1121.3; overuse = 128 ; min_overuse = 125 ; moves = 34(15); length = 15
+3: cost = 1261.4; overuse = 120 ; min_overuse = 120 ; moves = 33(11); length = 15
+4: cost = 1253.8; overuse = 87 ; min_overuse = 87 ; moves = 30(11); length = 15
+5: cost = 1260.3; overuse = 92 ; min_overuse = 87 ; moves = 32(10); length = 15
+6: cost = 1164.2; overuse = 77 ; min_overuse = 77 ; moves = 30(11); length = 15
+7: cost = 1419.8; overuse = 91 ; min_overuse = 77 ; moves = 31(13); length = 15
+8: cost = 1456.8; overuse = 86 ; min_overuse = 77 ; moves = 26(9); length = 15
+9: cost = 1668.0; overuse = 78 ; min_overuse = 77 ; moves = 28(12); length = 15
+10: cost = 2118.2; overuse = 109 ; min_overuse = 77 ; moves = 26(11); length = 15
+11: cost = 2221.5; overuse = 92 ; min_overuse = 77 ; moves = 27(10); length = 15
+12: cost = 2066.0; overuse = 84 ; min_overuse = 77 ; moves = 25(10); length = 15
+13: cost = 2481.5; overuse = 93 ; min_overuse = 77 ; moves = 27(15); length = 15
+14: cost = 2491.1; overuse = 90 ; min_overuse = 77 ; moves = 23(10); length = 15
+15: cost = 2598.6; overuse = 75 ; min_overuse = 75 ; moves = 26(11); length = 15
+16: cost = 3039.4; overuse = 107 ; min_overuse = 75 ; moves = 25(14); length = 15
+17: cost = 3295.0; overuse = 87 ; min_overuse = 75 ; moves = 24(10); length = 15
+18: cost = 4607.0; overuse = 89 ; min_overuse = 75 ; moves = 21(11); length = 15
+19: cost = 4168.2; overuse = 97 ; min_overuse = 75 ; moves = 26(11); length = 15
+20: cost = 3075.2; overuse = 55 ; min_overuse = 55 ; moves = 18(1); length = 15
+21: cost = 3190.7; overuse = 57 ; min_overuse = 55 ; moves = 15(2); length = 15
+22: cost = 2939.7; overuse = 38 ; min_overuse = 38 ; moves = 13(1); length = 15
+23: cost = 3083.3; overuse = 39 ; min_overuse = 38 ; moves = 12(2); length = 15
+24: cost = 3264.4; overuse = 35 ; min_overuse = 35 ; moves = 10(2); length = 15
+25: cost = 3177.7; overuse = 28 ; min_overuse = 28 ; moves = 10(1); length = 15
+26: cost = 3271.1; overuse = 35 ; min_overuse = 28 ; moves = 12(1); length = 15
+27: cost = 3470.0; overuse = 32 ; min_overuse = 28 ; moves = 9(3); length = 15
+28: cost = 3402.8; overuse = 31 ; min_overuse = 28 ; moves = 12(1); length = 15
+29: cost = 3737.7; overuse = 36 ; min_overuse = 28 ; moves = 11(3); length = 15
+30: cost = 3822.8; overuse = 30 ; min_overuse = 28 ; moves = 6(0); length = 15
+31: cost = 4510.6; overuse = 32 ; min_overuse = 28 ; moves = 4(0); length = 15
+32: cost = 5469.4; overuse = 41 ; min_overuse = 28 ; moves = 11(2); length = 15
+33: cost = 6218.0; overuse = 43 ; min_overuse = 28 ; moves = 14(1); length = 15
+34: cost = 6088.4; overuse = 35 ; min_overuse = 28 ; moves = 13(1); length = 15
+35: cost = 6905.6; overuse = 38 ; min_overuse = 28 ; moves = 8(1); length = 15
+36: cost = 7575.1; overuse = 32 ; min_overuse = 28 ; moves = 10(0); length = 15
+37: cost = 7597.2; overuse = 36 ; min_overuse = 28 ; moves = 12(2); length = 15
+38: cost = 7416.2; overuse = 25 ; min_overuse = 25 ; moves = 10(1); length = 15
+39: cost = 6959.5; overuse = 20 ; min_overuse = 20 ; moves = 9(1); length = 15
+40: cost = 7102.9; overuse = 19 ; min_overuse = 19 ; moves = 8(2); length = 15
+41: cost = 7053.8; overuse = 20 ; min_overuse = 19 ; moves = 7(1); length = 15
+42: cost = 7688.1; overuse = 25 ; min_overuse = 19 ; moves = 4(0); length = 15
+43: cost = 8023.0; overuse = 24 ; min_overuse = 19 ; moves = 4(0); length = 15
+44: cost = 8490.4; overuse = 27 ; min_overuse = 19 ; moves = 7(1); length = 15
+45: cost = 8836.8; overuse = 30 ; min_overuse = 19 ; moves = 6(0); length = 15
+46: cost = 7691.9; overuse = 19 ; min_overuse = 19 ; moves = 9(1); length = 15
+47: cost = 8003.7; overuse = 23 ; min_overuse = 19 ; moves = 8(1); length = 15
+48: cost = 8754.4; overuse = 31 ; min_overuse = 19 ; moves = 5(0); length = 15
+49: cost = 8205.8; overuse = 25 ; min_overuse = 19 ; moves = 8(0); length = 15
+50: cost = 7935.1; overuse = 28 ; min_overuse = 19 ; moves = 10(0); length = 15
+51: cost = 8564.8; overuse = 26 ; min_overuse = 19 ; moves = 2(1); length = 15
+52: cost = 9395.6; overuse = 26 ; min_overuse = 19 ; moves = 1(1); length = 15
+53: cost = 9952.0; overuse = 38 ; min_overuse = 19 ; moves = 11(1); length = 15
+54: cost = 9686.7; overuse = 29 ; min_overuse = 19 ; moves = 9(2); length = 15
+55: cost = 10517.8; overuse = 35 ; min_overuse = 19 ; moves = 8(1); length = 15
+56: cost = 10373.4; overuse = 31 ; min_overuse = 19 ; moves = 12(3); length = 15
+57: cost = 10343.1; overuse = 34 ; min_overuse = 19 ; moves = 10(0); length = 15
+58: cost = 10749.4; overuse = 54 ; min_overuse = 19 ; moves = 18(1); length = 15
+59: cost = 11915.4; overuse = 44 ; min_overuse = 19 ; moves = 9(0); length = 15
+60: cost = 12876.0; overuse = 40 ; min_overuse = 19 ; moves = 9(0); length = 15
+61: cost = 12308.0; overuse = 36 ; min_overuse = 19 ; moves = 13(0); length = 15
+62: cost = 13632.9; overuse = 43 ; min_overuse = 19 ; moves = 9(0); length = 15
+63: cost = 12856.1; overuse = 54 ; min_overuse = 19 ; moves = 15(0); length = 15
+64: cost = 13667.4; overuse = 49 ; min_overuse = 19 ; moves = 11(0); length = 15
+65: cost = 14167.5; overuse = 46 ; min_overuse = 19 ; moves = 12(1); length = 15
+66: cost = 14422.5; overuse = 49 ; min_overuse = 19 ; moves = 13(0); length = 15
+67: cost = 12124.5; overuse = 25 ; min_overuse = 19 ; moves = 13(1); length = 15
+68: cost = 12016.5; overuse = 28 ; min_overuse = 19 ; moves = 9(2); length = 15
+69: cost = 11600.8; overuse = 28 ; min_overuse = 19 ; moves = 10(0); length = 15
+70: cost = 12066.2; overuse = 32 ; min_overuse = 19 ; moves = 4(1); length = 15
+71: cost = 10674.6; overuse = 30 ; min_overuse = 19 ; moves = 15(1); length = 15
+72: cost = 10895.4; overuse = 26 ; min_overuse = 19 ; moves = 7(2); length = 15
+73: cost = 10941.7; overuse = 28 ; min_overuse = 19 ; moves = 5(1); length = 15
+74: cost = 10643.7; overuse = 25 ; min_overuse = 19 ; moves = 6(2); length = 15
+75: cost = 10666.3; overuse = 31 ; min_overuse = 19 ; moves = 8(0); length = 15
+76: cost = 10312.0; overuse = 28 ; min_overuse = 19 ; moves = 8(1); length = 15
+77: cost = 11047.8; overuse = 33 ; min_overuse = 19 ; moves = 10(1); length = 15
+78: cost = 11300.6; overuse = 29 ; min_overuse = 19 ; moves = 9(1); length = 15
+79: cost = 10731.8; overuse = 27 ; min_overuse = 19 ; moves = 8(1); length = 15
+80: cost = 10263.0; overuse = 23 ; min_overuse = 19 ; moves = 8(1); length = 15
+81: cost = 10239.7; overuse = 26 ; min_overuse = 19 ; moves = 7(1); length = 15
+82: cost = 9354.6; overuse = 22 ; min_overuse = 19 ; moves = 10(1); length = 15
+83: cost = 8967.5; overuse = 19 ; min_overuse = 19 ; moves = 7(0); length = 15
+84: cost = 8665.2; overuse = 17 ; min_overuse = 17 ; moves = 9(2); length = 15
+85: cost = 8889.5; overuse = 25 ; min_overuse = 17 ; moves = 8(1); length = 15
+86: cost = 8452.7; overuse = 19 ; min_overuse = 17 ; moves = 9(0); length = 15
+87: cost = 7512.2; overuse = 15 ; min_overuse = 15 ; moves = 7(2); length = 15
+88: cost = 7179.0; overuse = 10 ; min_overuse = 10 ; moves = 4(0); length = 15
+OVERUSE: node 1 [fu_0::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 17 [fu_2::pred],  modulo cycle: 0, overuse: 1
+OVERUSE: node 19 [fu_2::src2],  modulo cycle: 0, overuse: 1
+OVERUSE: node 25 [data_pseudo[fu_2]],  modulo cycle: 0, overuse: 1
+OVERUSE: node 67 [fu_8::src1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 68 [fu_8::src2],  modulo cycle: 1, overuse: 1
+OVERUSE: node 74 [data_pseudo[fu_8]],  modulo cycle: 1, overuse: 1
+OVERUSE: node 193 [fu_row_extended_7::dst1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 197 [data_pseudo[fu_row_extended_7]],  modulo cycle: 1, overuse: 1
+OVERUSE: node 303 [vliw_int_rf::out1],  modulo cycle: 0, overuse: 1
+total_overuse = 10, total_occpuancy = 494
+89: cost = 7040.3; overuse = 9 ; min_overuse = 9 ; moves = 1(0); length = 15
+OVERUSE: node 17 [fu_2::pred],  modulo cycle: 0, overuse: 1
+OVERUSE: node 19 [fu_2::src2],  modulo cycle: 0, overuse: 1
+OVERUSE: node 25 [data_pseudo[fu_2]],  modulo cycle: 0, overuse: 1
+OVERUSE: node 67 [fu_8::src1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 68 [fu_8::src2],  modulo cycle: 1, overuse: 1
+OVERUSE: node 74 [data_pseudo[fu_8]],  modulo cycle: 1, overuse: 1
+OVERUSE: node 193 [fu_row_extended_7::dst1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 197 [data_pseudo[fu_row_extended_7]],  modulo cycle: 1, overuse: 1
+OVERUSE: node 304 [vliw_int_rf::out2],  modulo cycle: 0, overuse: 1
+total_overuse = 9, total_occpuancy = 494
+90: cost = 7079.9; overuse = 10 ; min_overuse = 9 ; moves = 3(2); length = 15
+OVERUSE: node 17 [fu_2::pred],  modulo cycle: 0, overuse: 1
+OVERUSE: node 19 [fu_2::src2],  modulo cycle: 0, overuse: 1
+OVERUSE: node 25 [data_pseudo[fu_2]],  modulo cycle: 0, overuse: 1
+OVERUSE: node 43 [fu_5::src1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 44 [fu_5::src2],  modulo cycle: 1, overuse: 1
+OVERUSE: node 45 [fu_5::dst1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 49 [data_pseudo[fu_5]],  modulo cycle: 1, overuse: 1
+OVERUSE: node 133 [fu_row_extended_0::src1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 193 [fu_row_extended_7::dst1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 197 [data_pseudo[fu_row_extended_7]],  modulo cycle: 1, overuse: 1
+total_overuse = 10, total_occpuancy = 506
+91: cost = 6736.3; overuse = 8 ; min_overuse = 8 ; moves = 3(0); length = 15
+OVERUSE: node 17 [fu_2::pred],  modulo cycle: 0, overuse: 1
+OVERUSE: node 19 [fu_2::src2],  modulo cycle: 0, overuse: 1
+OVERUSE: node 25 [data_pseudo[fu_2]],  modulo cycle: 0, overuse: 1
+OVERUSE: node 84 [fu_10::src1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 85 [fu_10::src2],  modulo cycle: 1, overuse: 1
+OVERUSE: node 91 [data_pseudo[fu_10]],  modulo cycle: 1, overuse: 1
+OVERUSE: node 193 [fu_row_extended_7::dst1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 197 [data_pseudo[fu_row_extended_7]],  modulo cycle: 1, overuse: 1
+total_overuse = 8, total_occpuancy = 508
+92: cost = 6624.5; overuse = 10 ; min_overuse = 8 ; moves = 2(0); length = 15
+OVERUSE: node 17 [fu_2::pred],  modulo cycle: 0, overuse: 1
+OVERUSE: node 19 [fu_2::src2],  modulo cycle: 0, overuse: 1
+OVERUSE: node 25 [data_pseudo[fu_2]],  modulo cycle: 0, overuse: 1
+OVERUSE: node 84 [fu_10::src1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 85 [fu_10::src2],  modulo cycle: 1, overuse: 1
+OVERUSE: node 91 [data_pseudo[fu_10]],  modulo cycle: 1, overuse: 1
+OVERUSE: node 150 [fu_row_extended_2::src1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 151 [fu_row_extended_2::src2],  modulo cycle: 1, overuse: 1
+OVERUSE: node 157 [data_pseudo[fu_row_extended_2]],  modulo cycle: 1, overuse: 1
+OVERUSE: node 457 [ireg_row_extended_2::in1],  modulo cycle: 0, overuse: 1
+total_overuse = 10, total_occpuancy = 517
+93: cost = 6881.8; overuse = 18 ; min_overuse = 8 ; moves = 8(2); length = 15
+94: cost = 7708.3; overuse = 23 ; min_overuse = 8 ; moves = 7(1); length = 15
+95: cost = 6845.0; overuse = 15 ; min_overuse = 8 ; moves = 7(1); length = 15
+96: cost = 6739.0; overuse = 14 ; min_overuse = 8 ; moves = 8(1); length = 15
+97: cost = 6263.4; overuse = 12 ; min_overuse = 8 ; moves = 6(0); length = 15
+98: cost = 5916.6; overuse = 9 ; min_overuse = 8 ; moves = 6(2); length = 15
+OVERUSE: node 1 [fu_0::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 17 [fu_2::pred],  modulo cycle: 0, overuse: 1
+OVERUSE: node 18 [fu_2::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 25 [data_pseudo[fu_2]],  modulo cycle: 0, overuse: 1
+OVERUSE: node 67 [fu_8::src1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 150 [fu_row_extended_2::src1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 151 [fu_row_extended_2::src2],  modulo cycle: 1, overuse: 1
+OVERUSE: node 157 [data_pseudo[fu_row_extended_2]],  modulo cycle: 1, overuse: 1
+OVERUSE: node 307 [vliw_int_rf::out5],  modulo cycle: 0, overuse: 1
+total_overuse = 9, total_occpuancy = 483
+99: cost = 5450.6; overuse = 9 ; min_overuse = 8 ; moves = 5(1); length = 15
+OVERUSE: node 17 [fu_2::pred],  modulo cycle: 0, overuse: 1
+OVERUSE: node 19 [fu_2::src2],  modulo cycle: 0, overuse: 1
+OVERUSE: node 25 [data_pseudo[fu_2]],  modulo cycle: 0, overuse: 1
+OVERUSE: node 67 [fu_8::src1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 83 [fu_10::pred],  modulo cycle: 0, overuse: 1
+OVERUSE: node 85 [fu_10::src2],  modulo cycle: 0, overuse: 1
+OVERUSE: node 91 [data_pseudo[fu_10]],  modulo cycle: 0, overuse: 1
+OVERUSE: node 109 [fu_13::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 175 [fu_row_extended_5::src1],  modulo cycle: 0, overuse: 1
+total_overuse = 9, total_occpuancy = 478
+100: cost = 5533.0; overuse = 11 ; min_overuse = 8 ; moves = 3(1); length = 15
+101: cost = 5922.2; overuse = 15 ; min_overuse = 8 ; moves = 5(1); length = 15
+102: cost = 6342.4; overuse = 20 ; min_overuse = 8 ; moves = 6(2); length = 15
+103: cost = 7155.3; overuse = 30 ; min_overuse = 8 ; moves = 14(3); length = 15
+104: cost = 7267.8; overuse = 22 ; min_overuse = 8 ; moves = 13(0); length = 15
+105: cost = 7785.1; overuse = 29 ; min_overuse = 8 ; moves = 12(0); length = 15
+106: cost = 7180.4; overuse = 17 ; min_overuse = 8 ; moves = 8(1); length = 15
+107: cost = 7665.4; overuse = 25 ; min_overuse = 8 ; moves = 8(2); length = 15
+108: cost = 6553.2; overuse = 12 ; min_overuse = 8 ; moves = 10(1); length = 15
+109: cost = 6666.1; overuse = 12 ; min_overuse = 8 ; moves = 3(2); length = 15
+110: cost = 6780.7; overuse = 12 ; min_overuse = 8 ; moves = 1(0); length = 15
+111: cost = 6745.9; overuse = 19 ; min_overuse = 8 ; moves = 6(2); length = 15
+112: cost = 6399.7; overuse = 18 ; min_overuse = 8 ; moves = 9(0); length = 15
+113: cost = 6924.6; overuse = 20 ; min_overuse = 8 ; moves = 3(1); length = 15
+114: cost = 7518.6; overuse = 21 ; min_overuse = 8 ; moves = 7(2); length = 15
+115: cost = 8031.5; overuse = 26 ; min_overuse = 8 ; moves = 9(0); length = 15
+116: cost = 7654.4; overuse = 29 ; min_overuse = 8 ; moves = 10(0); length = 15
+117: cost = 7460.1; overuse = 21 ; min_overuse = 8 ; moves = 8(1); length = 15
+118: cost = 7439.1; overuse = 27 ; min_overuse = 8 ; moves = 9(0); length = 15
+119: cost = 7445.1; overuse = 19 ; min_overuse = 8 ; moves = 5(0); length = 15
+120: cost = 7728.0; overuse = 19 ; min_overuse = 8 ; moves = 2(1); length = 15
+121: cost = 7822.4; overuse = 18 ; min_overuse = 8 ; moves = 4(0); length = 15
+122: cost = 7846.5; overuse = 18 ; min_overuse = 8 ; moves = 5(0); length = 15
+123: cost = 8152.2; overuse = 18 ; min_overuse = 8 ; moves = 4(2); length = 15
+124: cost = 7858.4; overuse = 12 ; min_overuse = 8 ; moves = 2(0); length = 15
+125: cost = 8047.1; overuse = 14 ; min_overuse = 8 ; moves = 3(0); length = 15
+126: cost = 8942.7; overuse = 28 ; min_overuse = 8 ; moves = 4(1); length = 15
+127: cost = 8408.5; overuse = 21 ; min_overuse = 8 ; moves = 9(1); length = 15
+128: cost = 8089.0; overuse = 14 ; min_overuse = 8 ; moves = 6(1); length = 15
+129: cost = 8204.3; overuse = 13 ; min_overuse = 8 ; moves = 3(1); length = 15
+130: cost = 8238.2; overuse = 13 ; min_overuse = 8 ; moves = 3(0); length = 15
+131: cost = 8018.8; overuse = 13 ; min_overuse = 8 ; moves = 6(0); length = 15
+132: cost = 7755.7; overuse = 13 ; min_overuse = 8 ; moves = 9(0); length = 15
+133: cost = 7598.1; overuse = 10 ; min_overuse = 8 ; moves = 7(2); length = 15
+OVERUSE: node 17 [fu_2::pred],  modulo cycle: 0, overuse: 1
+OVERUSE: node 18 [fu_2::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 21 [fu_2::dst1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 25 [data_pseudo[fu_2]],  modulo cycle: 0, overuse: 1
+OVERUSE: node 51 [fu_6::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 117 [fu_14::src1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 183 [fu_row_extended_6::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 526 [const_2::out],  modulo cycle: 0, overuse: 1
+OVERUSE: node 592 [outireg1_2::in],  modulo cycle: 1, overuse: 1
+OVERUSE: node 593 [outireg1_2::out],  modulo cycle: 0, overuse: 1
+total_overuse = 10, total_occpuancy = 526
+134: cost = 7655.8; overuse = 15 ; min_overuse = 8 ; moves = 10(1); length = 15
+135: cost = 7749.5; overuse = 16 ; min_overuse = 8 ; moves = 4(1); length = 15
+136: cost = 7972.2; overuse = 20 ; min_overuse = 8 ; moves = 6(1); length = 15
+137: cost = 8132.0; overuse = 23 ; min_overuse = 8 ; moves = 8(2); length = 15
+138: cost = 7970.5; overuse = 18 ; min_overuse = 8 ; moves = 8(0); length = 15
+139: cost = 8137.2; overuse = 15 ; min_overuse = 8 ; moves = 5(1); length = 15
+140: cost = 8399.3; overuse = 19 ; min_overuse = 8 ; moves = 7(1); length = 15
+141: cost = 8360.8; overuse = 17 ; min_overuse = 8 ; moves = 8(0); length = 15
+142: cost = 8636.7; overuse = 17 ; min_overuse = 8 ; moves = 1(0); length = 15
+143: cost = 8783.7; overuse = 22 ; min_overuse = 8 ; moves = 8(1); length = 15
+144: cost = 8388.2; overuse = 18 ; min_overuse = 8 ; moves = 5(0); length = 15
+145: cost = 8564.6; overuse = 19 ; min_overuse = 8 ; moves = 3(0); length = 15
+146: cost = 8925.2; overuse = 21 ; min_overuse = 8 ; moves = 9(3); length = 15
+147: cost = 9379.5; overuse = 26 ; min_overuse = 8 ; moves = 10(3); length = 15
+148: cost = 9904.6; overuse = 25 ; min_overuse = 8 ; moves = 8(0); length = 15
+149: cost = 9460.0; overuse = 26 ; min_overuse = 8 ; moves = 10(2); length = 15
+150: cost = 9506.2; overuse = 24 ; min_overuse = 8 ; moves = 6(1); length = 15
+151: cost = 9445.1; overuse = 23 ; min_overuse = 8 ; moves = 8(2); length = 15
+152: cost = 9542.3; overuse = 23 ; min_overuse = 8 ; moves = 8(1); length = 15
+153: cost = 9761.6; overuse = 24 ; min_overuse = 8 ; moves = 6(1); length = 15
+154: cost = 9725.9; overuse = 21 ; min_overuse = 8 ; moves = 4(1); length = 15
+155: cost = 9416.6; overuse = 22 ; min_overuse = 8 ; moves = 9(2); length = 15
+156: cost = 9287.8; overuse = 27 ; min_overuse = 8 ; moves = 9(1); length = 15
+157: cost = 9051.3; overuse = 23 ; min_overuse = 8 ; moves = 11(1); length = 15
+158: cost = 8518.7; overuse = 15 ; min_overuse = 8 ; moves = 6(0); length = 15
+159: cost = 8323.4; overuse = 13 ; min_overuse = 8 ; moves = 4(1); length = 15
+160: cost = 8358.7; overuse = 13 ; min_overuse = 8 ; moves = 2(0); length = 15
+161: cost = 8363.2; overuse = 12 ; min_overuse = 8 ; moves = 1(0); length = 15
+162: cost = 8389.4; overuse = 12 ; min_overuse = 8 ; moves = 0(0); length = 15
+163: cost = 8413.0; overuse = 12 ; min_overuse = 8 ; moves = 0(0); length = 15
+164: cost = 8407.2; overuse = 18 ; min_overuse = 8 ; moves = 3(0); length = 15
+165: cost = 7481.6; overuse = 21 ; min_overuse = 8 ; moves = 6(1); length = 15
+166: cost = 7499.3; overuse = 15 ; min_overuse = 8 ; moves = 2(0); length = 15
+167: cost = 8098.1; overuse = 42 ; min_overuse = 8 ; moves = 10(1); length = 15
+168: cost = 7241.1; overuse = 33 ; min_overuse = 8 ; moves = 12(1); length = 15
+169: cost = 7594.4; overuse = 33 ; min_overuse = 8 ; moves = 13(1); length = 15
+170: cost = 7537.8; overuse = 29 ; min_overuse = 8 ; moves = 11(3); length = 15
+171: cost = 7426.3; overuse = 19 ; min_overuse = 8 ; moves = 7(0); length = 15
+172: cost = 7963.6; overuse = 27 ; min_overuse = 8 ; moves = 7(2); length = 15
+173: cost = 8507.7; overuse = 30 ; min_overuse = 8 ; moves = 7(2); length = 15
+174: cost = 8680.8; overuse = 27 ; min_overuse = 8 ; moves = 12(2); length = 15
+175: cost = 8228.7; overuse = 19 ; min_overuse = 8 ; moves = 9(0); length = 15
+176: cost = 6946.9; overuse = 16 ; min_overuse = 8 ; moves = 12(1); length = 15
+177: cost = 6083.2; overuse = 19 ; min_overuse = 8 ; moves = 10(2); length = 15
+178: cost = 5720.4; overuse = 17 ; min_overuse = 8 ; moves = 12(1); length = 15
+179: cost = 5423.7; overuse = 12 ; min_overuse = 8 ; moves = 5(1); length = 15
+180: cost = 5300.7; overuse = 8 ; min_overuse = 8 ; moves = 7(1); length = 15
+OVERUSE: node 43 [fu_5::src1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 44 [fu_5::src2],  modulo cycle: 1, overuse: 1
+OVERUSE: node 45 [fu_5::dst1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 49 [data_pseudo[fu_5]],  modulo cycle: 1, overuse: 1
+OVERUSE: node 126 [fu_15::src2],  modulo cycle: 1, overuse: 1
+OVERUSE: node 209 [fu_col_extended_1::src2],  modulo cycle: 1, overuse: 1
+OVERUSE: node 307 [vliw_int_rf::out5],  modulo cycle: 1, overuse: 1
+OVERUSE: node 402 [ireg_5::in1],  modulo cycle: 1, overuse: 1
+total_overuse = 8, total_occpuancy = 583
+181: cost = 5126.8; overuse = 10 ; min_overuse = 8 ; moves = 8(1); length = 15
+OVERUSE: node 8 [fu_1::pred],  modulo cycle: 0, overuse: 1
+OVERUSE: node 9 [fu_1::src1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 10 [fu_1::src2],  modulo cycle: 0, overuse: 1
+OVERUSE: node 16 [data_pseudo[fu_1]],  modulo cycle: 0, overuse: 1
+OVERUSE: node 111 [fu_13::dst1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 115 [data_pseudo[fu_13]],  modulo cycle: 0, overuse: 1
+OVERUSE: node 209 [fu_col_extended_1::src2],  modulo cycle: 1, overuse: 1
+OVERUSE: node 307 [vliw_int_rf::out5],  modulo cycle: 1, overuse: 1
+OVERUSE: node 402 [ireg_5::in1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 457 [ireg_row_extended_2::in1],  modulo cycle: 0, overuse: 1
+total_overuse = 10, total_occpuancy = 550
+182: cost = 4862.5; overuse = 11 ; min_overuse = 8 ; moves = 13(3); length = 15
+183: cost = 4892.6; overuse = 10 ; min_overuse = 8 ; moves = 1(0); length = 15
+OVERUSE: node 60 [fu_7::src2],  modulo cycle: 0, overuse: 1
+OVERUSE: node 67 [fu_8::src1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 68 [fu_8::src2],  modulo cycle: 1, overuse: 1
+OVERUSE: node 74 [data_pseudo[fu_8]],  modulo cycle: 1, overuse: 1
+OVERUSE: node 231 [fu_col_extended_4::pred],  modulo cycle: 1, overuse: 1
+OVERUSE: node 232 [fu_col_extended_4::src1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 233 [fu_col_extended_4::src2],  modulo cycle: 1, overuse: 1
+OVERUSE: node 239 [data_pseudo[fu_col_extended_4]],  modulo cycle: 1, overuse: 1
+OVERUSE: node 297 [vliw_int_rf::in1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 552 [const_col_extended_4::out],  modulo cycle: 1, overuse: 1
+total_overuse = 10, total_occpuancy = 569
+184: cost = 4926.2; overuse = 11 ; min_overuse = 8 ; moves = 2(0); length = 15
+185: cost = 5058.3; overuse = 11 ; min_overuse = 8 ; moves = 2(1); length = 15
+186: cost = 5245.6; overuse = 12 ; min_overuse = 8 ; moves = 1(0); length = 15
+187: cost = 5346.9; overuse = 13 ; min_overuse = 8 ; moves = 1(0); length = 15
+188: cost = 4519.5; overuse = 16 ; min_overuse = 8 ; moves = 9(3); length = 15
+189: cost = 4566.0; overuse = 13 ; min_overuse = 8 ; moves = 3(0); length = 15
+190: cost = 4428.4; overuse = 14 ; min_overuse = 8 ; moves = 6(1); length = 15
+191: cost = 4579.4; overuse = 12 ; min_overuse = 8 ; moves = 3(0); length = 15
+192: cost = 4921.8; overuse = 19 ; min_overuse = 8 ; moves = 10(1); length = 15
+193: cost = 4171.7; overuse = 15 ; min_overuse = 8 ; moves = 13(0); length = 15
+194: cost = 3719.3; overuse = 9 ; min_overuse = 8 ; moves = 9(2); length = 15
+OVERUSE: node 43 [fu_5::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 249 [fu_col_extended_6::src1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 264 [fu_row_col_extended_0::pred],  modulo cycle: 0, overuse: 1
+OVERUSE: node 265 [fu_row_col_extended_0::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 266 [fu_row_col_extended_0::src2],  modulo cycle: 0, overuse: 1
+OVERUSE: node 272 [data_pseudo[fu_row_col_extended_0]],  modulo cycle: 0, overuse: 1
+OVERUSE: node 305 [vliw_int_rf::out3],  modulo cycle: 0, overuse: 1
+OVERUSE: node 470 [ireg_row_extended_5::in1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 556 [const_row_col_extended_0::out],  modulo cycle: 0, overuse: 1
+total_overuse = 9, total_occpuancy = 566
+195: cost = 3601.1; overuse = 7 ; min_overuse = 7 ; moves = 5(0); length = 15
+OVERUSE: node 249 [fu_col_extended_6::src1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 264 [fu_row_col_extended_0::pred],  modulo cycle: 0, overuse: 1
+OVERUSE: node 265 [fu_row_col_extended_0::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 266 [fu_row_col_extended_0::src2],  modulo cycle: 0, overuse: 1
+OVERUSE: node 272 [data_pseudo[fu_row_col_extended_0]],  modulo cycle: 0, overuse: 1
+OVERUSE: node 308 [vliw_int_rf::out6],  modulo cycle: 0, overuse: 1
+OVERUSE: node 556 [const_row_col_extended_0::out],  modulo cycle: 0, overuse: 1
+total_overuse = 7, total_occpuancy = 551
+196: cost = 3223.1; overuse = 7 ; min_overuse = 7 ; moves = 7(2); length = 15
+OVERUSE: node 132 [fu_row_extended_0::pred],  modulo cycle: 0, overuse: 1
+OVERUSE: node 133 [fu_row_extended_0::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 140 [data_pseudo[fu_row_extended_0]],  modulo cycle: 0, overuse: 1
+OVERUSE: node 308 [vliw_int_rf::out6],  modulo cycle: 0, overuse: 1
+OVERUSE: node 448 [ireg_row_extended_0::in1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 451 [ireg_row_extended_0::out2],  modulo cycle: 0, overuse: 1
+OVERUSE: node 540 [const_row_extended_0::out],  modulo cycle: 0, overuse: 1
+total_overuse = 7, total_occpuancy = 544
+197: cost = 3302.5; overuse = 8 ; min_overuse = 7 ; moves = 3(1); length = 15
+OVERUSE: node 27 [fu_3::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 149 [fu_row_extended_2::pred],  modulo cycle: 0, overuse: 1
+OVERUSE: node 151 [fu_row_extended_2::src2],  modulo cycle: 0, overuse: 1
+OVERUSE: node 157 [data_pseudo[fu_row_extended_2]],  modulo cycle: 0, overuse: 1
+OVERUSE: node 307 [vliw_int_rf::out5],  modulo cycle: 0, overuse: 1
+OVERUSE: node 457 [ireg_row_extended_2::in1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 460 [ireg_row_extended_2::out2],  modulo cycle: 0, overuse: 1
+OVERUSE: node 542 [const_row_extended_2::out],  modulo cycle: 0, overuse: 1
+total_overuse = 8, total_occpuancy = 542
+198: cost = 3180.2; overuse = 6 ; min_overuse = 6 ; moves = 6(1); length = 15
+OVERUSE: node 231 [fu_col_extended_4::pred],  modulo cycle: 0, overuse: 1
+OVERUSE: node 233 [fu_col_extended_4::src2],  modulo cycle: 0, overuse: 1
+OVERUSE: node 239 [data_pseudo[fu_col_extended_4]],  modulo cycle: 0, overuse: 1
+OVERUSE: node 308 [vliw_int_rf::out6],  modulo cycle: 0, overuse: 1
+OVERUSE: node 493 [ireg_col_extended_4::out2],  modulo cycle: 0, overuse: 1
+OVERUSE: node 552 [const_col_extended_4::out],  modulo cycle: 0, overuse: 1
+total_overuse = 6, total_occpuancy = 535
+199: cost = 3358.2; overuse = 11 ; min_overuse = 6 ; moves = 9(3); length = 15
+200: cost = 2953.4; overuse = 4 ; min_overuse = 4 ; moves = 6(1); length = 15
+OVERUSE: node 59 [fu_7::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 151 [fu_row_extended_2::src2],  modulo cycle: 1, overuse: 1
+OVERUSE: node 308 [vliw_int_rf::out6],  modulo cycle: 1, overuse: 1
+OVERUSE: node 360 [vliw_pred::out1],  modulo cycle: 0, overuse: 1
+total_overuse = 4, total_occpuancy = 569
+201: cost = 2984.2; overuse = 5 ; min_overuse = 4 ; moves = 1(0); length = 15
+OVERUSE: node 59 [fu_7::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 151 [fu_row_extended_2::src2],  modulo cycle: 1, overuse: 1
+OVERUSE: node 214 [data_pseudo[fu_col_extended_1]],  modulo cycle: 0, overuse: 1
+OVERUSE: node 309 [vliw_int_rf],  modulo cycle: 1, overuse: 1
+OVERUSE: node 360 [vliw_pred::out1],  modulo cycle: 1, overuse: 1
+total_overuse = 5, total_occpuancy = 581
+202: cost = 2523.3; overuse = 1 ; min_overuse = 1 ; moves = 7(0); length = 15
+OVERUSE: node 308 [vliw_int_rf::out6],  modulo cycle: 1, overuse: 1
+total_overuse = 1, total_occpuancy = 538
+203: cost = 2414.8; overuse = 2 ; min_overuse = 1 ; moves = 4(1); length = 15
+OVERUSE: node 60 [fu_7::src2],  modulo cycle: 0, overuse: 1
+OVERUSE: node 214 [data_pseudo[fu_col_extended_1]],  modulo cycle: 0, overuse: 1
+total_overuse = 2, total_occpuancy = 539
+204: cost = 2211.6; overuse = 1 ; min_overuse = 1 ; moves = 4(1); length = 15
+OVERUSE: node 308 [vliw_int_rf::out6],  modulo cycle: 1, overuse: 1
+total_overuse = 1, total_occpuancy = 534
+205: cost = 2088.6; overuse = 1 ; min_overuse = 1 ; moves = 4(1); length = 15
+OVERUSE: node 307 [vliw_int_rf::out5],  modulo cycle: 0, overuse: 1
+total_overuse = 1, total_occpuancy = 563
+206: cost = 1999.3; overuse = 2 ; min_overuse = 1 ; moves = 4(3); length = 15
+OVERUSE: node 76 [fu_9::src1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 307 [vliw_int_rf::out5],  modulo cycle: 0, overuse: 1
+total_overuse = 2, total_occpuancy = 567
+207: cost = 1852.0; overuse = 1 ; min_overuse = 1 ; moves = 5(0); length = 15
+OVERUSE: node 76 [fu_9::src1],  modulo cycle: 1, overuse: 1
+total_overuse = 1, total_occpuancy = 564
+208: cost = 1657.5; overuse = 0 ; min_overuse = 0 ; moves = 2(0); length = 15
+total_overuse = 0, total_occpuancy = 565
+Successfully found a valid schedule for loop cb 20 src line 347 func main with II = 2; random_seed = 2006; relax_factor = 1.300
+
+total_overuse = 0, total_occpuancy = 565
+elapsed time = 99 seconds
+
+total elapsed time for all parameters = 99 seconds
+Performing CGA rotating RF allocation...
+Detected loop cb 23 src line 351
+Building routability matrix ...
+Performing copy propagation ... 
+Total 0 MOV operations are optimized corresponding to 0 dependences
+
+Scheduling loop 23...
+MII = 2, density = 45.83% (ResMII= 2, RecMII = 1, upper_density = 95.00%)
+Try II = 2; random_seed = 2008; relax_factor = 1.300
+Performing initial placement and routing ...
+Succeeded in scheduling operations in circuits
+Succeeded to schedule other operations
+Starting iterative improvement ...
+(you may interrupt scheduling process by typing q<RETURN>,
+ or continue directly to the next random_seed/relax_factor/II by typing s/r/i<return>)
+1: cost = 896.4; overuse = 123 ; min_overuse = 123 ; moves = 35(16); length = 14
+2: cost = 1047.1; overuse = 112 ; min_overuse = 112 ; moves = 35(13); length = 15
+3: cost = 1172.4; overuse = 106 ; min_overuse = 106 ; moves = 33(12); length = 15
+4: cost = 1445.8; overuse = 128 ; min_overuse = 106 ; moves = 27(13); length = 15
+5: cost = 1490.5; overuse = 125 ; min_overuse = 106 ; moves = 29(9); length = 15
+6: cost = 1581.4; overuse = 95 ; min_overuse = 95 ; moves = 30(13); length = 15
+7: cost = 1623.8; overuse = 101 ; min_overuse = 95 ; moves = 29(13); length = 15
+8: cost = 1803.4; overuse = 102 ; min_overuse = 95 ; moves = 30(17); length = 15
+9: cost = 1971.1; overuse = 100 ; min_overuse = 95 ; moves = 27(8); length = 15
+10: cost = 1976.5; overuse = 94 ; min_overuse = 94 ; moves = 27(11); length = 15
+11: cost = 2581.1; overuse = 117 ; min_overuse = 94 ; moves = 32(13); length = 15
+12: cost = 2620.7; overuse = 89 ; min_overuse = 89 ; moves = 28(11); length = 15
+13: cost = 3004.0; overuse = 103 ; min_overuse = 89 ; moves = 25(11); length = 15
+14: cost = 3772.4; overuse = 124 ; min_overuse = 89 ; moves = 26(12); length = 15
+15: cost = 4086.9; overuse = 118 ; min_overuse = 89 ; moves = 21(9); length = 15
+16: cost = 4752.9; overuse = 119 ; min_overuse = 89 ; moves = 23(11); length = 15
+17: cost = 4905.0; overuse = 113 ; min_overuse = 89 ; moves = 28(12); length = 15
+18: cost = 5838.0; overuse = 126 ; min_overuse = 89 ; moves = 24(9); length = 15
+19: cost = 7245.4; overuse = 128 ; min_overuse = 89 ; moves = 26(11); length = 15
+20: cost = 5230.8; overuse = 73 ; min_overuse = 73 ; moves = 19(0); length = 15
+21: cost = 3969.1; overuse = 58 ; min_overuse = 58 ; moves = 20(2); length = 15
+22: cost = 3277.3; overuse = 56 ; min_overuse = 56 ; moves = 20(2); length = 15
+23: cost = 3375.0; overuse = 45 ; min_overuse = 45 ; moves = 16(2); length = 15
+24: cost = 3270.0; overuse = 37 ; min_overuse = 37 ; moves = 12(0); length = 15
+25: cost = 3345.7; overuse = 24 ; min_overuse = 24 ; moves = 8(2); length = 15
+26: cost = 3368.6; overuse = 22 ; min_overuse = 22 ; moves = 2(1); length = 15
+27: cost = 3633.8; overuse = 28 ; min_overuse = 22 ; moves = 3(0); length = 15
+28: cost = 3791.6; overuse = 27 ; min_overuse = 22 ; moves = 11(3); length = 15
+29: cost = 3658.2; overuse = 24 ; min_overuse = 22 ; moves = 12(3); length = 15
+30: cost = 3645.5; overuse = 17 ; min_overuse = 17 ; moves = 5(1); length = 15
+31: cost = 3547.9; overuse = 14 ; min_overuse = 14 ; moves = 3(1); length = 15
+32: cost = 3767.7; overuse = 18 ; min_overuse = 14 ; moves = 4(1); length = 15
+33: cost = 4023.2; overuse = 17 ; min_overuse = 14 ; moves = 3(1); length = 15
+34: cost = 4142.2; overuse = 20 ; min_overuse = 14 ; moves = 9(0); length = 15
+35: cost = 3971.8; overuse = 16 ; min_overuse = 14 ; moves = 8(1); length = 15
+36: cost = 4006.0; overuse = 14 ; min_overuse = 14 ; moves = 7(1); length = 15
+37: cost = 3806.5; overuse = 13 ; min_overuse = 13 ; moves = 9(0); length = 15
+38: cost = 3830.0; overuse = 8 ; min_overuse = 8 ; moves = 5(0); length = 15
+OVERUSE: node 17 [fu_2::pred],  modulo cycle: 0, overuse: 1
+OVERUSE: node 18 [fu_2::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 25 [data_pseudo[fu_2]],  modulo cycle: 0, overuse: 1
+OVERUSE: node 93 [fu_11::src1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 126 [fu_15::src2],  modulo cycle: 1, overuse: 1
+OVERUSE: node 406 [ireg_6::in1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 408 [ireg_6::out1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 526 [const_2::out],  modulo cycle: 0, overuse: 1
+total_overuse = 8, total_occpuancy = 567
+39: cost = 3898.9; overuse = 8 ; min_overuse = 8 ; moves = 5(2); length = 15
+OVERUSE: node 17 [fu_2::pred],  modulo cycle: 0, overuse: 1
+OVERUSE: node 18 [fu_2::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 25 [data_pseudo[fu_2]],  modulo cycle: 0, overuse: 1
+OVERUSE: node 217 [fu_col_extended_2::src2],  modulo cycle: 1, overuse: 1
+OVERUSE: node 298 [vliw_int_rf::in2],  modulo cycle: 0, overuse: 1
+OVERUSE: node 406 [ireg_6::in1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 408 [ireg_6::out1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 526 [const_2::out],  modulo cycle: 0, overuse: 1
+total_overuse = 8, total_occpuancy = 564
+40: cost = 3827.6; overuse = 7 ; min_overuse = 7 ; moves = 7(1); length = 15
+OVERUSE: node 17 [fu_2::pred],  modulo cycle: 0, overuse: 1
+OVERUSE: node 18 [fu_2::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 25 [data_pseudo[fu_2]],  modulo cycle: 0, overuse: 1
+OVERUSE: node 217 [fu_col_extended_2::src2],  modulo cycle: 1, overuse: 1
+OVERUSE: node 406 [ireg_6::in1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 408 [ireg_6::out1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 526 [const_2::out],  modulo cycle: 0, overuse: 1
+total_overuse = 7, total_occpuancy = 568
+41: cost = 3993.9; overuse = 8 ; min_overuse = 7 ; moves = 6(2); length = 15
+OVERUSE: node 17 [fu_2::pred],  modulo cycle: 0, overuse: 1
+OVERUSE: node 18 [fu_2::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 25 [data_pseudo[fu_2]],  modulo cycle: 0, overuse: 1
+OVERUSE: node 210 [fu_col_extended_1::dst1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 214 [data_pseudo[fu_col_extended_1]],  modulo cycle: 0, overuse: 1
+OVERUSE: node 406 [ireg_6::in1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 408 [ireg_6::out1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 526 [const_2::out],  modulo cycle: 0, overuse: 1
+total_overuse = 8, total_occpuancy = 571
+42: cost = 3873.2; overuse = 8 ; min_overuse = 7 ; moves = 5(0); length = 15
+OVERUSE: node 17 [fu_2::pred],  modulo cycle: 0, overuse: 1
+OVERUSE: node 18 [fu_2::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 25 [data_pseudo[fu_2]],  modulo cycle: 0, overuse: 1
+OVERUSE: node 101 [fu_12::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 297 [vliw_int_rf::in1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 406 [ireg_6::in1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 408 [ireg_6::out1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 526 [const_2::out],  modulo cycle: 0, overuse: 1
+total_overuse = 8, total_occpuancy = 572
+43: cost = 3844.2; overuse = 7 ; min_overuse = 7 ; moves = 2(1); length = 15
+OVERUSE: node 17 [fu_2::pred],  modulo cycle: 0, overuse: 1
+OVERUSE: node 18 [fu_2::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 25 [data_pseudo[fu_2]],  modulo cycle: 0, overuse: 1
+OVERUSE: node 297 [vliw_int_rf::in1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 406 [ireg_6::in1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 408 [ireg_6::out1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 526 [const_2::out],  modulo cycle: 0, overuse: 1
+total_overuse = 7, total_occpuancy = 576
+44: cost = 3896.5; overuse = 7 ; min_overuse = 7 ; moves = 2(2); length = 15
+OVERUSE: node 17 [fu_2::pred],  modulo cycle: 0, overuse: 1
+OVERUSE: node 18 [fu_2::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 25 [data_pseudo[fu_2]],  modulo cycle: 0, overuse: 1
+OVERUSE: node 297 [vliw_int_rf::in1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 406 [ireg_6::in1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 408 [ireg_6::out1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 526 [const_2::out],  modulo cycle: 0, overuse: 1
+total_overuse = 7, total_occpuancy = 576
+45: cost = 3946.0; overuse = 7 ; min_overuse = 7 ; moves = 2(2); length = 15
+OVERUSE: node 17 [fu_2::pred],  modulo cycle: 0, overuse: 1
+OVERUSE: node 18 [fu_2::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 25 [data_pseudo[fu_2]],  modulo cycle: 0, overuse: 1
+OVERUSE: node 297 [vliw_int_rf::in1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 406 [ireg_6::in1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 408 [ireg_6::out1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 526 [const_2::out],  modulo cycle: 0, overuse: 1
+total_overuse = 7, total_occpuancy = 576
+46: cost = 3981.4; overuse = 7 ; min_overuse = 7 ; moves = 3(0); length = 15
+OVERUSE: node 17 [fu_2::pred],  modulo cycle: 0, overuse: 1
+OVERUSE: node 18 [fu_2::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 25 [data_pseudo[fu_2]],  modulo cycle: 0, overuse: 1
+OVERUSE: node 297 [vliw_int_rf::in1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 406 [ireg_6::in1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 408 [ireg_6::out1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 526 [const_2::out],  modulo cycle: 0, overuse: 1
+total_overuse = 7, total_occpuancy = 571
+47: cost = 4015.0; overuse = 7 ; min_overuse = 7 ; moves = 4(3); length = 15
+OVERUSE: node 17 [fu_2::pred],  modulo cycle: 0, overuse: 1
+OVERUSE: node 18 [fu_2::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 25 [data_pseudo[fu_2]],  modulo cycle: 0, overuse: 1
+OVERUSE: node 297 [vliw_int_rf::in1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 406 [ireg_6::in1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 408 [ireg_6::out1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 526 [const_2::out],  modulo cycle: 0, overuse: 1
+total_overuse = 7, total_occpuancy = 563
+48: cost = 4041.9; overuse = 7 ; min_overuse = 7 ; moves = 2(0); length = 15
+OVERUSE: node 17 [fu_2::pred],  modulo cycle: 0, overuse: 1
+OVERUSE: node 18 [fu_2::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 25 [data_pseudo[fu_2]],  modulo cycle: 0, overuse: 1
+OVERUSE: node 297 [vliw_int_rf::in1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 406 [ireg_6::in1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 408 [ireg_6::out1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 526 [const_2::out],  modulo cycle: 0, overuse: 1
+total_overuse = 7, total_occpuancy = 552
+49: cost = 4068.6; overuse = 7 ; min_overuse = 7 ; moves = 3(1); length = 15
+OVERUSE: node 17 [fu_2::pred],  modulo cycle: 0, overuse: 1
+OVERUSE: node 18 [fu_2::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 25 [data_pseudo[fu_2]],  modulo cycle: 0, overuse: 1
+OVERUSE: node 297 [vliw_int_rf::in1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 406 [ireg_6::in1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 408 [ireg_6::out1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 526 [const_2::out],  modulo cycle: 0, overuse: 1
+total_overuse = 7, total_occpuancy = 550
+50: cost = 4085.4; overuse = 7 ; min_overuse = 7 ; moves = 3(1); length = 15
+OVERUSE: node 17 [fu_2::pred],  modulo cycle: 0, overuse: 1
+OVERUSE: node 18 [fu_2::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 25 [data_pseudo[fu_2]],  modulo cycle: 0, overuse: 1
+OVERUSE: node 297 [vliw_int_rf::in1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 406 [ireg_6::in1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 408 [ireg_6::out1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 526 [const_2::out],  modulo cycle: 0, overuse: 1
+total_overuse = 7, total_occpuancy = 540
+51: cost = 4120.1; overuse = 7 ; min_overuse = 7 ; moves = 3(2); length = 15
+OVERUSE: node 17 [fu_2::pred],  modulo cycle: 0, overuse: 1
+OVERUSE: node 18 [fu_2::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 25 [data_pseudo[fu_2]],  modulo cycle: 0, overuse: 1
+OVERUSE: node 297 [vliw_int_rf::in1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 406 [ireg_6::in1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 408 [ireg_6::out1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 526 [const_2::out],  modulo cycle: 0, overuse: 1
+total_overuse = 7, total_occpuancy = 549
+52: cost = 4094.8; overuse = 8 ; min_overuse = 7 ; moves = 4(2); length = 15
+OVERUSE: node 10 [fu_1::src2],  modulo cycle: 1, overuse: 1
+OVERUSE: node 17 [fu_2::pred],  modulo cycle: 0, overuse: 1
+OVERUSE: node 18 [fu_2::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 25 [data_pseudo[fu_2]],  modulo cycle: 0, overuse: 1
+OVERUSE: node 298 [vliw_int_rf::in2],  modulo cycle: 1, overuse: 1
+OVERUSE: node 406 [ireg_6::in1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 408 [ireg_6::out1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 526 [const_2::out],  modulo cycle: 0, overuse: 1
+total_overuse = 8, total_occpuancy = 546
+53: cost = 4177.9; overuse = 8 ; min_overuse = 7 ; moves = 2(2); length = 15
+OVERUSE: node 10 [fu_1::src2],  modulo cycle: 1, overuse: 1
+OVERUSE: node 17 [fu_2::pred],  modulo cycle: 0, overuse: 1
+OVERUSE: node 18 [fu_2::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 25 [data_pseudo[fu_2]],  modulo cycle: 0, overuse: 1
+OVERUSE: node 298 [vliw_int_rf::in2],  modulo cycle: 1, overuse: 1
+OVERUSE: node 406 [ireg_6::in1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 408 [ireg_6::out1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 526 [const_2::out],  modulo cycle: 0, overuse: 1
+total_overuse = 8, total_occpuancy = 550
+54: cost = 4370.1; overuse = 10 ; min_overuse = 7 ; moves = 3(1); length = 15
+OVERUSE: node 17 [fu_2::pred],  modulo cycle: 0, overuse: 1
+OVERUSE: node 18 [fu_2::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 19 [fu_2::src2],  modulo cycle: 1, overuse: 2
+OVERUSE: node 25 [data_pseudo[fu_2]],  modulo cycle: 0, overuse: 1
+OVERUSE: node 25 [data_pseudo[fu_2]],  modulo cycle: 1, overuse: 1
+OVERUSE: node 299 [vliw_int_rf::in3],  modulo cycle: 1, overuse: 1
+OVERUSE: node 406 [ireg_6::in1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 408 [ireg_6::out1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 526 [const_2::out],  modulo cycle: 0, overuse: 1
+total_overuse = 10, total_occpuancy = 556
+55: cost = 4572.5; overuse = 10 ; min_overuse = 7 ; moves = 3(1); length = 15
+OVERUSE: node 17 [fu_2::pred],  modulo cycle: 0, overuse: 1
+OVERUSE: node 18 [fu_2::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 19 [fu_2::src2],  modulo cycle: 1, overuse: 2
+OVERUSE: node 25 [data_pseudo[fu_2]],  modulo cycle: 0, overuse: 1
+OVERUSE: node 25 [data_pseudo[fu_2]],  modulo cycle: 1, overuse: 1
+OVERUSE: node 299 [vliw_int_rf::in3],  modulo cycle: 1, overuse: 1
+OVERUSE: node 406 [ireg_6::in1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 408 [ireg_6::out1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 526 [const_2::out],  modulo cycle: 0, overuse: 1
+total_overuse = 10, total_occpuancy = 552
+56: cost = 4333.7; overuse = 8 ; min_overuse = 7 ; moves = 3(1); length = 15
+OVERUSE: node 17 [fu_2::pred],  modulo cycle: 0, overuse: 1
+OVERUSE: node 18 [fu_2::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 25 [data_pseudo[fu_2]],  modulo cycle: 0, overuse: 1
+OVERUSE: node 298 [vliw_int_rf::in2],  modulo cycle: 1, overuse: 1
+OVERUSE: node 305 [vliw_int_rf::out3],  modulo cycle: 1, overuse: 1
+OVERUSE: node 406 [ireg_6::in1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 408 [ireg_6::out1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 526 [const_2::out],  modulo cycle: 0, overuse: 1
+total_overuse = 8, total_occpuancy = 549
+57: cost = 4387.8; overuse = 8 ; min_overuse = 7 ; moves = 0(0); length = 15
+OVERUSE: node 17 [fu_2::pred],  modulo cycle: 0, overuse: 1
+OVERUSE: node 18 [fu_2::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 25 [data_pseudo[fu_2]],  modulo cycle: 0, overuse: 1
+OVERUSE: node 298 [vliw_int_rf::in2],  modulo cycle: 1, overuse: 1
+OVERUSE: node 305 [vliw_int_rf::out3],  modulo cycle: 1, overuse: 1
+OVERUSE: node 406 [ireg_6::in1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 408 [ireg_6::out1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 526 [const_2::out],  modulo cycle: 0, overuse: 1
+total_overuse = 8, total_occpuancy = 549
+58: cost = 4509.8; overuse = 9 ; min_overuse = 7 ; moves = 2(2); length = 15
+OVERUSE: node 17 [fu_2::pred],  modulo cycle: 0, overuse: 1
+OVERUSE: node 18 [fu_2::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 25 [data_pseudo[fu_2]],  modulo cycle: 0, overuse: 1
+OVERUSE: node 209 [fu_col_extended_1::src2],  modulo cycle: 1, overuse: 1
+OVERUSE: node 298 [vliw_int_rf::in2],  modulo cycle: 1, overuse: 1
+OVERUSE: node 306 [vliw_int_rf::out4],  modulo cycle: 1, overuse: 1
+OVERUSE: node 406 [ireg_6::in1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 408 [ireg_6::out1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 526 [const_2::out],  modulo cycle: 0, overuse: 1
+total_overuse = 9, total_occpuancy = 568
+59: cost = 4278.2; overuse = 7 ; min_overuse = 7 ; moves = 3(0); length = 15
+OVERUSE: node 5 [fu_0::pred_dst2],  modulo cycle: 0, overuse: 1
+OVERUSE: node 17 [fu_2::pred],  modulo cycle: 0, overuse: 1
+OVERUSE: node 18 [fu_2::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 25 [data_pseudo[fu_2]],  modulo cycle: 0, overuse: 1
+OVERUSE: node 406 [ireg_6::in1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 408 [ireg_6::out1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 526 [const_2::out],  modulo cycle: 0, overuse: 1
+total_overuse = 7, total_occpuancy = 580
+60: cost = 4288.8; overuse = 7 ; min_overuse = 7 ; moves = 3(2); length = 15
+OVERUSE: node 5 [fu_0::pred_dst2],  modulo cycle: 0, overuse: 1
+OVERUSE: node 17 [fu_2::pred],  modulo cycle: 0, overuse: 1
+OVERUSE: node 18 [fu_2::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 25 [data_pseudo[fu_2]],  modulo cycle: 0, overuse: 1
+OVERUSE: node 406 [ireg_6::in1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 408 [ireg_6::out1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 526 [const_2::out],  modulo cycle: 0, overuse: 1
+total_overuse = 7, total_occpuancy = 581
+61: cost = 4297.2; overuse = 7 ; min_overuse = 7 ; moves = 2(2); length = 15
+OVERUSE: node 5 [fu_0::pred_dst2],  modulo cycle: 0, overuse: 1
+OVERUSE: node 17 [fu_2::pred],  modulo cycle: 0, overuse: 1
+OVERUSE: node 18 [fu_2::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 25 [data_pseudo[fu_2]],  modulo cycle: 0, overuse: 1
+OVERUSE: node 406 [ireg_6::in1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 408 [ireg_6::out1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 526 [const_2::out],  modulo cycle: 0, overuse: 1
+total_overuse = 7, total_occpuancy = 581
+62: cost = 4182.3; overuse = 7 ; min_overuse = 7 ; moves = 4(0); length = 15
+OVERUSE: node 17 [fu_2::pred],  modulo cycle: 0, overuse: 1
+OVERUSE: node 18 [fu_2::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 25 [data_pseudo[fu_2]],  modulo cycle: 0, overuse: 1
+OVERUSE: node 303 [vliw_int_rf::out1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 406 [ireg_6::in1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 408 [ireg_6::out1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 526 [const_2::out],  modulo cycle: 0, overuse: 1
+total_overuse = 7, total_occpuancy = 585
+63: cost = 3715.8; overuse = 16 ; min_overuse = 7 ; moves = 5(1); length = 15
+64: cost = 2915.9; overuse = 5 ; min_overuse = 5 ; moves = 7(0); length = 15
+OVERUSE: node 66 [fu_8::pred],  modulo cycle: 0, overuse: 1
+OVERUSE: node 67 [fu_8::src1],  modulo cycle: 0, overuse: 2
+OVERUSE: node 74 [data_pseudo[fu_8]],  modulo cycle: 0, overuse: 1
+OVERUSE: node 532 [const_8::out],  modulo cycle: 0, overuse: 1
+total_overuse = 5, total_occpuancy = 598
+65: cost = 2716.1; overuse = 4 ; min_overuse = 4 ; moves = 3(0); length = 15
+OVERUSE: node 132 [fu_row_extended_0::pred],  modulo cycle: 0, overuse: 1
+OVERUSE: node 133 [fu_row_extended_0::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 134 [fu_row_extended_0::src2],  modulo cycle: 0, overuse: 1
+OVERUSE: node 140 [data_pseudo[fu_row_extended_0]],  modulo cycle: 0, overuse: 1
+total_overuse = 4, total_occpuancy = 601
+66: cost = 2820.6; overuse = 6 ; min_overuse = 4 ; moves = 3(1); length = 15
+OVERUSE: node 149 [fu_row_extended_2::pred],  modulo cycle: 0, overuse: 1
+OVERUSE: node 151 [fu_row_extended_2::src2],  modulo cycle: 0, overuse: 1
+OVERUSE: node 157 [data_pseudo[fu_row_extended_2]],  modulo cycle: 0, overuse: 1
+OVERUSE: node 457 [ireg_row_extended_2::in1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 460 [ireg_row_extended_2::out2],  modulo cycle: 0, overuse: 1
+OVERUSE: node 542 [const_row_extended_2::out],  modulo cycle: 0, overuse: 1
+total_overuse = 6, total_occpuancy = 600
+67: cost = 2915.6; overuse = 6 ; min_overuse = 4 ; moves = 1(0); length = 15
+OVERUSE: node 149 [fu_row_extended_2::pred],  modulo cycle: 0, overuse: 1
+OVERUSE: node 151 [fu_row_extended_2::src2],  modulo cycle: 0, overuse: 1
+OVERUSE: node 157 [data_pseudo[fu_row_extended_2]],  modulo cycle: 0, overuse: 1
+OVERUSE: node 457 [ireg_row_extended_2::in1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 460 [ireg_row_extended_2::out2],  modulo cycle: 0, overuse: 1
+OVERUSE: node 542 [const_row_extended_2::out],  modulo cycle: 0, overuse: 1
+total_overuse = 6, total_occpuancy = 597
+68: cost = 3008.0; overuse = 6 ; min_overuse = 4 ; moves = 2(0); length = 15
+OVERUSE: node 149 [fu_row_extended_2::pred],  modulo cycle: 0, overuse: 1
+OVERUSE: node 151 [fu_row_extended_2::src2],  modulo cycle: 0, overuse: 1
+OVERUSE: node 157 [data_pseudo[fu_row_extended_2]],  modulo cycle: 0, overuse: 1
+OVERUSE: node 457 [ireg_row_extended_2::in1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 460 [ireg_row_extended_2::out2],  modulo cycle: 0, overuse: 1
+OVERUSE: node 542 [const_row_extended_2::out],  modulo cycle: 0, overuse: 1
+total_overuse = 6, total_occpuancy = 595
+69: cost = 3381.4; overuse = 15 ; min_overuse = 4 ; moves = 10(2); length = 15
+70: cost = 3596.4; overuse = 15 ; min_overuse = 4 ; moves = 7(1); length = 15
+71: cost = 4614.4; overuse = 21 ; min_overuse = 4 ; moves = 7(0); length = 15
+72: cost = 4328.8; overuse = 18 ; min_overuse = 4 ; moves = 12(0); length = 15
+73: cost = 4953.7; overuse = 17 ; min_overuse = 4 ; moves = 9(2); length = 15
+74: cost = 4610.7; overuse = 21 ; min_overuse = 4 ; moves = 9(2); length = 15
+75: cost = 4817.0; overuse = 17 ; min_overuse = 4 ; moves = 6(1); length = 15
+76: cost = 4753.5; overuse = 14 ; min_overuse = 4 ; moves = 7(1); length = 15
+77: cost = 4881.3; overuse = 14 ; min_overuse = 4 ; moves = 7(1); length = 15
+78: cost = 5210.4; overuse = 14 ; min_overuse = 4 ; moves = 0(0); length = 15
+79: cost = 7117.9; overuse = 30 ; min_overuse = 4 ; moves = 5(1); length = 15
+80: cost = 6673.5; overuse = 24 ; min_overuse = 4 ; moves = 6(3); length = 15
+81: cost = 6340.8; overuse = 27 ; min_overuse = 4 ; moves = 10(3); length = 15
+82: cost = 6251.3; overuse = 22 ; min_overuse = 4 ; moves = 6(2); length = 15
+83: cost = 7001.1; overuse = 22 ; min_overuse = 4 ; moves = 1(0); length = 15
+84: cost = 8694.0; overuse = 44 ; min_overuse = 4 ; moves = 15(1); length = 15
+85: cost = 8430.4; overuse = 42 ; min_overuse = 4 ; moves = 19(0); length = 15
+86: cost = 9195.8; overuse = 47 ; min_overuse = 4 ; moves = 14(0); length = 15
+87: cost = 8279.5; overuse = 35 ; min_overuse = 4 ; moves = 18(0); length = 15
+88: cost = 8682.0; overuse = 37 ; min_overuse = 4 ; moves = 13(1); length = 15
+89: cost = 9752.8; overuse = 41 ; min_overuse = 4 ; moves = 17(1); length = 15
+90: cost = 9117.7; overuse = 33 ; min_overuse = 4 ; moves = 14(1); length = 15
+91: cost = 9000.3; overuse = 34 ; min_overuse = 4 ; moves = 14(3); length = 15
+92: cost = 10351.3; overuse = 45 ; min_overuse = 4 ; moves = 12(2); length = 15
+93: cost = 9418.6; overuse = 33 ; min_overuse = 4 ; moves = 17(0); length = 15
+94: cost = 7745.1; overuse = 20 ; min_overuse = 4 ; moves = 11(1); length = 15
+95: cost = 7719.5; overuse = 21 ; min_overuse = 4 ; moves = 9(0); length = 15
+96: cost = 7469.6; overuse = 18 ; min_overuse = 4 ; moves = 7(0); length = 15
+97: cost = 7325.9; overuse = 17 ; min_overuse = 4 ; moves = 8(1); length = 15
+98: cost = 8680.0; overuse = 37 ; min_overuse = 4 ; moves = 12(2); length = 15
+99: cost = 7158.6; overuse = 25 ; min_overuse = 4 ; moves = 19(0); length = 15
+100: cost = 7115.7; overuse = 21 ; min_overuse = 4 ; moves = 19(0); length = 15
+101: cost = 4890.6; overuse = 5 ; min_overuse = 4 ; moves = 12(2); length = 15
+OVERUSE: node 17 [fu_2::pred],  modulo cycle: 1, overuse: 1
+OVERUSE: node 110 [fu_13::src2],  modulo cycle: 1, overuse: 1
+OVERUSE: node 111 [fu_13::dst1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 115 [data_pseudo[fu_13]],  modulo cycle: 0, overuse: 1
+OVERUSE: node 423 [ireg_10::in1],  modulo cycle: 0, overuse: 1
+total_overuse = 5, total_occpuancy = 566
+102: cost = 4481.3; overuse = 3 ; min_overuse = 3 ; moves = 5(1); length = 15
+OVERUSE: node 17 [fu_2::pred],  modulo cycle: 1, overuse: 1
+OVERUSE: node 110 [fu_13::src2],  modulo cycle: 1, overuse: 1
+OVERUSE: node 423 [ireg_10::in1],  modulo cycle: 0, overuse: 1
+total_overuse = 3, total_occpuancy = 580
+103: cost = 4152.3; overuse = 2 ; min_overuse = 2 ; moves = 5(1); length = 15
+OVERUSE: node 17 [fu_2::pred],  modulo cycle: 1, overuse: 1
+OVERUSE: node 59 [fu_7::src1],  modulo cycle: 0, overuse: 1
+total_overuse = 2, total_occpuancy = 601
+104: cost = 4044.2; overuse = 5 ; min_overuse = 2 ; moves = 4(1); length = 15
+OVERUSE: node 17 [fu_2::pred],  modulo cycle: 1, overuse: 1
+OVERUSE: node 59 [fu_7::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 126 [fu_15::src2],  modulo cycle: 1, overuse: 1
+OVERUSE: node 133 [fu_row_extended_0::src1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 140 [data_pseudo[fu_row_extended_0]],  modulo cycle: 1, overuse: 1
+total_overuse = 5, total_occpuancy = 596
+105: cost = 3873.2; overuse = 4 ; min_overuse = 2 ; moves = 5(3); length = 15
+OVERUSE: node 17 [fu_2::pred],  modulo cycle: 1, overuse: 1
+OVERUSE: node 125 [fu_15::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 133 [fu_row_extended_0::src1],  modulo cycle: 1, overuse: 1
+OVERUSE: node 140 [data_pseudo[fu_row_extended_0]],  modulo cycle: 1, overuse: 1
+total_overuse = 4, total_occpuancy = 598
+106: cost = 3504.3; overuse = 2 ; min_overuse = 2 ; moves = 4(1); length = 15
+OVERUSE: node 17 [fu_2::pred],  modulo cycle: 1, overuse: 1
+OVERUSE: node 125 [fu_15::src1],  modulo cycle: 0, overuse: 1
+total_overuse = 2, total_occpuancy = 578
+107: cost = 3322.2; overuse = 2 ; min_overuse = 2 ; moves = 3(2); length = 15
+OVERUSE: node 17 [fu_2::pred],  modulo cycle: 1, overuse: 1
+OVERUSE: node 125 [fu_15::src1],  modulo cycle: 0, overuse: 1
+total_overuse = 2, total_occpuancy = 578
+108: cost = 3045.8; overuse = 3 ; min_overuse = 2 ; moves = 4(0); length = 15
+OVERUSE: node 17 [fu_2::pred],  modulo cycle: 1, overuse: 1
+OVERUSE: node 44 [fu_5::src2],  modulo cycle: 0, overuse: 1
+OVERUSE: node 298 [vliw_int_rf::in2],  modulo cycle: 1, overuse: 1
+total_overuse = 3, total_occpuancy = 574
+109: cost = 2869.9; overuse = 2 ; min_overuse = 2 ; moves = 4(0); length = 15
+OVERUSE: node 17 [fu_2::pred],  modulo cycle: 1, overuse: 1
+OVERUSE: node 44 [fu_5::src2],  modulo cycle: 0, overuse: 1
+total_overuse = 2, total_occpuancy = 566
+110: cost = 2551.4; overuse = 1 ; min_overuse = 1 ; moves = 8(2); length = 15
+OVERUSE: node 93 [fu_11::src1],  modulo cycle: 1, overuse: 1
+total_overuse = 1, total_occpuancy = 530
+111: cost = 2412.9; overuse = 1 ; min_overuse = 1 ; moves = 5(4); length = 15
+OVERUSE: node 93 [fu_11::src1],  modulo cycle: 1, overuse: 1
+total_overuse = 1, total_occpuancy = 527
+112: cost = 2286.2; overuse = 1 ; min_overuse = 1 ; moves = 4(3); length = 15
+OVERUSE: node 93 [fu_11::src1],  modulo cycle: 1, overuse: 1
+total_overuse = 1, total_occpuancy = 515
+113: cost = 2163.2; overuse = 1 ; min_overuse = 1 ; moves = 6(3); length = 15
+OVERUSE: node 93 [fu_11::src1],  modulo cycle: 1, overuse: 1
+total_overuse = 1, total_occpuancy = 535
+114: cost = 1873.0; overuse = 0 ; min_overuse = 0 ; moves = 3(0); length = 15
+total_overuse = 0, total_occpuancy = 521
+Successfully found a valid schedule for loop cb 23 src line 351 func main with II = 2; random_seed = 2008; relax_factor = 1.300
+
+total_overuse = 0, total_occpuancy = 521
+elapsed time = 60 seconds
+
+total elapsed time for all parameters = 60 seconds
+Performing CGA rotating RF allocation...
+make[1]: Verlasse Verzeichnis '/home/laboruser/student/rs2/adresc/workspace/performance-max4/workplace.cga'
+dresc_gen_makefile codeselect
+make -C workplace.codeselect compile
+make[1]: Betrete Verzeichnis '/home/laboruser/student/rs2/adresc/workspace/performance-max4/workplace.codeselect'
+dresc_klib_ld workplace.codeselect 
+touch .klib
+dresc_vliw_select --arch=../arch/dresc_arch --parm=../params/dresc_parms_v3  -I ../workplace.cga -O . -i ../workplace.cga/main.DRE  -o main.DRE -l main.log
+make[1]: Verlasse Verzeichnis '/home/laboruser/student/rs2/adresc/workspace/performance-max4/workplace.codeselect'
+dresc_gen_makefile ra
+make -C workplace.ra compile
+make[1]: Betrete Verzeichnis '/home/laboruser/student/rs2/adresc/workspace/performance-max4/workplace.ra'
+dresc_klib_ld workplace.ra 
+touch .klib
+dresc_regalloc --arch=../arch/dresc_arch --parm=../params/dresc_parms_v3 -i ../workplace.codeselect/main.DRE  -o main.DRE -l main.log
+make[1]: Verlasse Verzeichnis '/home/laboruser/student/rs2/adresc/workspace/performance-max4/workplace.ra'
+make -C workplace.ra run.csim
+make[1]: Betrete Verzeichnis '/home/laboruser/student/rs2/adresc/workspace/performance-max4/workplace.ra'
+csim --arch=../arch/dresc_arch --parm=../params/dresc_parms_v3 --project=bin.csim   main.DRE -- -Ahal.h -Ashared_intrinsics.h  -I/home/laboruser/student/rs2/adresc/workspace/performance-max4/src -I/home/laboruser/student/rs2/adresc/workspace/performance-max4/hal/include -I/opt/dresc/include  -L/home/laboruser/student/rs2/adresc/workspace/performance-max4/hal/host -lhal_host -L/opt/dresc/lib -lmt_host -lpthread -lFLAI_intrinsics -l3MF_intrinsics -lbase_intrinsics   
+make  -f Makefile.csim
+make[2]: Betrete Verzeichnis '/home/laboruser/student/rs2/adresc/workspace/performance-max4/workplace.ra'
+g++ -c -g -I. -I/opt/dresc/share/csim -I/opt/dresc/include    -I/home/laboruser/student/rs2/adresc/workspace/performance-max4/src -I/home/laboruser/student/rs2/adresc/workspace/performance-max4/hal/include -I/opt/dresc/include          -o prog_header.o prog_header.cpp
+g++ -c -g -I. -I/opt/dresc/share/csim -I/opt/dresc/include    -I/home/laboruser/student/rs2/adresc/workspace/performance-max4/src -I/home/laboruser/student/rs2/adresc/workspace/performance-max4/hal/include -I/opt/dresc/include          -o prog_data.o prog_data.cpp
+g++ -c -g -I. -I/opt/dresc/share/csim -I/opt/dresc/include    -I/home/laboruser/student/rs2/adresc/workspace/performance-max4/src -I/home/laboruser/student/rs2/adresc/workspace/performance-max4/hal/include -I/opt/dresc/include          -o prof_helper.o prof_helper.cpp
+g++ -c -g -I. -I/opt/dresc/share/csim -I/opt/dresc/include    -I/home/laboruser/student/rs2/adresc/workspace/performance-max4/src -I/home/laboruser/student/rs2/adresc/workspace/performance-max4/hal/include -I/opt/dresc/include          -o isa_helper.o isa_helper.cpp
+g++ -c -g -I. -I/opt/dresc/share/csim -I/opt/dresc/include    -I/home/laboruser/student/rs2/adresc/workspace/performance-max4/src -I/home/laboruser/student/rs2/adresc/workspace/performance-max4/hal/include -I/opt/dresc/include          -o intr_op.o intr_op.cpp
+g++ -c -g -I. -I/opt/dresc/share/csim -I/opt/dresc/include    -I/home/laboruser/student/rs2/adresc/workspace/performance-max4/src -I/home/laboruser/student/rs2/adresc/workspace/performance-max4/hal/include -I/opt/dresc/include          -o sim_vliw.o sim_vliw.cpp
+g++ -c -g -I. -I/opt/dresc/share/csim -I/opt/dresc/include    -I/home/laboruser/student/rs2/adresc/workspace/performance-max4/src -I/home/laboruser/student/rs2/adresc/workspace/performance-max4/hal/include -I/opt/dresc/include          -o sim_cga.o sim_cga.cpp
+g++ -c -g -I. -I/opt/dresc/share/csim -I/opt/dresc/include    -I/home/laboruser/student/rs2/adresc/workspace/performance-max4/src -I/home/laboruser/student/rs2/adresc/workspace/performance-max4/hal/include -I/opt/dresc/include          -o main.DRE.o main.DRE.cpp
+g++ -o bin.csim  prog_header.o prog_data.o prof_helper.o isa_helper.o intr_op.o sim_vliw.o sim_cga.o main.DRE.o  -L/opt/dresc/lib -lcsim_rt  -lstatxml -ldrescutil -lmt_host -L/lib -lxerces-c      -L/home/laboruser/student/rs2/adresc/workspace/performance-max4/hal/host -lhal_host -L/opt/dresc/lib -lmt_host -lpthread -lFLAI_intrinsics -l3MF_intrinsics -lbase_intrinsics 
+make[2]: Verlasse Verzeichnis '/home/laboruser/student/rs2/adresc/workspace/performance-max4/workplace.ra'
+ln -fs workplace.ra/bin.csim ../bin.ra
+./bin.csim  
+ln -fs workplace.ra/stat.out ../stat.out
+ln -fs workplace.ra/stat.xml ../stat.xml
+make[1]: Verlasse Verzeichnis '/home/laboruser/student/rs2/adresc/workspace/performance-max4/workplace.ra'
+
+
+
+**************
+** statistics **
+**************
+Instr          	             Num	  Clk/Instr	      Energy/Clk	    Total energy	
+------------------------------------------------------------------------------------------------
+mov            	            4554	          1	    0.9699235897	 4417.0320274938	
+add            	            2897	          1	             1.0	          2897.0	
+add_u          	             361	          1	             1.0	           361.0	
+sub            	            2532	          1	    0.9995122744	 2530.7650787808	
+setlo          	              17	          1	    0.9699235897	   16.4887010249	
+sethi          	              16	          1	    0.9699235897	   15.5187774352	
+cga            	               8	          3	             1.5	            36.0	
+ld_i           	            2305	          4	    0.9705738904	 8948.6912694880	
+pred_gt        	              80	          1	    0.9741505446	   77.9320435680	
+pred_lt        	             281	          1	    0.9731750935	  273.4622012735	
+asr            	            1290	          1	    1.0539749634	 1359.6277027860	
+st_i           	            2305	          1	    0.9721996423	 2240.9201755015	
+rts            	               1	          3	             1.5	             4.5	
+nop            	            5868	          1	             0.3	          1760.4	
+
+
+
+**************
+** overview **
+**************
+Used instance : 6x6
+Total clocks on cga : 721
+Total clocks  : 818
+Total nop-clk : 5868 
+Total energy  : 24939.3379773517
+********************************
+********************************
++------------+--------------+---------------------+
+| Ins        | Clk/ Energy/ |        Total        |
+|            |  Ins     Clk |     Num      Energy |
++------------+--------------+---------------------+
+| add        |    1  1.0000 |    2897      2897.0 |
+| add_u      |    1  1.0000 |     361       361.0 |
+| asr        |    1  1.0540 |    1290      1359.6 |
+| cga        |    3  1.5000 |       8        36.0 |
+| ld_i       |    4  0.9706 |    2305      8948.7 |
+| mov        |    1  0.9699 |    4554      4417.0 |
+| nop        |    1  0.3000 |    5868      1760.4 |
+| pred_gt    |    1  0.9742 |      80        77.9 |
+| pred_lt    |    1  0.9732 |     281       273.5 |
+| rts        |    3  1.5000 |       1         4.5 |
+| sethi      |    1  0.9699 |      16        15.5 |
+| setlo      |    1  0.9699 |      17        16.5 |
+| st_i       |    1  0.9722 |    2305      2240.9 |
+| sub        |    1  0.9995 |    2532      2530.8 |
++------------+--------------+---------------------+
++---------------+---------------------+
+| Section       |        Total        |
++---------------+---------------------+
+| FU setup      |                 6x6 |
+| Cycles        |                 818 |
+| CGRA cycles   |                 721 |
+| NOPs          |                5868 |
+| NOP %         |               19.9% |
+| Reads         |                2305 |
+| Writes        |                2305 |
+| Total Energy  |               24939 |
+| CGRA Energy   |                     |
++---------------+---------------------+

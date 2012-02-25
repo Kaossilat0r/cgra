@@ -1,0 +1,507 @@
+dresc_gen_makefile native
+make hal/host/libhal_host.a hal/host/libhal_host_shared.so  \
+		hal/avm/stub/libavm_stub_rtl.so
+make[1]: Betrete Verzeichnis '/home/laboruser/student/rs2/adresc/workspace/performance-max4'
+ar cr hal/host/libhal_host.a   
+ranlib hal/host/libhal_host.a
+gcc -shared -Wl,-soname,libhal_host_shared.so -o hal/host/libhal_host_shared.so  
+g++ -shared -Wl,-soname,libavm_stub_rtl.so -o hal/avm/stub/libavm_stub_rtl.so 
+make[1]: Verlasse Verzeichnis '/home/laboruser/student/rs2/adresc/workspace/performance-max4'
+make -C workplace.native bin.native
+make[1]: Betrete Verzeichnis '/home/laboruser/student/rs2/adresc/workspace/performance-max4/workplace.native'
+dresc_klib_ld workplace.native 
+touch .klib
+ar cr libklib.a   
+ranlib libklib.a
+gcc -Wall -g  -I/home/laboruser/student/rs2/adresc/workspace/performance-max4/src -I/home/laboruser/student/rs2/adresc/workspace/performance-max4/hal/include -I/opt/dresc/include -c -o main.o ../src/main.c
+gcc -Wall -g  -I/home/laboruser/student/rs2/adresc/workspace/performance-max4/src -I/home/laboruser/student/rs2/adresc/workspace/performance-max4/hal/include -I/opt/dresc/include -o bin.native main.o -L. -lklib  -L/home/laboruser/student/rs2/adresc/workspace/performance-max4/hal/host -lhal_host -L/opt/dresc/lib -lmt_host -lpthread -lFLAI_intrinsics -l3MF_intrinsics -lbase_intrinsics   
+make[1]: Verlasse Verzeichnis '/home/laboruser/student/rs2/adresc/workspace/performance-max4/workplace.native'
+ln -fs workplace.native/bin.native bin.native
+dresc_gen_makefile lcode
+make -C workplace.lcode compile
+make[1]: Betrete Verzeichnis '/home/laboruser/student/rs2/adresc/workspace/performance-max4/workplace.lcode'
+dresc_compile_bench
+Using these settings to compile:
+  Project Name: performance-max4
+  USER_BENCH_PATH1: /home/laboruser/student/rs2/adresc/workspace
+  STD_PARMS_FILE: /home/laboruser/student/rs2/adresc/workspace/performance-max4/params/STD_PARMS
+  LOG_FILE: /home/laboruser/student/rs2/adresc/workspace/performance-max4/workplace.lcode/workspace/openimpact.log
+
+>> Sa 25. Feb 16:16:16 CET 2012: Setting up for performance-max4 in /home/laboruser/student/rs2/adresc/workspace/performance-max4/workplace.lcode/workspace
+>> Sa 25. Feb 16:16:16 CET 2012: c2gp 1/6: EDG frontend on the *.c in impactbenchsrc
+>> Sa 25. Feb 16:16:17 CET 2012: c2lc 2/6: Performing Pcode flattening
+>> Sa 25. Feb 16:16:17 CET 2012: c2lc 3/6: Pcode profiling using settings for performance-max4
+>> Sa 25. Feb 16:16:21 CET 2012: c2gp 5/6: Performing Pcode inlining
+>> Sa 25. Feb 16:16:21 CET 2012: c2gp 6/6: Converting Pcode to Lcode (w/ sync arcs)
+>> Sa 25. Feb 16:16:22 CET 2012: lc2O: Running Lopti on .lc files
+>> Sa 25. Feb 16:16:22 CET 2012: O2O_p: Profiling .O files
+>> Sa 25. Feb 16:16:22 CET 2012: O_p2H: Running Lblock on .O files to create hyperblocks
+>> Sa 25. Feb 16:16:22 CET 2012: H2HS: Running Lsuperscalar on .H files
+make[1]: Verlasse Verzeichnis '/home/laboruser/student/rs2/adresc/workspace/performance-max4/workplace.lcode'
+mkdir -p arch/
+[ -r arch/dresc_arch ] || ln -sf ../params/dresc_arch arch/dresc_arch
+for xml in ; do [ -r arch//$xml ] || ln -sf ../params/$xml arch/; done
+dresc_gen_makefile unsched
+make -C workplace.unsched compile
+make[1]: Betrete Verzeichnis '/home/laboruser/student/rs2/adresc/workspace/performance-max4/workplace.unsched'
+dresc_klib_ld workplace.unsched 
+touch .klib
+lc2dre --arch=../arch/dresc_arch --parm=../params/dresc_parms_v3 -i ../workplace.lcode/main.HS  -o main.DRE -l main.log
+make[1]: Verlasse Verzeichnis '/home/laboruser/student/rs2/adresc/workspace/performance-max4/workplace.unsched'
+dresc_gen_makefile cloned
+make -C workplace.cloned compile
+make[1]: Betrete Verzeichnis '/home/laboruser/student/rs2/adresc/workspace/performance-max4/workplace.cloned'
+dresc_klib_ld workplace.cloned 
+touch .klib
+dresc_mt_clone --arch=../arch/dresc_arch --parm=../params/dresc_parms_v3  -I ../workplace.unsched -O . -i ../workplace.unsched/main.DRE  -o main.DRE -l main.log
+make[1]: Verlasse Verzeichnis '/home/laboruser/student/rs2/adresc/workspace/performance-max4/workplace.cloned'
+dresc_gen_makefile assign
+make -C workplace.assign compile
+make[1]: Betrete Verzeichnis '/home/laboruser/student/rs2/adresc/workspace/performance-max4/workplace.assign'
+dresc_klib_ld workplace.assign 
+touch .klib
+dresc_mem_assign --arch=../arch/dresc_arch --parm=../params/dresc_parms_v3   -I ../workplace.cloned -O . -i ../workplace.cloned/main.DRE  -o main.DRE -l main.log
+make[1]: Verlasse Verzeichnis '/home/laboruser/student/rs2/adresc/workspace/performance-max4/workplace.assign'
+dresc_gen_makefile precga
+make -C workplace.precga compile
+make[1]: Betrete Verzeichnis '/home/laboruser/student/rs2/adresc/workspace/performance-max4/workplace.precga'
+dresc_klib_ld workplace.precga 
+touch .klib
+dresc_cga_prep --arch=../arch/dresc_arch --parm=../params/dresc_parms_v3 -i ../workplace.assign/main.DRE  -o main.DRE -l main.log
+Found software pipelineable loop (lcode cb 5 src line 326) in function main
+Creating REG_BIDIR since reg vr32[50] is loop livein
+Creating REG_BIDIR since reg vr32[50] satisfies bdd_lastdef & bdd_lastuse0 = 0
+Creating REG_BIDIR since reg vr32[155] is loop livein
+Creating REG_BIDIR since reg vr32[155] satisfies bdd_lastdef & bdd_lastuse0 = 0
+Performing predicate speculation ... 
+Total 0 predicates are optimized
+
+make[1]: Verlasse Verzeichnis '/home/laboruser/student/rs2/adresc/workspace/performance-max4/workplace.precga'
+dresc_gen_makefile cga
+make -C workplace.cga compile
+make[1]: Betrete Verzeichnis '/home/laboruser/student/rs2/adresc/workspace/performance-max4/workplace.cga'
+dresc_klib_ld workplace.cga 
+touch .klib
+dresc_cga_sched --arch=../arch/dresc_arch --parm=../params/dresc_parms_v3 -i ../workplace.precga/main.DRE  -o main.DRE -l main.log
+Processing file ../workplace.precga/main.DRE
+
+Function printArray2d skipped by parameters
+Function calculateRow skipped by parameters
+Function calculateCol skipped by parameters
+Function reverseRow skipped by parameters
+Function reverseCol skipped by parameters
+Processing function main...
+
+Detected loop cb 5 src line 326
+Building routability matrix ...
+Performing copy propagation ... 
+Total 0 MOV operations are optimized corresponding to 0 dependences
+
+Scheduling loop 5...
+MII = 6, density = 52.78% (ResMII= 6, RecMII = 1, upper_density = 95.00%)
+Try II = 6; random_seed = 2006; relax_factor = 1.300
+Performing initial placement and routing ...
+Succeeded in scheduling operations in circuits
+Succeeded to schedule other operations
+Starting iterative improvement ...
+(you may interrupt scheduling process by typing q<RETURN>,
+ or continue directly to the next random_seed/relax_factor/II by typing s/r/i<return>)
+1: cost = 3938.6; overuse = 416 ; min_overuse = 416 ; moves = 116(26); length = 18
+2: cost = 5789.1; overuse = 396 ; min_overuse = 396 ; moves = 112(40); length = 19
+3: cost = 6327.9; overuse = 383 ; min_overuse = 383 ; moves = 113(38); length = 20
+4: cost = 6828.9; overuse = 348 ; min_overuse = 348 ; moves = 108(35); length = 20
+5: cost = 6791.4; overuse = 354 ; min_overuse = 348 ; moves = 112(42); length = 20
+6: cost = 6424.7; overuse = 364 ; min_overuse = 348 ; moves = 106(37); length = 20
+7: cost = 7332.6; overuse = 379 ; min_overuse = 348 ; moves = 111(49); length = 20
+8: cost = 8099.0; overuse = 361 ; min_overuse = 348 ; moves = 103(37); length = 20
+9: cost = 8210.1; overuse = 368 ; min_overuse = 348 ; moves = 108(36); length = 20
+10: cost = 8096.2; overuse = 339 ; min_overuse = 339 ; moves = 104(39); length = 20
+11: cost = 9740.7; overuse = 349 ; min_overuse = 339 ; moves = 102(46); length = 20
+12: cost = 10457.6; overuse = 389 ; min_overuse = 339 ; moves = 107(38); length = 20
+13: cost = 12855.7; overuse = 370 ; min_overuse = 339 ; moves = 107(55); length = 20
+14: cost = 14847.3; overuse = 378 ; min_overuse = 339 ; moves = 104(41); length = 20
+15: cost = 17034.3; overuse = 352 ; min_overuse = 339 ; moves = 110(44); length = 20
+16: cost = 17743.4; overuse = 360 ; min_overuse = 339 ; moves = 103(44); length = 20
+17: cost = 21580.3; overuse = 383 ; min_overuse = 339 ; moves = 104(46); length = 20
+18: cost = 28586.6; overuse = 407 ; min_overuse = 339 ; moves = 99(59); length = 20
+19: cost = 28458.5; overuse = 374 ; min_overuse = 339 ; moves = 103(38); length = 20
+20: cost = 18221.0; overuse = 336 ; min_overuse = 336 ; moves = 93(6); length = 20
+21: cost = 16521.9; overuse = 295 ; min_overuse = 295 ; moves = 86(3); length = 20
+22: cost = 16544.6; overuse = 226 ; min_overuse = 226 ; moves = 79(9); length = 20
+23: cost = 18483.0; overuse = 223 ; min_overuse = 223 ; moves = 70(8); length = 20
+24: cost = 19189.9; overuse = 180 ; min_overuse = 180 ; moves = 60(4); length = 20
+25: cost = 16007.6; overuse = 181 ; min_overuse = 180 ; moves = 67(7); length = 20
+26: cost = 17640.3; overuse = 187 ; min_overuse = 180 ; moves = 57(2); length = 20
+27: cost = 17139.4; overuse = 171 ; min_overuse = 171 ; moves = 61(5); length = 20
+28: cost = 19552.1; overuse = 188 ; min_overuse = 171 ; moves = 60(8); length = 20
+29: cost = 18050.1; overuse = 155 ; min_overuse = 155 ; moves = 69(0); length = 20
+30: cost = 18248.0; overuse = 136 ; min_overuse = 136 ; moves = 58(4); length = 20
+31: cost = 19474.6; overuse = 143 ; min_overuse = 136 ; moves = 55(8); length = 20
+32: cost = 18296.3; overuse = 100 ; min_overuse = 100 ; moves = 54(6); length = 20
+33: cost = 17953.2; overuse = 82 ; min_overuse = 82 ; moves = 41(2); length = 20
+34: cost = 17714.4; overuse = 80 ; min_overuse = 80 ; moves = 41(4); length = 20
+35: cost = 15933.3; overuse = 61 ; min_overuse = 61 ; moves = 55(4); length = 20
+36: cost = 15808.0; overuse = 55 ; min_overuse = 55 ; moves = 25(2); length = 20
+37: cost = 15504.4; overuse = 41 ; min_overuse = 41 ; moves = 21(2); length = 20
+38: cost = 15336.9; overuse = 44 ; min_overuse = 41 ; moves = 24(3); length = 20
+39: cost = 15773.2; overuse = 39 ; min_overuse = 39 ; moves = 25(6); length = 20
+40: cost = 16566.8; overuse = 49 ; min_overuse = 39 ; moves = 27(2); length = 20
+41: cost = 17048.8; overuse = 58 ; min_overuse = 39 ; moves = 31(1); length = 20
+42: cost = 17245.5; overuse = 55 ; min_overuse = 39 ; moves = 34(4); length = 20
+43: cost = 17629.4; overuse = 52 ; min_overuse = 39 ; moves = 30(5); length = 20
+44: cost = 17577.2; overuse = 49 ; min_overuse = 39 ; moves = 20(2); length = 20
+45: cost = 18058.3; overuse = 53 ; min_overuse = 39 ; moves = 26(3); length = 20
+46: cost = 19209.3; overuse = 57 ; min_overuse = 39 ; moves = 32(3); length = 20
+47: cost = 18160.6; overuse = 44 ; min_overuse = 39 ; moves = 31(1); length = 20
+48: cost = 18415.6; overuse = 56 ; min_overuse = 39 ; moves = 27(2); length = 20
+49: cost = 18337.4; overuse = 51 ; min_overuse = 39 ; moves = 33(2); length = 20
+50: cost = 17415.0; overuse = 36 ; min_overuse = 36 ; moves = 36(3); length = 20
+51: cost = 17353.2; overuse = 32 ; min_overuse = 32 ; moves = 15(3); length = 20
+52: cost = 16673.1; overuse = 41 ; min_overuse = 32 ; moves = 24(3); length = 20
+53: cost = 16542.4; overuse = 38 ; min_overuse = 32 ; moves = 24(3); length = 20
+54: cost = 17643.4; overuse = 42 ; min_overuse = 32 ; moves = 25(6); length = 20
+55: cost = 16228.3; overuse = 42 ; min_overuse = 32 ; moves = 28(0); length = 20
+56: cost = 17289.7; overuse = 45 ; min_overuse = 32 ; moves = 26(1); length = 20
+57: cost = 16753.1; overuse = 49 ; min_overuse = 32 ; moves = 30(7); length = 20
+58: cost = 16190.5; overuse = 42 ; min_overuse = 32 ; moves = 25(5); length = 20
+59: cost = 16980.0; overuse = 46 ; min_overuse = 32 ; moves = 18(0); length = 20
+60: cost = 16275.7; overuse = 42 ; min_overuse = 32 ; moves = 23(1); length = 20
+61: cost = 16135.6; overuse = 41 ; min_overuse = 32 ; moves = 23(2); length = 20
+62: cost = 16074.4; overuse = 42 ; min_overuse = 32 ; moves = 23(0); length = 20
+63: cost = 16262.9; overuse = 42 ; min_overuse = 32 ; moves = 19(2); length = 20
+64: cost = 16544.0; overuse = 46 ; min_overuse = 32 ; moves = 23(2); length = 20
+65: cost = 16928.5; overuse = 53 ; min_overuse = 32 ; moves = 31(3); length = 20
+66: cost = 17175.2; overuse = 53 ; min_overuse = 32 ; moves = 26(3); length = 20
+67: cost = 17618.9; overuse = 51 ; min_overuse = 32 ; moves = 30(2); length = 20
+68: cost = 16300.6; overuse = 36 ; min_overuse = 32 ; moves = 29(4); length = 20
+69: cost = 16842.5; overuse = 41 ; min_overuse = 32 ; moves = 18(3); length = 20
+70: cost = 17760.2; overuse = 52 ; min_overuse = 32 ; moves = 31(4); length = 20
+71: cost = 18341.2; overuse = 64 ; min_overuse = 32 ; moves = 32(6); length = 20
+72: cost = 16595.6; overuse = 43 ; min_overuse = 32 ; moves = 31(3); length = 20
+73: cost = 17255.9; overuse = 51 ; min_overuse = 32 ; moves = 32(7); length = 20
+74: cost = 16429.2; overuse = 42 ; min_overuse = 32 ; moves = 27(1); length = 20
+75: cost = 16725.4; overuse = 50 ; min_overuse = 32 ; moves = 25(2); length = 20
+76: cost = 16452.8; overuse = 47 ; min_overuse = 32 ; moves = 24(5); length = 20
+77: cost = 15402.3; overuse = 33 ; min_overuse = 32 ; moves = 26(6); length = 20
+78: cost = 15692.1; overuse = 42 ; min_overuse = 32 ; moves = 19(4); length = 20
+79: cost = 17349.2; overuse = 47 ; min_overuse = 32 ; moves = 26(5); length = 20
+80: cost = 17149.5; overuse = 55 ; min_overuse = 32 ; moves = 30(6); length = 20
+81: cost = 17740.8; overuse = 44 ; min_overuse = 32 ; moves = 27(3); length = 20
+82: cost = 19113.8; overuse = 59 ; min_overuse = 32 ; moves = 26(1); length = 20
+83: cost = 18490.7; overuse = 62 ; min_overuse = 32 ; moves = 32(5); length = 20
+84: cost = 19364.1; overuse = 66 ; min_overuse = 32 ; moves = 31(6); length = 20
+85: cost = 18080.1; overuse = 53 ; min_overuse = 32 ; moves = 32(1); length = 20
+86: cost = 17579.3; overuse = 40 ; min_overuse = 32 ; moves = 37(5); length = 20
+87: cost = 16402.3; overuse = 36 ; min_overuse = 32 ; moves = 22(1); length = 20
+88: cost = 16915.8; overuse = 45 ; min_overuse = 32 ; moves = 20(2); length = 20
+89: cost = 16593.5; overuse = 42 ; min_overuse = 32 ; moves = 21(2); length = 20
+90: cost = 15782.1; overuse = 37 ; min_overuse = 32 ; moves = 16(1); length = 20
+91: cost = 15982.0; overuse = 40 ; min_overuse = 32 ; moves = 21(1); length = 20
+92: cost = 14686.7; overuse = 22 ; min_overuse = 22 ; moves = 23(5); length = 20
+93: cost = 14603.0; overuse = 26 ; min_overuse = 22 ; moves = 19(3); length = 20
+94: cost = 15027.1; overuse = 37 ; min_overuse = 22 ; moves = 18(2); length = 20
+95: cost = 14638.1; overuse = 38 ; min_overuse = 22 ; moves = 23(1); length = 20
+96: cost = 14664.3; overuse = 34 ; min_overuse = 22 ; moves = 31(6); length = 20
+97: cost = 14628.6; overuse = 30 ; min_overuse = 22 ; moves = 23(2); length = 20
+98: cost = 13527.7; overuse = 24 ; min_overuse = 22 ; moves = 16(3); length = 20
+99: cost = 13070.3; overuse = 34 ; min_overuse = 22 ; moves = 21(3); length = 20
+100: cost = 13448.8; overuse = 42 ; min_overuse = 22 ; moves = 26(3); length = 20
+101: cost = 13608.3; overuse = 35 ; min_overuse = 22 ; moves = 24(2); length = 20
+102: cost = 13836.2; overuse = 33 ; min_overuse = 22 ; moves = 26(4); length = 20
+103: cost = 13268.6; overuse = 26 ; min_overuse = 22 ; moves = 24(4); length = 20
+104: cost = 14231.1; overuse = 34 ; min_overuse = 22 ; moves = 18(1); length = 20
+105: cost = 13506.7; overuse = 38 ; min_overuse = 22 ; moves = 27(1); length = 20
+106: cost = 13070.2; overuse = 33 ; min_overuse = 22 ; moves = 17(2); length = 20
+107: cost = 12171.9; overuse = 24 ; min_overuse = 22 ; moves = 17(1); length = 20
+108: cost = 12361.5; overuse = 27 ; min_overuse = 22 ; moves = 12(1); length = 20
+109: cost = 11847.5; overuse = 27 ; min_overuse = 22 ; moves = 15(1); length = 20
+110: cost = 11134.8; overuse = 28 ; min_overuse = 22 ; moves = 26(5); length = 20
+111: cost = 10278.2; overuse = 13 ; min_overuse = 13 ; moves = 20(4); length = 20
+112: cost = 9891.2; overuse = 13 ; min_overuse = 13 ; moves = 15(5); length = 20
+113: cost = 9763.2; overuse = 17 ; min_overuse = 13 ; moves = 14(3); length = 20
+114: cost = 9623.8; overuse = 18 ; min_overuse = 13 ; moves = 12(3); length = 20
+115: cost = 9251.2; overuse = 17 ; min_overuse = 13 ; moves = 18(2); length = 20
+116: cost = 8863.1; overuse = 13 ; min_overuse = 13 ; moves = 15(5); length = 20
+117: cost = 8917.0; overuse = 15 ; min_overuse = 13 ; moves = 12(6); length = 20
+118: cost = 8580.4; overuse = 14 ; min_overuse = 13 ; moves = 21(5); length = 20
+119: cost = 8935.3; overuse = 23 ; min_overuse = 13 ; moves = 16(1); length = 20
+120: cost = 8874.8; overuse = 23 ; min_overuse = 13 ; moves = 13(4); length = 20
+121: cost = 9340.0; overuse = 28 ; min_overuse = 13 ; moves = 20(4); length = 20
+122: cost = 10177.0; overuse = 39 ; min_overuse = 13 ; moves = 23(4); length = 20
+123: cost = 9948.3; overuse = 24 ; min_overuse = 13 ; moves = 22(4); length = 20
+124: cost = 9748.4; overuse = 27 ; min_overuse = 13 ; moves = 22(6); length = 20
+125: cost = 11055.2; overuse = 33 ; min_overuse = 13 ; moves = 28(4); length = 20
+126: cost = 9533.4; overuse = 27 ; min_overuse = 13 ; moves = 28(6); length = 20
+127: cost = 9260.0; overuse = 24 ; min_overuse = 13 ; moves = 23(5); length = 20
+128: cost = 9942.7; overuse = 24 ; min_overuse = 13 ; moves = 6(1); length = 20
+129: cost = 11135.4; overuse = 35 ; min_overuse = 13 ; moves = 24(4); length = 20
+130: cost = 11120.6; overuse = 38 ; min_overuse = 13 ; moves = 18(4); length = 20
+131: cost = 12338.5; overuse = 45 ; min_overuse = 13 ; moves = 26(5); length = 20
+132: cost = 12966.2; overuse = 44 ; min_overuse = 13 ; moves = 23(2); length = 20
+133: cost = 13245.7; overuse = 36 ; min_overuse = 13 ; moves = 24(3); length = 20
+134: cost = 14166.4; overuse = 56 ; min_overuse = 13 ; moves = 24(3); length = 20
+135: cost = 15443.0; overuse = 55 ; min_overuse = 13 ; moves = 21(5); length = 20
+136: cost = 15034.0; overuse = 48 ; min_overuse = 13 ; moves = 25(1); length = 20
+137: cost = 15144.2; overuse = 48 ; min_overuse = 13 ; moves = 27(1); length = 20
+138: cost = 14290.2; overuse = 33 ; min_overuse = 13 ; moves = 24(5); length = 20
+139: cost = 14779.4; overuse = 45 ; min_overuse = 13 ; moves = 26(4); length = 20
+140: cost = 15233.4; overuse = 51 ; min_overuse = 13 ; moves = 37(5); length = 20
+OVERUSE: node 8 [fu_1::pred],  modulo cycle: 5, overuse: 1
+OVERUSE: node 10 [fu_1::src2],  modulo cycle: 5, overuse: 1
+OVERUSE: node 12 [fu_1::dst1],  modulo cycle: 4, overuse: 1
+OVERUSE: node 16 [data_pseudo[fu_1]],  modulo cycle: 5, overuse: 1
+OVERUSE: node 17 [fu_2::pred],  modulo cycle: 0, overuse: 1
+OVERUSE: node 18 [fu_2::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 25 [data_pseudo[fu_2]],  modulo cycle: 0, overuse: 1
+OVERUSE: node 28 [fu_3::src2],  modulo cycle: 3, overuse: 1
+OVERUSE: node 66 [fu_8::pred],  modulo cycle: 0, overuse: 1
+OVERUSE: node 66 [fu_8::pred],  modulo cycle: 4, overuse: 1
+OVERUSE: node 67 [fu_8::src1],  modulo cycle: 0, overuse: 2
+OVERUSE: node 68 [fu_8::src2],  modulo cycle: 0, overuse: 2
+OVERUSE: node 68 [fu_8::src2],  modulo cycle: 4, overuse: 1
+OVERUSE: node 70 [fu_8::dst1],  modulo cycle: 3, overuse: 1
+OVERUSE: node 74 [data_pseudo[fu_8]],  modulo cycle: 0, overuse: 2
+OVERUSE: node 74 [data_pseudo[fu_8]],  modulo cycle: 4, overuse: 1
+OVERUSE: node 110 [fu_13::src2],  modulo cycle: 5, overuse: 1
+OVERUSE: node 111 [fu_13::dst1],  modulo cycle: 5, overuse: 1
+OVERUSE: node 115 [data_pseudo[fu_13]],  modulo cycle: 5, overuse: 1
+OVERUSE: node 125 [fu_15::src1],  modulo cycle: 5, overuse: 1
+OVERUSE: node 149 [fu_row_extended_2::pred],  modulo cycle: 1, overuse: 2
+OVERUSE: node 151 [fu_row_extended_2::src2],  modulo cycle: 1, overuse: 2
+OVERUSE: node 157 [data_pseudo[fu_row_extended_2]],  modulo cycle: 1, overuse: 2
+OVERUSE: node 192 [fu_row_extended_7::src2],  modulo cycle: 1, overuse: 1
+OVERUSE: node 192 [fu_row_extended_7::src2],  modulo cycle: 4, overuse: 1
+OVERUSE: node 199 [fu_col_extended_0::src1],  modulo cycle: 3, overuse: 1
+OVERUSE: node 249 [fu_col_extended_6::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 264 [fu_row_col_extended_0::pred],  modulo cycle: 0, overuse: 1
+OVERUSE: node 265 [fu_row_col_extended_0::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 272 [data_pseudo[fu_row_col_extended_0]],  modulo cycle: 0, overuse: 1
+OVERUSE: node 298 [vliw_int_rf::in2],  modulo cycle: 4, overuse: 1
+OVERUSE: node 307 [vliw_int_rf::out5],  modulo cycle: 5, overuse: 1
+OVERUSE: node 408 [ireg_6::out1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 414 [ireg_8::in1],  modulo cycle: 5, overuse: 1
+OVERUSE: node 460 [ireg_row_extended_2::out2],  modulo cycle: 1, overuse: 2
+OVERUSE: node 484 [ireg_col_extended_2::out1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 525 [const_1::out],  modulo cycle: 5, overuse: 1
+OVERUSE: node 526 [const_2::out],  modulo cycle: 0, overuse: 1
+OVERUSE: node 532 [const_8::out],  modulo cycle: 0, overuse: 1
+OVERUSE: node 532 [const_8::out],  modulo cycle: 4, overuse: 1
+OVERUSE: node 542 [const_row_extended_2::out],  modulo cycle: 1, overuse: 2
+OVERUSE: node 1034 [vliw_out5_delay::in],  modulo cycle: 5, overuse: 1
+OVERUSE: node 1035 [vliw_out5_delay::out],  modulo cycle: 0, overuse: 1
+total_overuse = 51, total_occpuancy = 1654
+Failed to find a valid schedule
+
+elapsed time = 585 seconds
+Continuing with next random seed
+Minimal overuse (13) > max_overuse_random_seed_range (3), skip searching next random_seed
+Overuse (13) > max_overuse_relax_factor_range (6), skip searching next relax_factor
+
+Try II = 7; random_seed = 2006; relax_factor = 1.300
+Performing initial placement and routing ...
+Succeeded in scheduling operations in circuits
+Succeeded to schedule other operations
+Starting iterative improvement ...
+(you may interrupt scheduling process by typing q<RETURN>,
+ or continue directly to the next random_seed/relax_factor/II by typing s/r/i<return>)
+1: cost = 3852.9; overuse = 411 ; min_overuse = 13 ; moves = 117(26); length = 18
+2: cost = 5915.6; overuse = 435 ; min_overuse = 13 ; moves = 114(46); length = 19
+3: cost = 6416.4; overuse = 391 ; min_overuse = 13 ; moves = 113(36); length = 20
+4: cost = 6940.9; overuse = 355 ; min_overuse = 13 ; moves = 113(43); length = 20
+5: cost = 8041.9; overuse = 395 ; min_overuse = 13 ; moves = 110(54); length = 20
+6: cost = 7808.5; overuse = 392 ; min_overuse = 13 ; moves = 110(36); length = 20
+7: cost = 7304.4; overuse = 359 ; min_overuse = 13 ; moves = 111(34); length = 20
+8: cost = 8515.3; overuse = 412 ; min_overuse = 13 ; moves = 108(48); length = 20
+9: cost = 8667.4; overuse = 365 ; min_overuse = 13 ; moves = 109(39); length = 20
+10: cost = 10580.8; overuse = 376 ; min_overuse = 13 ; moves = 100(44); length = 20
+11: cost = 11710.8; overuse = 369 ; min_overuse = 13 ; moves = 105(45); length = 20
+12: cost = 12690.1; overuse = 359 ; min_overuse = 13 ; moves = 102(47); length = 20
+13: cost = 14870.5; overuse = 380 ; min_overuse = 13 ; moves = 105(48); length = 20
+14: cost = 16452.0; overuse = 376 ; min_overuse = 13 ; moves = 104(41); length = 20
+15: cost = 17112.1; overuse = 350 ; min_overuse = 13 ; moves = 97(41); length = 20
+16: cost = 19510.4; overuse = 344 ; min_overuse = 13 ; moves = 103(47); length = 20
+17: cost = 22185.9; overuse = 369 ; min_overuse = 13 ; moves = 100(41); length = 20
+18: cost = 23466.4; overuse = 331 ; min_overuse = 13 ; moves = 102(43); length = 20
+19: cost = 24524.4; overuse = 321 ; min_overuse = 13 ; moves = 100(45); length = 20
+20: cost = 16743.4; overuse = 260 ; min_overuse = 13 ; moves = 97(3); length = 20
+21: cost = 13351.3; overuse = 217 ; min_overuse = 13 ; moves = 81(2); length = 20
+22: cost = 12825.3; overuse = 181 ; min_overuse = 13 ; moves = 76(8); length = 20
+23: cost = 11816.8; overuse = 131 ; min_overuse = 13 ; moves = 68(8); length = 20
+24: cost = 11771.0; overuse = 141 ; min_overuse = 13 ; moves = 50(3); length = 20
+25: cost = 11801.7; overuse = 114 ; min_overuse = 13 ; moves = 47(5); length = 20
+26: cost = 11482.1; overuse = 101 ; min_overuse = 13 ; moves = 54(9); length = 20
+27: cost = 11688.7; overuse = 106 ; min_overuse = 13 ; moves = 55(5); length = 20
+28: cost = 12062.9; overuse = 100 ; min_overuse = 13 ; moves = 47(5); length = 20
+29: cost = 10656.0; overuse = 61 ; min_overuse = 13 ; moves = 50(6); length = 20
+30: cost = 10986.8; overuse = 63 ; min_overuse = 13 ; moves = 37(6); length = 20
+31: cost = 11109.6; overuse = 56 ; min_overuse = 13 ; moves = 33(4); length = 20
+32: cost = 11197.0; overuse = 61 ; min_overuse = 13 ; moves = 40(8); length = 20
+33: cost = 11449.8; overuse = 50 ; min_overuse = 13 ; moves = 21(1); length = 20
+34: cost = 10947.7; overuse = 42 ; min_overuse = 13 ; moves = 30(4); length = 20
+35: cost = 11059.7; overuse = 36 ; min_overuse = 13 ; moves = 25(5); length = 20
+36: cost = 11509.9; overuse = 40 ; min_overuse = 13 ; moves = 22(2); length = 20
+37: cost = 12016.7; overuse = 37 ; min_overuse = 13 ; moves = 31(7); length = 20
+38: cost = 12056.6; overuse = 36 ; min_overuse = 13 ; moves = 24(2); length = 20
+39: cost = 13278.9; overuse = 38 ; min_overuse = 13 ; moves = 23(7); length = 20
+40: cost = 12473.8; overuse = 31 ; min_overuse = 13 ; moves = 29(3); length = 20
+41: cost = 12552.5; overuse = 32 ; min_overuse = 13 ; moves = 33(6); length = 20
+42: cost = 12240.4; overuse = 29 ; min_overuse = 13 ; moves = 25(4); length = 20
+43: cost = 13222.9; overuse = 37 ; min_overuse = 13 ; moves = 22(4); length = 20
+44: cost = 13634.4; overuse = 33 ; min_overuse = 13 ; moves = 26(5); length = 20
+45: cost = 13638.2; overuse = 44 ; min_overuse = 13 ; moves = 20(3); length = 20
+46: cost = 13365.9; overuse = 31 ; min_overuse = 13 ; moves = 25(7); length = 20
+47: cost = 13238.3; overuse = 33 ; min_overuse = 13 ; moves = 25(4); length = 20
+48: cost = 12961.8; overuse = 28 ; min_overuse = 13 ; moves = 18(5); length = 20
+49: cost = 13186.6; overuse = 35 ; min_overuse = 13 ; moves = 25(5); length = 20
+50: cost = 12898.9; overuse = 41 ; min_overuse = 13 ; moves = 32(7); length = 20
+51: cost = 11635.8; overuse = 19 ; min_overuse = 13 ; moves = 26(3); length = 20
+52: cost = 11305.1; overuse = 18 ; min_overuse = 13 ; moves = 14(3); length = 20
+53: cost = 11367.6; overuse = 23 ; min_overuse = 13 ; moves = 23(8); length = 20
+54: cost = 11018.7; overuse = 22 ; min_overuse = 13 ; moves = 24(9); length = 20
+55: cost = 10362.3; overuse = 20 ; min_overuse = 13 ; moves = 20(1); length = 20
+56: cost = 9704.2; overuse = 29 ; min_overuse = 13 ; moves = 29(1); length = 20
+57: cost = 9284.0; overuse = 22 ; min_overuse = 13 ; moves = 31(8); length = 20
+58: cost = 10034.3; overuse = 28 ; min_overuse = 13 ; moves = 29(4); length = 20
+59: cost = 9141.4; overuse = 23 ; min_overuse = 13 ; moves = 24(9); length = 20
+60: cost = 9103.8; overuse = 21 ; min_overuse = 13 ; moves = 24(7); length = 20
+61: cost = 8627.8; overuse = 16 ; min_overuse = 13 ; moves = 23(7); length = 20
+62: cost = 8864.8; overuse = 22 ; min_overuse = 13 ; moves = 17(5); length = 20
+63: cost = 8471.7; overuse = 17 ; min_overuse = 13 ; moves = 16(2); length = 20
+64: cost = 7164.1; overuse = 8 ; min_overuse = 8 ; moves = 27(7); length = 20
+OVERUSE: node 51 [fu_6::src1],  modulo cycle: 0, overuse: 1
+OVERUSE: node 231 [fu_col_extended_4::pred],  modulo cycle: 4, overuse: 1
+OVERUSE: node 232 [fu_col_extended_4::src1],  modulo cycle: 4, overuse: 2
+OVERUSE: node 239 [data_pseudo[fu_col_extended_4]],  modulo cycle: 4, overuse: 1
+OVERUSE: node 406 [ireg_6::in1],  modulo cycle: 2, overuse: 1
+OVERUSE: node 408 [ireg_6::out1],  modulo cycle: 3, overuse: 1
+OVERUSE: node 552 [const_col_extended_4::out],  modulo cycle: 4, overuse: 1
+total_overuse = 8, total_occpuancy = 1650
+65: cost = 6832.5; overuse = 10 ; min_overuse = 8 ; moves = 22(6); length = 20
+OVERUSE: node 149 [fu_row_extended_2::pred],  modulo cycle: 5, overuse: 1
+OVERUSE: node 150 [fu_row_extended_2::src1],  modulo cycle: 5, overuse: 1
+OVERUSE: node 157 [data_pseudo[fu_row_extended_2]],  modulo cycle: 5, overuse: 1
+OVERUSE: node 198 [fu_col_extended_0::pred],  modulo cycle: 4, overuse: 1
+OVERUSE: node 200 [fu_col_extended_0::src2],  modulo cycle: 4, overuse: 1
+OVERUSE: node 206 [data_pseudo[fu_col_extended_0]],  modulo cycle: 4, overuse: 1
+OVERUSE: node 460 [ireg_row_extended_2::out2],  modulo cycle: 5, overuse: 1
+OVERUSE: node 484 [ireg_col_extended_2::out1],  modulo cycle: 4, overuse: 1
+OVERUSE: node 542 [const_row_extended_2::out],  modulo cycle: 5, overuse: 1
+OVERUSE: node 548 [const_col_extended_0::out],  modulo cycle: 4, overuse: 1
+total_overuse = 10, total_occpuancy = 1644
+66: cost = 6307.5; overuse = 6 ; min_overuse = 6 ; moves = 22(8); length = 20
+OVERUSE: node 231 [fu_col_extended_4::pred],  modulo cycle: 5, overuse: 1
+OVERUSE: node 233 [fu_col_extended_4::src2],  modulo cycle: 5, overuse: 1
+OVERUSE: node 239 [data_pseudo[fu_col_extended_4]],  modulo cycle: 5, overuse: 1
+OVERUSE: node 304 [vliw_int_rf::out2],  modulo cycle: 6, overuse: 1
+OVERUSE: node 493 [ireg_col_extended_4::out2],  modulo cycle: 5, overuse: 1
+OVERUSE: node 552 [const_col_extended_4::out],  modulo cycle: 5, overuse: 1
+total_overuse = 6, total_occpuancy = 1635
+67: cost = 5641.8; overuse = 0 ; min_overuse = 0 ; moves = 11(2); length = 20
+total_overuse = 0, total_occpuancy = 1637
+Successfully found a valid schedule for loop cb 5 src line 326 func main with II = 7; random_seed = 2006; relax_factor = 1.300
+
+total_overuse = 0, total_occpuancy = 1637
+elapsed time = 257 seconds
+
+total elapsed time for all parameters = 842 seconds
+Performing CGA rotating RF allocation...
+make[1]: Verlasse Verzeichnis '/home/laboruser/student/rs2/adresc/workspace/performance-max4/workplace.cga'
+dresc_gen_makefile codeselect
+make -C workplace.codeselect compile
+make[1]: Betrete Verzeichnis '/home/laboruser/student/rs2/adresc/workspace/performance-max4/workplace.codeselect'
+dresc_klib_ld workplace.codeselect 
+touch .klib
+dresc_vliw_select --arch=../arch/dresc_arch --parm=../params/dresc_parms_v3  -I ../workplace.cga -O . -i ../workplace.cga/main.DRE  -o main.DRE -l main.log
+make[1]: Verlasse Verzeichnis '/home/laboruser/student/rs2/adresc/workspace/performance-max4/workplace.codeselect'
+dresc_gen_makefile ra
+make -C workplace.ra compile
+make[1]: Betrete Verzeichnis '/home/laboruser/student/rs2/adresc/workspace/performance-max4/workplace.ra'
+dresc_klib_ld workplace.ra 
+touch .klib
+dresc_regalloc --arch=../arch/dresc_arch --parm=../params/dresc_parms_v3 -i ../workplace.codeselect/main.DRE  -o main.DRE -l main.log
+make[1]: Verlasse Verzeichnis '/home/laboruser/student/rs2/adresc/workspace/performance-max4/workplace.ra'
+make -C workplace.ra run.csim
+make[1]: Betrete Verzeichnis '/home/laboruser/student/rs2/adresc/workspace/performance-max4/workplace.ra'
+csim --arch=../arch/dresc_arch --parm=../params/dresc_parms_v3 --project=bin.csim   main.DRE -- -Ahal.h -Ashared_intrinsics.h  -I/home/laboruser/student/rs2/adresc/workspace/performance-max4/src -I/home/laboruser/student/rs2/adresc/workspace/performance-max4/hal/include -I/opt/dresc/include  -L/home/laboruser/student/rs2/adresc/workspace/performance-max4/hal/host -lhal_host -L/opt/dresc/lib -lmt_host -lpthread -lFLAI_intrinsics -l3MF_intrinsics -lbase_intrinsics   
+make  -f Makefile.csim
+make[2]: Betrete Verzeichnis '/home/laboruser/student/rs2/adresc/workspace/performance-max4/workplace.ra'
+g++ -c -g -I. -I/opt/dresc/share/csim -I/opt/dresc/include    -I/home/laboruser/student/rs2/adresc/workspace/performance-max4/src -I/home/laboruser/student/rs2/adresc/workspace/performance-max4/hal/include -I/opt/dresc/include          -o prog_header.o prog_header.cpp
+g++ -c -g -I. -I/opt/dresc/share/csim -I/opt/dresc/include    -I/home/laboruser/student/rs2/adresc/workspace/performance-max4/src -I/home/laboruser/student/rs2/adresc/workspace/performance-max4/hal/include -I/opt/dresc/include          -o prog_data.o prog_data.cpp
+g++ -c -g -I. -I/opt/dresc/share/csim -I/opt/dresc/include    -I/home/laboruser/student/rs2/adresc/workspace/performance-max4/src -I/home/laboruser/student/rs2/adresc/workspace/performance-max4/hal/include -I/opt/dresc/include          -o prof_helper.o prof_helper.cpp
+g++ -c -g -I. -I/opt/dresc/share/csim -I/opt/dresc/include    -I/home/laboruser/student/rs2/adresc/workspace/performance-max4/src -I/home/laboruser/student/rs2/adresc/workspace/performance-max4/hal/include -I/opt/dresc/include          -o isa_helper.o isa_helper.cpp
+g++ -c -g -I. -I/opt/dresc/share/csim -I/opt/dresc/include    -I/home/laboruser/student/rs2/adresc/workspace/performance-max4/src -I/home/laboruser/student/rs2/adresc/workspace/performance-max4/hal/include -I/opt/dresc/include          -o intr_op.o intr_op.cpp
+g++ -c -g -I. -I/opt/dresc/share/csim -I/opt/dresc/include    -I/home/laboruser/student/rs2/adresc/workspace/performance-max4/src -I/home/laboruser/student/rs2/adresc/workspace/performance-max4/hal/include -I/opt/dresc/include          -o sim_vliw.o sim_vliw.cpp
+g++ -c -g -I. -I/opt/dresc/share/csim -I/opt/dresc/include    -I/home/laboruser/student/rs2/adresc/workspace/performance-max4/src -I/home/laboruser/student/rs2/adresc/workspace/performance-max4/hal/include -I/opt/dresc/include          -o sim_cga.o sim_cga.cpp
+g++ -c -g -I. -I/opt/dresc/share/csim -I/opt/dresc/include    -I/home/laboruser/student/rs2/adresc/workspace/performance-max4/src -I/home/laboruser/student/rs2/adresc/workspace/performance-max4/hal/include -I/opt/dresc/include          -o main.DRE.o main.DRE.cpp
+g++ -o bin.csim  prog_header.o prog_data.o prof_helper.o isa_helper.o intr_op.o sim_vliw.o sim_cga.o main.DRE.o  -L/opt/dresc/lib -lcsim_rt  -lstatxml -ldrescutil -lmt_host -L/lib -lxerces-c      -L/home/laboruser/student/rs2/adresc/workspace/performance-max4/hal/host -lhal_host -L/opt/dresc/lib -lmt_host -lpthread -lFLAI_intrinsics -l3MF_intrinsics -lbase_intrinsics 
+make[2]: Verlasse Verzeichnis '/home/laboruser/student/rs2/adresc/workspace/performance-max4/workplace.ra'
+ln -fs workplace.ra/bin.csim ../bin.ra
+./bin.csim  
+ln -fs workplace.ra/stat.out ../stat.out
+ln -fs workplace.ra/stat.xml ../stat.xml
+make[1]: Verlasse Verzeichnis '/home/laboruser/student/rs2/adresc/workspace/performance-max4/workplace.ra'
+
+
+
+**************
+** statistics **
+**************
+Instr          	             Num	  Clk/Instr	      Energy/Clk	    Total energy	
+------------------------------------------------------------------------------------------------
+mov            	             490	          1	    0.9699235897	  475.2625589530	
+add            	             597	          1	             1.0	           597.0	
+add_u          	              27	          1	             1.0	            27.0	
+sub            	             570	          1	    0.9995122744	  569.7219964080	
+setlo          	               2	          1	    0.9699235897	    1.9398471794	
+sethi          	               2	          1	    0.9699235897	    1.9398471794	
+cga            	               1	          3	             1.5	             4.5	
+ld_i           	             577	          4	    0.9705738904	 2240.0845390432	
+pred_lt        	              27	          1	    0.9731750935	   26.2757275245	
+asr            	             567	          1	    1.0539749634	  597.6038042478	
+st_i           	             577	          1	    0.9721996423	  560.9591936071	
+rts            	               1	          3	             1.5	             4.5	
+nop            	            2351	          1	             0.3	           705.3	
+
+
+
+**************
+** overview **
+**************
+Used instance : 6x6
+Total clocks on cga : 189
+Total clocks  : 209
+Total nop-clk : 2351 
+Total energy  : 5812.0875141424
+********************************
+********************************
++------------+--------------+---------------------+
+| Ins        | Clk/ Energy/ |        Total        |
+|            |  Ins     Clk |     Num      Energy |
++------------+--------------+---------------------+
+| add        |    1  1.0000 |     597       597.0 |
+| add_u      |    1  1.0000 |      27        27.0 |
+| asr        |    1  1.0540 |     567       597.6 |
+| cga        |    3  1.5000 |       1         4.5 |
+| ld_i       |    4  0.9706 |     577      2240.1 |
+| mov        |    1  0.9699 |     490       475.3 |
+| nop        |    1  0.3000 |    2351       705.3 |
+| pred_lt    |    1  0.9732 |      27        26.3 |
+| rts        |    3  1.5000 |       1         4.5 |
+| sethi      |    1  0.9699 |       2         1.9 |
+| setlo      |    1  0.9699 |       2         1.9 |
+| st_i       |    1  0.9722 |     577       561.0 |
+| sub        |    1  0.9995 |     570       569.7 |
++------------+--------------+---------------------+
++---------------+---------------------+
+| Section       |        Total        |
++---------------+---------------------+
+| FU setup      |                 6x6 |
+| Cycles        |                 209 |
+| CGRA cycles   |                 189 |
+| NOPs          |                2351 |
+| NOP %         |               31.2% |
+| Reads         |                 577 |
+| Writes        |                 577 |
+| Total Energy  |                5812 |
+| CGRA Energy   |                     |
++---------------+---------------------+
