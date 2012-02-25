@@ -1,0 +1,82 @@
+<?xml version="1.0"?>
+<parms>
+ 
+  <!--
+  This is default global parameter file from DRESC_XML_specifications.
+  -->
+ 
+  <section name='vliw'>
+  </section>
+ 
+  <section name='cga'>
+    <property name='copy_propagation'        type='boolean'  value='true'/>
+    <property name='compress'                type='boolean'  value='false'/>
+    <property name='relax_factor'            type='float'    value='1.3'/>
+    <section name='func_main'>
+      <section name='loop_line_337'>
+        <!-- MII = 6, density = 86.46% (ResMII= 6, RecMII = 1, upper_density = 95.00%) -->
+        <!-- Try II = 7; random_seed = 2006; relax_factor = 2.000 -->
+        <!-- Try II = 7; random_seed = 2006; relax_factor = 2.250 -->
+        <!-- Try II = 7; random_seed = 2006; relax_factor = 2.500 -->
+        <property type='int' name='starting_II' value='2'/>
+        <property type='int' name='random_seed' value='2006'/>
+        <property type='float' name='relax_factor' value='1.300'/>
+      </section>
+	  
+	  <section name='loop_line_341'>
+        <property type='int' name='starting_II' value='2'/>
+        <property type='int' name='random_seed' value='2006'/>
+        <property type='float' name='relax_factor' value='1.300'/>
+      </section>
+	  <section name='loop_line_345'>
+        <property type='int' name='starting_II' value='2'/>
+        <property type='int' name='random_seed' value='2006'/>
+        <property type='float' name='relax_factor' value='1.300'/>
+      </section>	  
+	  <section name='loop_line_349'>
+        <property type='int' name='starting_II' value='2'/>
+        <property type='int' name='random_seed' value='2006'/>
+        <property type='float' name='relax_factor' value='1.300'/>
+      </section>	  
+	  <section name='loop_line_353'>
+        <property type='int' name='starting_II' value='2'/>
+        <property type='int' name='random_seed' value='2006'/>
+        <property type='float' name='relax_factor' value='1.300'/>
+      </section>	  
+	  <section name='loop_line_357'>
+        <property type='int' name='starting_II' value='2'/>
+        <property type='int' name='random_seed' value='2006'/>
+        <property type='float' name='relax_factor' value='1.300'/>
+      </section>	  
+	  <section name='loop_line_361'>
+        <property type='int' name='starting_II' value='2'/>
+        <property type='int' name='random_seed' value='2006'/>
+        <property type='float' name='relax_factor' value='1.300'/>
+      </section>
+	  
+	  <section name='loop_line_365'>
+        <property type='int' name='starting_II' value='2'/>
+        <property type='int' name='random_seed' value='2008'/>
+        <property type='float' name='relax_factor' value='1.300'/>
+      </section>
+    </section>
+  </section>
+ 
+  <section name='debug'>
+  </section>
+ 
+  <section name='simulator'>
+    <section name='memory'>
+      <property name='mem_size' type='int'  value='0x4000000'/>  <!-- 64M bytes -->
+      <property name='stack_size' type='int'  value='0x100000'/> <!--  1M bytes -->
+    </section>
+    <section name='cga'>
+      <property name='trace'  type='boolean'  value='false'/>
+    </section>
+ 
+    <section name='vliw'>
+      <property name='trace'  type='boolean'  value='false'/>
+    </section>
+  </section>
+ 
+</parms>
