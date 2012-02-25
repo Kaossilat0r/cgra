@@ -9,7 +9,17 @@
 #define HEIGHT 24
 
 #define PITCH 24
+#define PITCH_2 48				// PITCH * 2
+#define PITCH_3 72				// PITCH * 3
+#define PITCH_4 96				// PITCH * 4
+#define PITCH_5 120				// PITCH * 5
+#define PITCH_6 144				// PITCH * 6
+#define PITCH_7 168		 		// PITCH * 7
+
 #define KERNEL_SIZE 8
+
+
+#define mean(a, b) (a + b) >> 1
 
 // Das Eingabearray muss als 24x24 Short-Array unverändert bleiben.
 int signed input_array[HEIGHT][WIDTH] =
@@ -111,18 +121,7 @@ int signed input_array[HEIGHT][WIDTH] =
 	-706368, -1067968, 708480, -1382912, -1121280, -1104640, -298496, -1353792}
 };
 
-inline void printArray(int* chunk) {
-	int i, j;
-	for (i=0; i<8; i++) {
-		for (j=0; j<8; j++) {
-			printf("%d\t", chunk[i*8+j]);
-		}
-		printf("\n");
-	}
-	printf("\n");
-}
-
-inline void printArray2d(signed int chunk[HEIGHT][WIDTH]) {
+void printArray2d() {
 	int i, j;
 	for (i=0; i<HEIGHT; i++) {
 		for (j=0; j<WIDTH; j++) {
@@ -133,15 +132,8 @@ inline void printArray2d(signed int chunk[HEIGHT][WIDTH]) {
 	printf("\n");
 }
 
-inline void set(int* array, int row, int col, int val) {
-	array[row*8 + col] = val;
-}
+inline void __attribute__((always_inline)) calculateRow(int* array) {
 
-
-#define mean(a, b) (a + b) >> 1
-
-inline void calculateRow(int* array) {
-	
 	int a0 = array[0];
 	int a1 = array[1];
 	int a2 = array[2];
@@ -156,100 +148,100 @@ inline void calculateRow(int* array) {
 	int b1 = mean(a2, a3);
 	int b2 = mean(a4, a5);
 	int b3 = mean(a6, a7);
-	
+
 	array[4] = a0-b0;
 	array[5] = a2-b1;
 	array[6] = a4-b2;
 	array[7] = a6-b3;
-	
+
 	// second round
 	int c0 = mean(b0, b1);
 	int c1 = mean(b2, b3);
-	
+
 	array[2] = b0 - c0;
 	array[3] = b2 - c1;
-	
+
 	// third round
 	int d0 = mean(c0, c1);
-	
+
 	array[0] = d0;
 	array[1] = c0 - d0;
 
 }
 
-inline void calculateCol(int* array, int pitch) {
+inline void __attribute__((always_inline)) calculateCol(int* array) {
 
 	int a0 = array[0];
-	int a1 = array[pitch];
-	int a2 = array[pitch << 1];
-	int a3 = array[pitch * 3];
-	int a4 = array[pitch << 2];
-	int a5 = array[pitch * 5];
-	int a6 = array[pitch * 6];
-	int a7 = array[pitch * 7];
+	int a1 = array[PITCH];
+	int a2 = array[PITCH_2];
+	int a3 = array[PITCH_3];
+	int a4 = array[PITCH_4];
+	int a5 = array[PITCH_5];
+	int a6 = array[PITCH_6];
+	int a7 = array[PITCH_7];
 
 	// first round
 	int b0 = mean(a0, a1);
 	int b1 = mean(a2, a3);
 	int b2 = mean(a4, a5);
 	int b3 = mean(a6, a7);
-	
-	array[pitch << 2] = a0-b0;
-	array[pitch * 5] = a2-b1;
-	array[pitch * 6] = a4-b2;
-	array[pitch * 7] = a6-b3;
-	
+
+	array[PITCH_4] = a0-b0;
+	array[PITCH_5] = a2-b1;
+	array[PITCH_6] = a4-b2;
+	array[PITCH_7] = a6-b3;
+
 	// second round
 	int c0 = mean(b0, b1);
 	int c1 = mean(b2, b3);
-	
-	array[pitch << 1] = b0 - c0;
-	array[pitch * 3] = b2 - c1;
-	
+
+	array[PITCH_2] = b0 - c0;
+	array[PITCH_3] = b2 - c1;
+
 	// third round
 	int d0 = mean(c0, c1);
-	
+
 	array[0] = d0;
-	array[pitch] = c0 - d0;
+	array[PITCH] = c0 - d0;
 
 }
 
-inline void reverseRow(int* array) {
+inline void __attribute__((always_inline)) reverseRow(int* array) {
 	int a0 = array[0];
 	int a1 = array[1];	
-	
+
 	// third round ^-1
 	int b0 = a0 + a1;
 	int b1 = a0 - a1;
-	
+
 	int b2 = array[2];
 	int b3 = array[3];
-	
+
 	// second round ^-1
 	int c0 = b0 + b2;
 	int c1 = b0 - b2;
-	
+
 	int c2 = b1 + b3;
 	int c3 = b1 - b3;
-	
+
 	int c4 = array[4];
 	int c5 = array[5];
 	int c6 = array[6];
 	int c7 = array[7];
-	
+
 	// first round ^-1
 	int d0 = c0 + c4;
 	int d1 = c0 - c4;
-	
+
 	int d2 = c1 + c5;
 	int d3 = c1 - c5;
-	
+
 	int d4 = c2 + c6;
 	int d5 = c2 - c6;
-	
+
 	int d6 = c3 + c7;
 	int d7 = c3 - c7;
-	
+
 	array[0] = d0;
 	array[1] = d1;
 	array[2] = d2;
@@ -260,113 +252,114 @@ inline void reverseRow(int* array) {
 	array[7] = d7;
 }
 
-inline void reverseCol(int* array, int pitch) {
+inline void __attribute__((always_inline)) reverseCol(int* array) {
 	int a0 = array[0];
-	int a1 = array[pitch];	
-	
+	int a1 = array[PITCH];	
+
 	// third round ^-1
 	int b0 = a0 + a1;
 	int b1 = a0 - a1;
-	
-	int b2 = array[pitch << 1];
-	int b3 = array[pitch * 3];
-	
+
+	int b2 = array[PITCH_2];
+	int b3 = array[PITCH_3];
+
 	// second round ^-1
 	int c0 = b0 + b2;
 	int c1 = b0 - b2;
-	
+
 	int c2 = b1 + b3;
 	int c3 = b1 - b3;
-	
-	int c4 = array[pitch << 2];
-	int c5 = array[pitch * 5];
-	int c6 = array[pitch * 6];
-	int c7 = array[pitch * 7];
-	
+
+	int c4 = array[PITCH_4];
+	int c5 = array[PITCH_5];
+	int c6 = array[PITCH_6];
+	int c7 = array[PITCH_7];
+
 	// first round ^-1
 	int d0 = c0 + c4;
 	int d1 = c0 - c4;
-	
+
 	int d2 = c1 + c5;
 	int d3 = c1 - c5;
-	
+
 	int d4 = c2 + c6;
 	int d5 = c2 - c6;
-	
+
 	int d6 = c3 + c7;
 	int d7 = c3 - c7;
-	
+
 	array[0] = d0;
-	array[pitch] = d1;
-	array[pitch << 1] = d2;
-	array[pitch * 3] = d3;
-	array[pitch << 2] = d4;
-	array[pitch * 5] = d5;
-	array[pitch * 6] = d6;
-	array[pitch * 7] = d7;
+	array[PITCH] = d1;
+	array[PITCH_2] = d2;
+	array[PITCH_3] = d3;
+	array[PITCH_4] = d4;
+	array[PITCH_5] = d5;
+	array[PITCH_6] = d6;
+	array[PITCH_7] = d7;
 }
 
-int main() {
-	
-	//int* chunk = input_array[0];
-	
-	
-	// int i;
-	// for (i=0; i<8; i++) {
-		// int j;
-		// for (j=0; j<8; j++) {
-			// set(chunk, i, j, input_array[i][j]);
-		// }
-	// }
-	
-	// //set with example data
-	// int testData[8] =  {7,1,6,6,3,-5,4,2};
-	// for (i=0; i<8; i++)
-		// chunk[i*8] = testData[i];
-	
-	 // printArray2d(input_array);
-//	int col, row;
-	
-#define CELLS WIDTH*HEIGHT
-#define COL_JUMP (WIDTH * KERNEL_SIZE)
-#define COL_JUMP_2 (WIDTH * KERNEL_SIZE * 2)
+#define CELLS 576 				// WIDTH*HEIGHT
 
+#define COL_BLOCK_0_START 0
+#define COL_BLOCK_0_END 24 		// (COL_BLOCK_0_START + WIDTH)
+
+#define COL_BLOCK_1_START 192 	// (WIDTH * KERNEL_SIZE)
+#define COL_BLOCK_1_END 216 	// (COL_BLOCK_1_START + WIDTH)
+
+#define COL_BLOCK_2_START 384 	//(WIDTH * KERNEL_SIZE * 2)
+#define COL_BLOCK_2_END 408 	//(COL_BLOCK_2_START + WIDTH)
+
+int main() {
 	int* base = &input_array[0][0];
-	
 	int cell;
+	
+	/***********************************************************
+	 * calculate ROW
+	 ***********************************************************/	
 	for(cell = 0; cell < CELLS; cell+=KERNEL_SIZE) {
 		calculateRow(&base[cell]);
 	}
 	
-	for(cell = 0; cell < WIDTH; cell++) {
-		calculateCol(&base[cell], PITCH);
+	/***********************************************************
+	 * calculate COLUMN
+	 ***********************************************************/	
+	for(cell = COL_BLOCK_0_START; cell < COL_BLOCK_0_END; cell++) {
+		calculateCol(&base[cell]);
 	}
 	
-	for(cell = 0; cell < WIDTH; cell++) {
-		calculateCol(&base[cell + COL_JUMP], PITCH);
+	for(cell = COL_BLOCK_1_START; cell < COL_BLOCK_1_END; cell++) {
+		calculateCol(&base[cell]);
 	}
 	
-	for(cell = 0; cell < WIDTH; cell++) {
-		calculateCol(&base[cell + COL_JUMP_2], PITCH);
+	for(cell = COL_BLOCK_2_START; cell < COL_BLOCK_2_END; cell++) {
+		calculateCol(&base[cell]);
 	}
 	
-	for(cell = 0; cell < WIDTH; cell++) {
-		reverseCol(&base[cell], PITCH);
+	// printArray2d();
+	
+	/***********************************************************
+	 * calculate reverse COLUMN
+	 ***********************************************************/
+	for(cell = COL_BLOCK_0_START; cell < COL_BLOCK_0_END; cell++) {
+		reverseCol(&base[cell]);
 	}
 	
-	for(cell = 0; cell < WIDTH; cell++) {		
-		reverseCol(&base[cell + COL_JUMP], PITCH);
+	for(cell = COL_BLOCK_1_START; cell < COL_BLOCK_1_END; cell++) {		
+		reverseCol(&base[cell]);
 	}
 	
-	for(cell = 0; cell < WIDTH; cell++) {
-		reverseCol(&base[cell + COL_JUMP_2], PITCH);
+	for(cell = COL_BLOCK_2_START; cell < COL_BLOCK_2_END; cell++) {
+		reverseCol(&base[cell]);
 	}
 	
+	/***********************************************************
+	 * calculate reverse ROW
+	 ***********************************************************/
 	for(cell = 0; cell < CELLS; cell+=KERNEL_SIZE) {
 		reverseRow(&base[cell]);
 	}
 	
-	// printArray2d(input_array);
+	// printArray2d();
 		
 
 	return 0;

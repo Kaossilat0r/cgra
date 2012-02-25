@@ -13,7 +13,7 @@
     <property name='compress'                type='boolean'  value='false'/>
     <property name='relax_factor'            type='float'    value='1.3'/>
     <section name='func_main'>
-      <section name='loop_line_337'>
+      <section name='loop_line_319'>
         <!-- MII = 6, density = 86.46% (ResMII= 6, RecMII = 1, upper_density = 95.00%) -->
         <!-- Try II = 7; random_seed = 2006; relax_factor = 2.000 -->
         <!-- Try II = 7; random_seed = 2006; relax_factor = 2.250 -->
@@ -23,38 +23,39 @@
         <property type='float' name='relax_factor' value='1.300'/>
       </section>
 	  
-	  <section name='loop_line_341'>
+	  <section name='loop_line_326'>
         <property type='int' name='starting_II' value='2'/>
         <property type='int' name='random_seed' value='2006'/>
         <property type='float' name='relax_factor' value='1.300'/>
       </section>
-	  <section name='loop_line_345'>
+	  <section name='loop_line_330'>
         <property type='int' name='starting_II' value='2'/>
         <property type='int' name='random_seed' value='2006'/>
         <property type='float' name='relax_factor' value='1.300'/>
       </section>	  
-	  <section name='loop_line_349'>
+	  <section name='loop_line_334'>
         <property type='int' name='starting_II' value='2'/>
         <property type='int' name='random_seed' value='2006'/>
         <property type='float' name='relax_factor' value='1.300'/>
       </section>	  
-	  <section name='loop_line_353'>
+	  
+	  <section name='loop_line_343'>
         <property type='int' name='starting_II' value='2'/>
         <property type='int' name='random_seed' value='2006'/>
         <property type='float' name='relax_factor' value='1.300'/>
       </section>	  
-	  <section name='loop_line_357'>
+	  <section name='loop_line_347'>
         <property type='int' name='starting_II' value='2'/>
         <property type='int' name='random_seed' value='2006'/>
         <property type='float' name='relax_factor' value='1.300'/>
       </section>	  
-	  <section name='loop_line_361'>
+	  <section name='loop_line_351'>
         <property type='int' name='starting_II' value='2'/>
-        <property type='int' name='random_seed' value='2006'/>
+        <property type='int' name='random_seed' value='2008'/>
         <property type='float' name='relax_factor' value='1.300'/>
       </section>
 	  
-	  <section name='loop_line_365'>
+	  <section name='loop_line_358'>
         <property type='int' name='starting_II' value='2'/>
         <property type='int' name='random_seed' value='2008'/>
         <property type='float' name='relax_factor' value='1.300'/>
