@@ -31,18 +31,15 @@
         <property type='int' name='random_seed' value='2006'/>
         <property type='float' name='relax_factor' value='1.300'/>
       </section>	  
-	  <section name='loop_line_343'>
-        <property type='int' name='starting_II' value='2'/>
-        <property type='int' name='random_seed' value='2006'/>
-        <property type='float' name='relax_factor' value='1.300'/>
-      </section>	  
-	  <section name='loop_line_347'>
+
+	  <section name='loop_line_345'>
         <property type='int' name='starting_II' value='2'/>
         <property type='int' name='random_seed' value='2008'/>
         <property type='float' name='relax_factor' value='1.300'/>
       </section>
 	  
-	  <section name='loop_line_354'>
+	  
+	  <section name='loop_line_352'>
         <property type='int' name='starting_II' value='1'/>
         <property type='int' name='random_seed' value='2008'/>
         <property type='float' name='relax_factor' value='1.300'/>

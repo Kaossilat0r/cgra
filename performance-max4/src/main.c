@@ -338,10 +338,8 @@ int main() {
 	 ***********************************************************/
 	for(cell = COL_BLOCK_0_START; cell < COL_BLOCK_0_END; cell++) {
 		reverseCol(&base[cell]);
-	}
 	
-	for(cell = COL_BLOCK_1_START; cell < COL_BLOCK_1_END; cell++) {		
-		reverseCol(&base[cell]);
+		reverseCol(&base[cell + COL_BLOCK_1_START]);
 	}
 	
 	for(cell = COL_BLOCK_2_START; cell < COL_BLOCK_2_END; cell++) {
