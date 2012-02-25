@@ -56,4 +56,6 @@ echo "Total clocks on cga : `head -n 3 $1 | grep "Total cga" | cut -d ' ' -f 5`"
 echo "Total clocks  : $USED_CLOCK"
 echo "Total nop-clk : $NOP_NUM "
 echo "Total energy  : $USED_ENERGY"
-sleep 2
+
+echo -e "********************************"
+echo -e "********************************"
