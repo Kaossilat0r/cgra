@@ -1,0 +1,289 @@
+dresc_gen_makefile native
+make hal/host/libhal_host.a hal/host/libhal_host_shared.so  \
+		hal/avm/stub/libavm_stub_rtl.so
+make[1]: Betrete Verzeichnis '/home/laboruser/student/rs2/adresc/workspace/performance-max4'
+ar cr hal/host/libhal_host.a   
+ranlib hal/host/libhal_host.a
+gcc -shared -Wl,-soname,libhal_host_shared.so -o hal/host/libhal_host_shared.so  
+g++ -shared -Wl,-soname,libavm_stub_rtl.so -o hal/avm/stub/libavm_stub_rtl.so 
+make[1]: Verlasse Verzeichnis '/home/laboruser/student/rs2/adresc/workspace/performance-max4'
+make -C workplace.native bin.native
+make[1]: Betrete Verzeichnis '/home/laboruser/student/rs2/adresc/workspace/performance-max4/workplace.native'
+dresc_klib_ld workplace.native 
+touch .klib
+ar cr libklib.a   
+ranlib libklib.a
+gcc -Wall -g  -I/home/laboruser/student/rs2/adresc/workspace/performance-max4/src -I/home/laboruser/student/rs2/adresc/workspace/performance-max4/hal/include -I/opt/dresc/include -c -o main.o ../src/main.c
+gcc -Wall -g  -I/home/laboruser/student/rs2/adresc/workspace/performance-max4/src -I/home/laboruser/student/rs2/adresc/workspace/performance-max4/hal/include -I/opt/dresc/include -o bin.native main.o -L. -lklib  -L/home/laboruser/student/rs2/adresc/workspace/performance-max4/hal/host -lhal_host -L/opt/dresc/lib -lmt_host -lpthread -lFLAI_intrinsics -l3MF_intrinsics -lbase_intrinsics   
+make[1]: Verlasse Verzeichnis '/home/laboruser/student/rs2/adresc/workspace/performance-max4/workplace.native'
+ln -fs workplace.native/bin.native bin.native
+dresc_gen_makefile lcode
+make -C workplace.lcode compile
+make[1]: Betrete Verzeichnis '/home/laboruser/student/rs2/adresc/workspace/performance-max4/workplace.lcode'
+dresc_compile_bench
+Using these settings to compile:
+  Project Name: performance-max4
+  USER_BENCH_PATH1: /home/laboruser/student/rs2/adresc/workspace
+  STD_PARMS_FILE: /home/laboruser/student/rs2/adresc/workspace/performance-max4/params/STD_PARMS
+  LOG_FILE: /home/laboruser/student/rs2/adresc/workspace/performance-max4/workplace.lcode/workspace/openimpact.log
+
+>> Sa 25. Feb 22:47:12 CET 2012: Setting up for performance-max4 in /home/laboruser/student/rs2/adresc/workspace/performance-max4/workplace.lcode/workspace
+>> Sa 25. Feb 22:47:15 CET 2012: c2gp 1/6: EDG frontend on the *.c in impactbenchsrc
+>> Sa 25. Feb 22:47:16 CET 2012: c2lc 2/6: Performing Pcode flattening
+>> Sa 25. Feb 22:47:17 CET 2012: c2lc 3/6: Pcode profiling using settings for performance-max4
+>> Sa 25. Feb 22:47:18 CET 2012: c2gp 5/6: Performing Pcode inlining
+>> Sa 25. Feb 22:47:18 CET 2012: c2gp 6/6: Converting Pcode to Lcode (w/ sync arcs)
+>> Sa 25. Feb 22:47:19 CET 2012: lc2O: Running Lopti on .lc files
+>> Sa 25. Feb 22:47:19 CET 2012: O2O_p: Profiling .O files
+>> Sa 25. Feb 22:47:19 CET 2012: O_p2H: Running Lblock on .O files to create hyperblocks
+>> Sa 25. Feb 22:47:19 CET 2012: H2HS: Running Lsuperscalar on .H files
+make[1]: Verlasse Verzeichnis '/home/laboruser/student/rs2/adresc/workspace/performance-max4/workplace.lcode'
+mkdir -p arch/
+[ -r arch/dresc_arch ] || ln -sf ../params/dresc_arch arch/dresc_arch
+for xml in ; do [ -r arch//$xml ] || ln -sf ../params/$xml arch/; done
+dresc_gen_makefile unsched
+make -C workplace.unsched compile
+make[1]: Betrete Verzeichnis '/home/laboruser/student/rs2/adresc/workspace/performance-max4/workplace.unsched'
+dresc_klib_ld workplace.unsched 
+touch .klib
+lc2dre --arch=../arch/dresc_arch --parm=../params/dresc_parms_v3 -i ../workplace.lcode/main.HS  -o main.DRE -l main.log
+make[1]: Verlasse Verzeichnis '/home/laboruser/student/rs2/adresc/workspace/performance-max4/workplace.unsched'
+dresc_gen_makefile cloned
+make -C workplace.cloned compile
+make[1]: Betrete Verzeichnis '/home/laboruser/student/rs2/adresc/workspace/performance-max4/workplace.cloned'
+dresc_klib_ld workplace.cloned 
+touch .klib
+dresc_mt_clone --arch=../arch/dresc_arch --parm=../params/dresc_parms_v3  -I ../workplace.unsched -O . -i ../workplace.unsched/main.DRE  -o main.DRE -l main.log
+make[1]: Verlasse Verzeichnis '/home/laboruser/student/rs2/adresc/workspace/performance-max4/workplace.cloned'
+dresc_gen_makefile assign
+make -C workplace.assign compile
+make[1]: Betrete Verzeichnis '/home/laboruser/student/rs2/adresc/workspace/performance-max4/workplace.assign'
+dresc_klib_ld workplace.assign 
+touch .klib
+dresc_mem_assign --arch=../arch/dresc_arch --parm=../params/dresc_parms_v3   -I ../workplace.cloned -O . -i ../workplace.cloned/main.DRE  -o main.DRE -l main.log
+make[1]: Verlasse Verzeichnis '/home/laboruser/student/rs2/adresc/workspace/performance-max4/workplace.assign'
+dresc_gen_makefile precga
+make -C workplace.precga compile
+make[1]: Betrete Verzeichnis '/home/laboruser/student/rs2/adresc/workspace/performance-max4/workplace.precga'
+dresc_klib_ld workplace.precga 
+touch .klib
+dresc_cga_prep --arch=../arch/dresc_arch --parm=../params/dresc_parms_v3 -i ../workplace.assign/main.DRE  -o main.DRE -l main.log
+Found software pipelineable loop (lcode cb 5 src line 326) in function main
+Creating REG_BIDIR since reg vr32[50] is loop livein
+Creating REG_BIDIR since reg vr32[50] satisfies bdd_lastdef & bdd_lastuse0 = 0
+Creating REG_BIDIR since reg vr32[155] is loop livein
+Creating REG_BIDIR since reg vr32[155] satisfies bdd_lastdef & bdd_lastuse0 = 0
+Performing predicate speculation ... 
+Total 0 predicates are optimized
+
+make[1]: Verlasse Verzeichnis '/home/laboruser/student/rs2/adresc/workspace/performance-max4/workplace.precga'
+dresc_gen_makefile cga
+make -C workplace.cga compile
+make[1]: Betrete Verzeichnis '/home/laboruser/student/rs2/adresc/workspace/performance-max4/workplace.cga'
+dresc_klib_ld workplace.cga 
+touch .klib
+dresc_cga_sched --arch=../arch/dresc_arch --parm=../params/dresc_parms_v3 -i ../workplace.precga/main.DRE  -o main.DRE -l main.log
+Processing file ../workplace.precga/main.DRE
+
+Function printArray2d skipped by parameters
+Function calculateRow skipped by parameters
+Function calculateCol skipped by parameters
+Function reverseRow skipped by parameters
+Function reverseCol skipped by parameters
+Processing function main...
+
+Detected loop cb 5 src line 326
+Building routability matrix ...
+Performing copy propagation ... 
+Total 0 MOV operations are optimized corresponding to 0 dependences
+
+Scheduling loop 5...
+MII = 6, density = 52.78% (ResMII= 6, RecMII = 1, upper_density = 95.00%)
+Try II = 6; random_seed = 2014; relax_factor = 1.300
+Performing initial placement and routing ...
+Succeeded in scheduling operations in circuits
+Succeeded to schedule other operations
+Starting iterative improvement ...
+(you may interrupt scheduling process by typing q<RETURN>,
+ or continue directly to the next random_seed/relax_factor/II by typing s/r/i<return>)
+1: cost = 3975.5; overuse = 426 ; min_overuse = 426 ; moves = 109(30); length = 18
+2: cost = 5326.8; overuse = 392 ; min_overuse = 392 ; moves = 115(38); length = 19
+3: cost = 5969.2; overuse = 374 ; min_overuse = 374 ; moves = 111(41); length = 20
+4: cost = 6462.6; overuse = 381 ; min_overuse = 374 ; moves = 108(43); length = 20
+5: cost = 7046.6; overuse = 347 ; min_overuse = 347 ; moves = 112(36); length = 20
+6: cost = 7597.4; overuse = 388 ; min_overuse = 347 ; moves = 110(45); length = 20
+7: cost = 7771.6; overuse = 362 ; min_overuse = 347 ; moves = 109(35); length = 20
+8: cost = 7969.5; overuse = 351 ; min_overuse = 347 ; moves = 113(36); length = 20
+9: cost = 7226.2; overuse = 299 ; min_overuse = 299 ; moves = 105(37); length = 20
+10: cost = 7821.2; overuse = 302 ; min_overuse = 299 ; moves = 101(39); length = 20
+11: cost = 8586.9; overuse = 333 ; min_overuse = 299 ; moves = 107(43); length = 20
+12: cost = 9486.8; overuse = 322 ; min_overuse = 299 ; moves = 105(44); length = 20
+13: cost = 10403.5; overuse = 310 ; min_overuse = 299 ; moves = 102(42); length = 20
+14: cost = 11471.7; overuse = 338 ; min_overuse = 299 ; moves = 104(44); length = 20
+15: cost = 12780.5; overuse = 332 ; min_overuse = 299 ; moves = 102(50); length = 20
+16: cost = 14051.4; overuse = 318 ; min_overuse = 299 ; moves = 104(46); length = 20
+17: cost = 18252.1; overuse = 364 ; min_overuse = 299 ; moves = 99(46); length = 20
+18: cost = 17633.1; overuse = 317 ; min_overuse = 299 ; moves = 102(38); length = 20
+19: cost = 20704.5; overuse = 339 ; min_overuse = 299 ; moves = 97(46); length = 20
+20: cost = 15028.7; overuse = 259 ; min_overuse = 259 ; moves = 91(1); length = 20
+21: cost = 13669.0; overuse = 232 ; min_overuse = 232 ; moves = 79(4); length = 20
+22: cost = 14000.8; overuse = 210 ; min_overuse = 210 ; moves = 67(3); length = 20
+23: cost = 15516.7; overuse = 243 ; min_overuse = 210 ; moves = 73(5); length = 20
+24: cost = 16274.1; overuse = 207 ; min_overuse = 207 ; moves = 63(9); length = 20
+25: cost = 16369.6; overuse = 169 ; min_overuse = 169 ; moves = 64(2); length = 20
+26: cost = 16741.0; overuse = 162 ; min_overuse = 162 ; moves = 65(4); length = 20
+27: cost = 16542.4; overuse = 135 ; min_overuse = 135 ; moves = 63(9); length = 20
+28: cost = 16408.5; overuse = 125 ; min_overuse = 125 ; moves = 57(6); length = 20
+29: cost = 15798.5; overuse = 111 ; min_overuse = 111 ; moves = 53(3); length = 20
+30: cost = 16508.5; overuse = 110 ; min_overuse = 110 ; moves = 45(4); length = 20
+31: cost = 16239.7; overuse = 105 ; min_overuse = 105 ; moves = 52(6); length = 20
+32: cost = 21868.8; overuse = 158 ; min_overuse = 105 ; moves = 55(4); length = 20
+33: cost = 20839.0; overuse = 142 ; min_overuse = 105 ; moves = 59(6); length = 20
+34: cost = 20292.0; overuse = 122 ; min_overuse = 105 ; moves = 59(2); length = 20
+35: cost = 20024.5; overuse = 88 ; min_overuse = 88 ; moves = 58(5); length = 20
+36: cost = 19333.4; overuse = 90 ; min_overuse = 88 ; moves = 44(3); length = 20
+37: cost = 19962.5; overuse = 77 ; min_overuse = 77 ; moves = 47(3); length = 20
+38: cost = 19160.5; overuse = 50 ; min_overuse = 50 ; moves = 35(2); length = 20
+39: cost = 18738.2; overuse = 53 ; min_overuse = 50 ; moves = 34(5); length = 20
+40: cost = 18843.2; overuse = 53 ; min_overuse = 50 ; moves = 38(6); length = 20
+41: cost = 19085.8; overuse = 52 ; min_overuse = 50 ; moves = 30(1); length = 20
+42: cost = 18755.9; overuse = 49 ; min_overuse = 49 ; moves = 32(2); length = 20
+43: cost = 25930.6; overuse = 119 ; min_overuse = 49 ; moves = 45(5); length = 20
+44: cost = 25386.0; overuse = 111 ; min_overuse = 49 ; moves = 61(6); length = 20
+45: cost = 22991.9; overuse = 77 ; min_overuse = 49 ; moves = 53(4); length = 20
+46: cost = 23292.3; overuse = 78 ; min_overuse = 49 ; moves = 47(3); length = 20
+47: cost = 22461.9; overuse = 72 ; min_overuse = 49 ; moves = 41(4); length = 20
+48: cost = 20294.8; overuse = 53 ; min_overuse = 49 ; moves = 33(0); length = 20
+49: cost = 19353.3; overuse = 37 ; min_overuse = 37 ; moves = 30(3); length = 20
+50: cost = 18910.6; overuse = 46 ; min_overuse = 37 ; moves = 30(0); length = 20
+51: cost = 18243.3; overuse = 46 ; min_overuse = 37 ; moves = 37(4); length = 20
+52: cost = 17479.6; overuse = 38 ; min_overuse = 37 ; moves = 25(4); length = 20
+53: cost = 17255.3; overuse = 41 ; min_overuse = 37 ; moves = 32(1); length = 20
+54: cost = 16499.9; overuse = 36 ; min_overuse = 36 ; moves = 27(3); length = 20
+55: cost = 14782.8; overuse = 25 ; min_overuse = 25 ; moves = 28(1); length = 20
+56: cost = 13936.3; overuse = 24 ; min_overuse = 24 ; moves = 19(2); length = 20
+57: cost = 12718.1; overuse = 9 ; min_overuse = 9 ; moves = 17(2); length = 20
+OVERUSE: node 66 [fu_8::pred],  modulo cycle: 3, overuse: 1
+OVERUSE: node 67 [fu_8::src1],  modulo cycle: 3, overuse: 1
+OVERUSE: node 70 [fu_8::dst1],  modulo cycle: 2, overuse: 1
+OVERUSE: node 74 [data_pseudo[fu_8]],  modulo cycle: 3, overuse: 1
+OVERUSE: node 259 [fu_col_extended_7::dst1],  modulo cycle: 4, overuse: 1
+OVERUSE: node 263 [data_pseudo[fu_col_extended_7]],  modulo cycle: 4, overuse: 1
+OVERUSE: node 532 [const_8::out],  modulo cycle: 3, overuse: 1
+OVERUSE: node 882 [outireg2_col_extended_2::in],  modulo cycle: 3, overuse: 1
+OVERUSE: node 883 [outireg2_col_extended_2::out],  modulo cycle: 4, overuse: 1
+total_overuse = 9, total_occpuancy = 1976
+58: cost = 11885.5; overuse = 9 ; min_overuse = 9 ; moves = 15(5); length = 20
+OVERUSE: node 149 [fu_row_extended_2::pred],  modulo cycle: 5, overuse: 1
+OVERUSE: node 150 [fu_row_extended_2::src1],  modulo cycle: 5, overuse: 2
+OVERUSE: node 157 [data_pseudo[fu_row_extended_2]],  modulo cycle: 5, overuse: 1
+OVERUSE: node 217 [fu_col_extended_2::src2],  modulo cycle: 4, overuse: 1
+OVERUSE: node 304 [vliw_int_rf::out2],  modulo cycle: 3, overuse: 1
+OVERUSE: node 542 [const_row_extended_2::out],  modulo cycle: 5, overuse: 1
+OVERUSE: node 894 [outireg2_col_extended_3::in],  modulo cycle: 3, overuse: 1
+OVERUSE: node 895 [outireg2_col_extended_3::out],  modulo cycle: 4, overuse: 1
+total_overuse = 9, total_occpuancy = 1962
+59: cost = 10284.1; overuse = 5 ; min_overuse = 5 ; moves = 17(2); length = 20
+OVERUSE: node 67 [fu_8::src1],  modulo cycle: 5, overuse: 1
+OVERUSE: node 68 [fu_8::src2],  modulo cycle: 5, overuse: 1
+OVERUSE: node 74 [data_pseudo[fu_8]],  modulo cycle: 5, overuse: 1
+OVERUSE: node 241 [fu_col_extended_5::src1],  modulo cycle: 4, overuse: 1
+OVERUSE: node 414 [ireg_8::in1],  modulo cycle: 5, overuse: 1
+total_overuse = 5, total_occpuancy = 1917
+60: cost = 9325.4; overuse = 1 ; min_overuse = 1 ; moves = 5(0); length = 20
+OVERUSE: node 404 [ireg_5::out1],  modulo cycle: 0, overuse: 1
+total_overuse = 1, total_occpuancy = 1904
+61: cost = 8639.5; overuse = 1 ; min_overuse = 1 ; moves = 9(4); length = 20
+OVERUSE: node 404 [ireg_5::out1],  modulo cycle: 0, overuse: 1
+total_overuse = 1, total_occpuancy = 1900
+62: cost = 8261.1; overuse = 4 ; min_overuse = 1 ; moves = 3(3); length = 20
+OVERUSE: node 67 [fu_8::src1],  modulo cycle: 4, overuse: 2
+OVERUSE: node 74 [data_pseudo[fu_8]],  modulo cycle: 4, overuse: 1
+OVERUSE: node 414 [ireg_8::in1],  modulo cycle: 4, overuse: 1
+total_overuse = 4, total_occpuancy = 1891
+63: cost = 7576.7; overuse = 2 ; min_overuse = 1 ; moves = 9(4); length = 20
+OVERUSE: node 76 [fu_9::src1],  modulo cycle: 5, overuse: 1
+OVERUSE: node 305 [vliw_int_rf::out3],  modulo cycle: 1, overuse: 1
+total_overuse = 2, total_occpuancy = 1871
+64: cost = 7091.4; overuse = 2 ; min_overuse = 1 ; moves = 10(4); length = 20
+OVERUSE: node 76 [fu_9::src1],  modulo cycle: 5, overuse: 1
+OVERUSE: node 306 [vliw_int_rf::out4],  modulo cycle: 0, overuse: 1
+total_overuse = 2, total_occpuancy = 1838
+65: cost = 6452.3; overuse = 0 ; min_overuse = 0 ; moves = 9(3); length = 20
+total_overuse = 0, total_occpuancy = 1838
+Successfully found a valid schedule for loop cb 5 src line 326 func main with II = 6; random_seed = 2014; relax_factor = 1.300
+
+total_overuse = 0, total_occpuancy = 1838
+elapsed time = 191 seconds
+
+total elapsed time for all parameters = 191 seconds
+Performing CGA rotating RF allocation...
+make[1]: Verlasse Verzeichnis '/home/laboruser/student/rs2/adresc/workspace/performance-max4/workplace.cga'
+dresc_gen_makefile codeselect
+make -C workplace.codeselect compile
+make[1]: Betrete Verzeichnis '/home/laboruser/student/rs2/adresc/workspace/performance-max4/workplace.codeselect'
+dresc_klib_ld workplace.codeselect 
+touch .klib
+dresc_vliw_select --arch=../arch/dresc_arch --parm=../params/dresc_parms_v3  -I ../workplace.cga -O . -i ../workplace.cga/main.DRE  -o main.DRE -l main.log
+make[1]: Verlasse Verzeichnis '/home/laboruser/student/rs2/adresc/workspace/performance-max4/workplace.codeselect'
+dresc_gen_makefile ra
+make -C workplace.ra compile
+make[1]: Betrete Verzeichnis '/home/laboruser/student/rs2/adresc/workspace/performance-max4/workplace.ra'
+dresc_klib_ld workplace.ra 
+touch .klib
+dresc_regalloc --arch=../arch/dresc_arch --parm=../params/dresc_parms_v3 -i ../workplace.codeselect/main.DRE  -o main.DRE -l main.log
+make[1]: Verlasse Verzeichnis '/home/laboruser/student/rs2/adresc/workspace/performance-max4/workplace.ra'
+make -C workplace.ra run.csim
+make[1]: Betrete Verzeichnis '/home/laboruser/student/rs2/adresc/workspace/performance-max4/workplace.ra'
+csim --arch=../arch/dresc_arch --parm=../params/dresc_parms_v3 --project=bin.csim   main.DRE -- -Ahal.h -Ashared_intrinsics.h  -I/home/laboruser/student/rs2/adresc/workspace/performance-max4/src -I/home/laboruser/student/rs2/adresc/workspace/performance-max4/hal/include -I/opt/dresc/include  -L/home/laboruser/student/rs2/adresc/workspace/performance-max4/hal/host -lhal_host -L/opt/dresc/lib -lmt_host -lpthread -lFLAI_intrinsics -l3MF_intrinsics -lbase_intrinsics   
+make  -f Makefile.csim
+make[2]: Betrete Verzeichnis '/home/laboruser/student/rs2/adresc/workspace/performance-max4/workplace.ra'
+g++ -c -g -I. -I/opt/dresc/share/csim -I/opt/dresc/include    -I/home/laboruser/student/rs2/adresc/workspace/performance-max4/src -I/home/laboruser/student/rs2/adresc/workspace/performance-max4/hal/include -I/opt/dresc/include          -o prog_header.o prog_header.cpp
+g++ -c -g -I. -I/opt/dresc/share/csim -I/opt/dresc/include    -I/home/laboruser/student/rs2/adresc/workspace/performance-max4/src -I/home/laboruser/student/rs2/adresc/workspace/performance-max4/hal/include -I/opt/dresc/include          -o prog_data.o prog_data.cpp
+g++ -c -g -I. -I/opt/dresc/share/csim -I/opt/dresc/include    -I/home/laboruser/student/rs2/adresc/workspace/performance-max4/src -I/home/laboruser/student/rs2/adresc/workspace/performance-max4/hal/include -I/opt/dresc/include          -o prof_helper.o prof_helper.cpp
+g++ -c -g -I. -I/opt/dresc/share/csim -I/opt/dresc/include    -I/home/laboruser/student/rs2/adresc/workspace/performance-max4/src -I/home/laboruser/student/rs2/adresc/workspace/performance-max4/hal/include -I/opt/dresc/include          -o isa_helper.o isa_helper.cpp
+g++ -c -g -I. -I/opt/dresc/share/csim -I/opt/dresc/include    -I/home/laboruser/student/rs2/adresc/workspace/performance-max4/src -I/home/laboruser/student/rs2/adresc/workspace/performance-max4/hal/include -I/opt/dresc/include          -o intr_op.o intr_op.cpp
+g++ -c -g -I. -I/opt/dresc/share/csim -I/opt/dresc/include    -I/home/laboruser/student/rs2/adresc/workspace/performance-max4/src -I/home/laboruser/student/rs2/adresc/workspace/performance-max4/hal/include -I/opt/dresc/include          -o sim_vliw.o sim_vliw.cpp
+g++ -c -g -I. -I/opt/dresc/share/csim -I/opt/dresc/include    -I/home/laboruser/student/rs2/adresc/workspace/performance-max4/src -I/home/laboruser/student/rs2/adresc/workspace/performance-max4/hal/include -I/opt/dresc/include          -o sim_cga.o sim_cga.cpp
+g++ -c -g -I. -I/opt/dresc/share/csim -I/opt/dresc/include    -I/home/laboruser/student/rs2/adresc/workspace/performance-max4/src -I/home/laboruser/student/rs2/adresc/workspace/performance-max4/hal/include -I/opt/dresc/include          -o main.DRE.o main.DRE.cpp
+g++ -o bin.csim  prog_header.o prog_data.o prof_helper.o isa_helper.o intr_op.o sim_vliw.o sim_cga.o main.DRE.o  -L/opt/dresc/lib -lcsim_rt  -lstatxml -ldrescutil -lmt_host -L/lib -lxerces-c      -L/home/laboruser/student/rs2/adresc/workspace/performance-max4/hal/host -lhal_host -L/opt/dresc/lib -lmt_host -lpthread -lFLAI_intrinsics -l3MF_intrinsics -lbase_intrinsics 
+make[2]: Verlasse Verzeichnis '/home/laboruser/student/rs2/adresc/workspace/performance-max4/workplace.ra'
+ln -fs workplace.ra/bin.csim ../bin.ra
+./bin.csim  
+ln -fs workplace.ra/stat.out ../stat.out
+ln -fs workplace.ra/stat.xml ../stat.xml
+make[1]: Verlasse Verzeichnis '/home/laboruser/student/rs2/adresc/workspace/performance-max4/workplace.ra'
+
+
+
+**************
+** statistics **
+**************
+Instr          	             Num	  Clk/Instr	      Energy/Clk	    Total energy	
+------------------------------------------------------------------------------------------------
+mov            	             837	          1	    0.9699235897	  811.8260445789	
+add            	             592	          1	             1.0	           592.0	
+add_u          	              26	          1	             1.0	            26.0	
+sub            	             567	          1	    0.9995122744	  566.7234595848	
+setlo          	               2	          1	    0.9699235897	    1.9398471794	
+sethi          	               2	          1	    0.9699235897	    1.9398471794	
+cga            	               1	          3	             1.5	             4.5	
+ld_i           	             577	          4	    0.9705738904	 2240.0845390432	
+pred_gt        	              27	          1	    0.9741505446	   26.3020647042	
+asr            	             561	          1	    1.0539749634	  591.2799544674	
+st_i           	             577	          1	    0.9721996423	  560.9591936071	
+rts            	               1	          3	             1.5	             4.5	
+nop            	           -5505	          1	             0.3	         -1651.5	
+
+
+
+**************
+** overview **
+**************
+Used instance : 
+Total clocks on cga : 161
+Total clocks  : 181
+Total nop-clk : -5505 
+Total energy  : 3776.5549503444
+********************************
+********************************
