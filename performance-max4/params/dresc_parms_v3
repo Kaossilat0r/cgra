@@ -29,7 +29,7 @@
 	  <section name='loop_line_339'>
         <property type='int' name='starting_II' value='2'/>
         <property type='int' name='random_seed' value='1337'/>
-        <property type='float' name='relax_factor' value='1.300'/>
+        <property type='float' name='relax_factor' value='1.550'/>
       </section>  
 	  
 	  <section name='loop_line_348'>
