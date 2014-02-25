@@ -15,6 +15,11 @@
 \widowpenalty10000
 \displaywidowpenalty=10000
 
+% remove space between items 
+\usepackage{enumitem}
+	\setenumerate{noitemsep}
+	\setitemize{noitemsep}
+	\setdescription{noitemsep}
 
 \title{Rechnersysteme 2}
 \subtitle{CGRA Versuch\\
@@ -35,6 +40,44 @@ Roman Neß (\href{mailto:roman.ness@stud.tu-darmstadt.de}{roman.ness@stud.tu-dar
 \section*{Implementierte Funktionalität}
 
 \section*{Herangehensweise}
+Wir handelten frei nach dem Motto: "`Make It Work, Make It Right, Make It Fast"':
+
+\begin{itemize}
+	\item erste Version in "`intuitivem"' C-Code
+	\item mittels printf testen ob es bei nativer compilierung die Rechnung korrekt funktioniert
+	\item nachdem Korrektheit sichergestellt ist, Toolchain ohne Auslagerung auf CGRA testen
+	\item \textbf{dresc\_params\_v3} auf verwendete Schleifen anpassen und unoptimierte Performance messen
+	\item Optimierungs-Zyklus beginnen (Ändern, Compilieren, Auswerten, Repeat)
+\end{itemize}
+
+\section*{Optimierung}
+Wir entschieden uns zunächst den Code für das Ziel "`performance-max"' hin zu optimieren.
+Hauptgrund hierfür war das klar definierte Kriterium von möglichst wenigen Clock-Cycles.
+
+Wir verwenden die "`6x6"' Instanz, weil davon auszugehen ist, dass mehr FUs mehr Arbeit in kürzerer Zeit bewältigen können.
+Da ein Leerlauf einzelner FUs das Ergebnis nicht negativ beeinflusst gab es keinen Grund die kleineren Instanzen zu testen.\\
+\\
+Wir gehen davon aus, dass sich die Performance noch weiter steigern lässt, wenn ein noch größeres Array verwendet wird.
+Allerdings konnten wir nicht herausfinden wie sich ein eigenes Array automatisch erzeugen lässt und ein händisches Erstellen schien den Rahmen dieses Versuchs klar zu sprengen.\\
+\\
+Konkret wurden die folgenden Optimierungstechniken angewandt:
+\begin{description}	
+	\item[Kein Loop Nesting] \hfill \\
+	Alle geschachtelten Schleifen wurden aufgelöst um den Kontrollfluss auf dem CGRA zu vereinfachen.\\
+	
+	\item[Minimierung der Speicherzugriffe] \hfill \\
+	Da Speicherzugriffe die teuersten Operation sind, wurde die Anzahl der Speicherzugriffe auf das absolute Minimum reduziert.
+	Das heißt, jedes Array-Element wird in einer Transformation genau einmal gelesen und genau einmal geschrieben.
+	Dies lässt sich auch in der Ausgabe auf der Konsole nachvollziehen (576 * 4 = 2304 (+1 für Basisadresse)).\\
+	
+	\item[Minimierung der Speicherzugriffe] \hfill \\
+	
+	
+	\item[Kein Loop Nesting] \hfill \\
+	aaa
+	
+\end{description}
+
 
 \section*{Herausforderungen}
 
