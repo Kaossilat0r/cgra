@@ -52,7 +52,7 @@ Wir handelten frei nach dem Motto: "`Make It Work, Make It Right, Make It Fast"'
 
 \section*{Optimierung}
 Wir entschieden uns zunächst den Code für das Ziel "`performance-max"' hin zu optimieren.
-Hauptgrund hierfür war das klar definierte Kriterium von möglichst wenigen Clock-Cycles.
+Hauptgrund hierfür war das klar definierte Kriterium von möglichst wenigen Taktzyklen.
 
 Wir verwenden die "`6x6"' Instanz, weil davon auszugehen ist, dass mehr FUs mehr Arbeit in kürzerer Zeit bewältigen können.
 Da ein Leerlauf einzelner FUs das Ergebnis nicht negativ beeinflusst gab es keinen Grund die kleineren Instanzen zu testen.\\
@@ -70,11 +70,19 @@ Konkret wurden die folgenden Optimierungstechniken angewandt:
 	Das heißt, jedes Array-Element wird in einer Transformation genau einmal gelesen und genau einmal geschrieben.
 	Dies lässt sich auch in der Ausgabe auf der Konsole nachvollziehen (576 * 4 = 2304 (+1 für Basisadresse)).\\
 	
-	\item[Minimierung der Speicherzugriffe] \hfill \\
+	\item[Vorausberechnung aller Konstanten] \hfill \\
+	Alle Konstanten die schon zur Compile-Zeit vorberechnet werden können, werden als Makros definiert. 
+	Darunter fallen z.B. Indizes der Matrix oder Offsets zwischen Elementen.\\
 	
+	\item[Method Inlining] \hfill \\
+	Um Methodenaufrufe auf dem CGRA zu verhindern und den Code gleichzeitig lesbar zu halten, werden Unterfunktionen in optimierten Schleifen als inline definiert.
+	Da der Compiler bei Tests den "`inline"' Modifier mitunter ignorierte, erzwingen wir das Inlining mit \texttt{\_\_attribute\_\_((always\_inline))}.\\
 	
-	\item[Kein Loop Nesting] \hfill \\
-	aaa
+	\item[Optimierung der Ausgabe] \hfill \\
+	Da zunächst Kommuniziert wurde, dass die Ausgabe der Matrix Teil der Performance Messung sein muss, optimierten wir auch diese.
+	Es zeigte sich, dass bei der Optimierung der Ausgabe im Vergleich zur Berechnung ein viel größeres Potential besteht.
+	Nach der Optimierung mittels massivem loop-unrolling benötigte die Ausgabe der 24x24 Matrix bei unserer Lösung etwa 800 Taktzyklen.
+	Aufgrund der Komplexität des entstanden Codes fielen wir auf die unoptimierte Version zurück, als bekannt wurde, dass die Ausgabe keinen Einfluss auf die Messung haben würde.
 	
 \end{description}
 
