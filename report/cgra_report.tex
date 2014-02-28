@@ -50,7 +50,7 @@ Wir handelten frei nach dem Motto: "`Make It Work, Make It Right, Make It Fast"'
 	\item Optimierungs-Zyklus beginnen (Ändern, Compilieren, Auswerten, Repeat)
 \end{itemize}
 
-\section*{Optimierung}
+\section*{Optimierungen Performance-Max}
 Wir entschieden uns zunächst den Code für das Ziel "`performance-max"' hin zu optimieren.
 Hauptgrund hierfür war das klar verständliche Kriterium von möglichst wenigen Taktzyklen um jeden Preis.\\
 \\
@@ -82,6 +82,9 @@ Konkret wurden die folgenden Optimierungstechniken angewandt:
 	\item[Intrinsics] \hfill \\
 	Zur Berechnung des Durchschnitts verwenden wir ein eingebautes Intrinsic der Architektur (\texttt{intr12\_gp\_\_avg}).\\
 	
+	\item[Verwendete Parameter] \hfill \\
+	XXX\\
+	
 	\item[Optimierung der Ausgabefunktion] \hfill \\
 	Da zunächst Kommuniziert wurde, dass die Ausgabe der Matrix Teil der Performance Messung sein muss, optimierten wir auch diese.
 	Es zeigte sich, dass bei der Ausgabefunktion im Vergleich zur Berechnung ein viel größeres Optimierungspotential besteht.\\
@@ -97,15 +100,16 @@ Die Benutzung der Toolchain war nicht frei von Hindernissen.
 Zu Beginn des Versuchs war die bereitgestellte VM nicht in einem Zustand, in dem wir sie für unseren Workflow gebrauchen konnten.
 So musste z.B. ssh eingerichtet werden und die Befehle zur Verwendung der Toolchain aus einer Geany Konfigurationsdatei extrahiert werden.\\
 \\
-Weiterhin hat das Shellscript zur Ausgabe bei uns zu Beginn nicht funktioniert. 
+Weiterhin hat das Shellscript zur Ausgabe bei uns zu Beginn nicht vollständig funktioniert. 
 Wir haben es deswegen aus dem /usr Verzeichnis in den Workspace kopiert und repariert.
 Die Berechnung der Ergebnisse blieb dabei unangetastet.\\
 \\
 Auch der Komfort während des Entwickelns war nicht wirklich gut.
-Insbesondere fielen die Geschwindigkeit des Compiliervorgangs und die Fehleranfälligkeit bei Anpassung der Zeilennummern in der Datei "`dresc\_params\_v3"' negativ auf.\\
+Insbesondere fielen die Geschwindigkeit der Toolchain und die Fehleranfälligkeit und häufig notwendige Anpassungen in der Datei "`dresc\_params\_v3"' negativ auf.
+Ebenso empfanden wir es als mühsam, dass es vom Finden eines passenden zufälligen Seeds abhängt, ob das Problem mit den angestrebten Parametern auf die Architektur gemappt werden kann.\\
 \\
-Alles in allem war das Projekt sehr gut machbar, jedoch konnte das Optimierungspotential nicht vollständig ausgenutzt werden, da die XML-Konfiguration der Instanzen undurchsichtig war.
-Ein Tool zur Erstellung von eigenen Instanzen (oder auch nur eine Visualisierung einer bestehenden Instanz) hätte uns hier sehr geholfen.
+Alles in allem war das Projekt sehr gut machbar, jedoch konnte das Optimierungspotential nicht vollständig ausgenutzt werden, da z.B. die XML-Konfiguration der Instanzen undurchsichtig war.
+Ein Tool zur Erstellung von eigenen Instanzen (oder zumindest die Visualisierung einer bestehenden Instanz) hätte uns hier sehr geholfen.
 Leider konnte das Manual aufgrund des Aufbaus nicht als Nachschlagewerk helfen.
 Abschließend ist zu sagen, dass wir wohl an einem Punkt angelangt sind, an dem weitere Optimierungen zwar möglich aber vom Zeitaufwand her nicht mehr vertretbar sind.
 
