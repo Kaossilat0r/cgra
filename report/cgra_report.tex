@@ -37,8 +37,6 @@ Roman Neß (\href{mailto:roman.ness@stud.tu-darmstadt.de}{roman.ness@stud.tu-dar
 
 \maketitle
 
-\section*{Implementierte Funktionalität}
-
 \section*{Herangehensweise}
 Wir handelten frei nach dem Motto: "`Make It Work, Make It Right, Make It Fast"':
 
@@ -48,6 +46,18 @@ Wir handelten frei nach dem Motto: "`Make It Work, Make It Right, Make It Fast"'
 	\item Benutzung der Toolchain ohne Auslagerung von Berechnungen auf CGRA testen
 	\item \textbf{dresc\_params\_v3} auf verwendete Schleifen anpassen und unoptimierte Performance messen
 	\item Optimierungs-Zyklus beginnen (Ändern, Compilieren, Auswerten, Repeat)
+\end{itemize}
+
+\paragraph{Algorithmus}
+Das Problem lässt sich in vier Teilschritte aufteilen, die im Programm in vier For-Schleifen bearbeitet werden.
+Innerhalb einer Ausführung des Schleifenbodys wird jeweils eine Teilmatrix mit acht Elementen bearbeitet.
+\begin{itemize}
+	\item Hinrichtung für Zeilen. (8x1 Teilmatrizen)
+	\item Hinrichtung für Spalten (1x8 Teilmatrizen)
+	\item \textcolor{gray}{(Ausgabe des Zwischenergebnis)}
+	\item Rückrichtung für Spalten.
+	\item Rückrichtung für Zeilen.
+	\item \textcolor{gray}{(Ausgabe des Endergebnis)}
 \end{itemize}
 
 \section*{Optimierungen Performance-Max}
