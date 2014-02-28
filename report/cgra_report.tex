@@ -90,7 +90,9 @@ Konkret wurden die folgenden Optimierungstechniken angewandt:
 	Da der Compiler bei Tests den "`inline"' Modifier mitunter ignorierte, erzwingen wir  Inlining per Compiler Attribut \texttt{\_\_attribute\_\_((always\_inline))}.\\
 	
 	\item[Intrinsics] \hfill \\
-	Zur Berechnung des Durchschnitts verwenden wir ein eingebautes Intrinsic der Architektur (\texttt{intr12\_gp\_\_avg}).\\
+	Zur Berechnung des Durchschnitts verwenden wir ein eingebautes Intrinsic der Architektur (\texttt{intr12\_gp\_\_avg}).
+	Es erscheint uns sinnvoll, dass diese Operation genauso schnell ist und so viel Energie benötigt wie ein Add.
+	Realisiert werden könnte die Durchschnittsberechnung z.B. durch einen Adder hinter dem die Kabel des Ergebnisses um eine Stelle geshiftet sind, um die Summe durch 2 zu teilen.\\
 	
 	\item[Verwendete Parameter] \hfill \\
 	\begin{itemize}
@@ -108,6 +110,16 @@ Konkret wurden die folgenden Optimierungstechniken angewandt:
 	
 \end{description}
 
+\section*{Optimierungen Energy-Min}
+
+Wir sind der Ansicht, dass unser in Performance-Max verwendeter Algorithmus bereits weitestgehend Arbeits-optimal ist. Deswegen übernahmen wir die bereits vorhandenen Kernel auch für die Energy-Min Lösung.\\
+\\
+Wir vermuteten, dass auf einer kleineren Architektur (wie z.B. 4x4), die Hardware besser ausgelastet werden könnte, wodurch der Energieverbrauch durch weniger Leerlauf noch weiter sinken müsste.
+Versuche, unseren Code sinnvoll auf eine kleinere Architektur zu mappen schlugen jedoch fehl, bzw. führten zu stark erhöhtem Initiation Intervals.\\
+\\
+Bei einem Versuch, die Loop-Fusion wieder zu deaktivieren (d.h. Transformation auf einer Spalte bzw. Zeile im Body der Schleife), verbesserten sich Parameter wie das Initiation Interval. Dennoch wurde durch den erhöhten Overhead der Schleifen mehr Energie verbraucht, als durch die kleineren Parameter gespart werden konnte.\\
+\\
+Nicht zuletzt hatten die NOPs nur einen geringen Anteil an der gesamten verbrauchten Energie. Deswegen entschieden wir uns letztlich dafür, auch für die Energy-Min Lösung die 6x6 Architektur zu verwenden, auf die wir den Algorithmus bereits effizient mappen konnten. Auch die anderen Parameter, wie II und relax-Factor beließen wir bei den gleichen Werten, da Energieverbrauch und Laufzeit bei allen Tests stark korrelierten.
 
 \section*{Herausforderungen}
 
@@ -121,11 +133,12 @@ Die Berechnung der Ergebnisse blieb dabei unangetastet.\\
 \\
 Auch der Komfort während des Entwickelns war nicht wirklich gut.
 Insbesondere fielen die Geschwindigkeit der Toolchain und die Fehleranfälligkeit und häufig notwendige Anpassungen in der Datei "`dresc\_params\_v3"' negativ auf.
-Ebenso empfanden wir es als mühsam, dass es vom Finden eines passenden zufälligen Seeds abhängt, ob das Problem mit den angestrebten Parametern auf die Architektur gemappt werden kann.\\
+Ebenso empfanden wir es als mühsam, dass es vom Finden eines passenden zufälligen Seeds abhängt, ob der Code nach einer Anpassung mit den angestrebten Parametern auf die Architektur gemappt werden kann.\\
 \\
 Alles in allem war das Projekt sehr gut machbar, jedoch konnte das Optimierungspotential nicht vollständig ausgenutzt werden, da z.B. die XML-Konfiguration der Instanzen undurchsichtig war.
 Ein Tool zur Erstellung von eigenen Instanzen (oder zumindest die Visualisierung einer bestehenden Instanz) hätte uns hier sehr geholfen.
-Leider konnte das Manual aufgrund des Aufbaus nicht als Nachschlagewerk helfen.
+Leider konnte das Manual aufgrund des Aufbaus nicht als Nachschlagewerk helfen.\\
+\\
 Abschließend ist zu sagen, dass wir wohl an einem Punkt angelangt sind, an dem weitere Optimierungen zwar möglich aber vom Zeitaufwand her nicht mehr vertretbar sind.
 
 \lstset{
