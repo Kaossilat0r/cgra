@@ -12,7 +12,7 @@
 
 % Hurenkinder und Schusterjungen verhindern
 \clubpenalty10000
-\widowpenalty10000
+\widowpenalty1000
 \displaywidowpenalty=10000
 
 % remove space between items 
@@ -83,7 +83,12 @@ Konkret wurden die folgenden Optimierungstechniken angewandt:
 	Zur Berechnung des Durchschnitts verwenden wir ein eingebautes Intrinsic der Architektur (\texttt{intr12\_gp\_\_avg}).\\
 	
 	\item[Verwendete Parameter] \hfill \\
-	XXX\\
+	\begin{itemize}
+		\item \textbf{II} Kleinstmöglicher Wert (Wird durch RESMII nach unten hin begrenzt, Ziel ist es diesen Wert zu erreichen)
+		\item \textbf{Random Seed} Standardwert: 2006, wenn das Mapping mit dem Standartwert nicht mit dem minimalen II funktioniert, solange am Seed drehen, bis es klappt
+		\item \textbf{Relax Factor} Kleinstmöglicher wert (= 1.3) verwenden.
+			Wenn das Mapping automatisch einen größeren Wert verwendet, diesen eintragen, damit es beim nächsten mal nicht alle kleineren Faktoren probiert werden müssen und es schneller geht.
+	\end{itemize}
 	
 	\item[Optimierung der Ausgabefunktion] \hfill \\
 	Da zunächst Kommuniziert wurde, dass die Ausgabe der Matrix Teil der Performance Messung sein muss, optimierten wir auch diese.
