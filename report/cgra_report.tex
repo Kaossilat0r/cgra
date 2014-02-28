@@ -89,4 +89,22 @@ Konkret wurden die folgenden Optimierungstechniken angewandt:
 
 \section*{Herausforderungen}
 
+Die Benutzung der Toolchain war nicht frei von Hindernissen.
+Zu Beginn des Versuchs war die bereitgestellte VM nicht in einem Zustand, in dem wir sie für unseren Workflow gebrauchen konnten.
+So musste z.B. ssh eingerichtet werden und die Befehle zur Verwendung der Toolchain aus einer Geany Konfigurationsdatei extrahiert werden.\\
+\\
+Weiterhin hat das Shellscript zur Ausgabe bei uns zu Beginn nicht funktioniert. 
+Wir haben es deswegen aus dem /usr Verzeichnis in den Workspace kopiert und repariert.
+Die Berechnung der Ergebnisse blieb dabei unangetastet.\\
+\\
+Auch der Komfort während des Entwickelns war nicht wirklich gut.
+Insbesondere fielen die Geschwindigkeit des Compiliervorgangs und die Fehleranfälligkeit bei Anpassung der Zeilennummern in der Datei "`dresc\_params\_v3"' negativ auf.\\
+\\
+Alles in allem war das Projekt sehr gut machbar, jedoch konnte das Optimierungspotential nicht vollständig ausgenutzt werden, da die XML-Konfiguration der Instanzen undurchsichtig war.
+Ein Tool zur Erstellung von eigenen Instanzen (oder auch nur eine Visualisierung einer bestehenden Instanz) hätte uns hier sehr geholfen.
+Leider konnte das Manual aufgrund des Aufbaus nicht als Nachschlagewerk helfen.
+Abschließend ist zu sagen, dass wir wohl an einem Punkt angelangt sind, an dem weitere Optimierungen zwar möglich aber vom Zeitaufwand her nicht mehr vertretbar sind.
+
+
+
 \end{document}
