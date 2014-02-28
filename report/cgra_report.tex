@@ -44,45 +44,49 @@ Wir handelten frei nach dem Motto: "`Make It Work, Make It Right, Make It Fast"'
 
 \begin{itemize}
 	\item erste Version in "`intuitivem"' C-Code
-	\item mittels printf testen ob es bei nativer compilierung die Rechnung korrekt funktioniert
-	\item nachdem Korrektheit sichergestellt ist, Toolchain ohne Auslagerung auf CGRA testen
+	\item Test der korrekten Funktionsweise bei nativer Kompilierung (mittels printf)
+	\item Benutzung der Toolchain ohne Auslagerung von Berechnungen auf CGRA testen
 	\item \textbf{dresc\_params\_v3} auf verwendete Schleifen anpassen und unoptimierte Performance messen
 	\item Optimierungs-Zyklus beginnen (Ändern, Compilieren, Auswerten, Repeat)
 \end{itemize}
 
 \section*{Optimierung}
 Wir entschieden uns zunächst den Code für das Ziel "`performance-max"' hin zu optimieren.
-Hauptgrund hierfür war das klar definierte Kriterium von möglichst wenigen Taktzyklen.
-
-Wir verwenden die "`6x6"' Instanz, weil davon auszugehen ist, dass mehr FUs mehr Arbeit in kürzerer Zeit bewältigen können.
-Da ein Leerlauf einzelner FUs das Ergebnis nicht negativ beeinflusst gab es keinen Grund die kleineren Instanzen zu testen.\\
+Hauptgrund hierfür war das klar verständliche Kriterium von möglichst wenigen Taktzyklen um jeden Preis.\\
 \\
-Wir gehen davon aus, dass sich die Performance noch weiter steigern lässt, wenn ein noch größeres Array verwendet wird.
+Wir verwenden die "`6x6"' Instanz, weil davon auszugehen ist, dass mehr FUs mehr parallele Arbeit in kürzerer Zeit bewältigen können.
+Da ein Leerlauf einzelner FUs das Ergebnis nicht negativ beeinflussen kann, sahen wir keinen Grund die kleineren Instanzen zu testen.\\
+\\
+Wir gehen davon aus, dass sich die Performance noch weiter steigern lassen könnte, wenn ein noch größeres Array verwendet wird.
+Besonders müsste das für jede Schleifen gelten, in denen der Compiler wegen mangelnder Ressourcen ein erhöhtes Initiation Interval erzwingt.
 Allerdings konnten wir nicht herausfinden wie sich ein eigenes Array automatisch erzeugen lässt und ein händisches Erstellen schien den Rahmen dieses Versuchs klar zu sprengen.\\
 \\
 Konkret wurden die folgenden Optimierungstechniken angewandt:
 \begin{description}	
 	\item[Kein Loop Nesting] \hfill \\
-	Alle geschachtelten Schleifen wurden aufgelöst um den Kontrollfluss auf dem CGRA zu vereinfachen.\\
+	Alle geschachtelten Schleifen wurden aufgelöst um den Kontrollfluss auf dem CGRA zu vereinfachen und Overhead durch die Schleifen zu verhindern.\\
 	
 	\item[Minimierung der Speicherzugriffe] \hfill \\
 	Da Speicherzugriffe die teuersten Operation sind, wurde die Anzahl der Speicherzugriffe auf das absolute Minimum reduziert.
 	Das heißt, jedes Array-Element wird in einer Transformation genau einmal gelesen und genau einmal geschrieben.
-	Dies lässt sich auch in der Ausgabe auf der Konsole nachvollziehen (576 * 4 = 2304 (+1 für Basisadresse)).\\
+	Dies lässt sich auch in der Ausgabe auf der Konsole nachvollziehen (576 Elemente * 4 Transformationen = 2304 [+1 Zugriff für Basisadresse]).\\
 	
-	\item[Vorausberechnung aller Konstanten] \hfill \\
+	\item[Vorausberechnung von Konstanten] \hfill \\
 	Alle Konstanten die schon zur Compile-Zeit vorberechnet werden können, werden als Makros definiert. 
-	Darunter fallen z.B. Indizes der Matrix oder Offsets zwischen Elementen.\\
+	Darunter fallen z.B. Startindizes der Matrix oder Offsets zwischen Elementen.\\
 	
 	\item[Method Inlining] \hfill \\
 	Um Methodenaufrufe auf dem CGRA zu verhindern und den Code gleichzeitig lesbar zu halten, werden Unterfunktionen in optimierten Schleifen als inline definiert.
-	Da der Compiler bei Tests den "`inline"' Modifier mitunter ignorierte, erzwingen wir das Inlining mit \texttt{\_\_attribute\_\_((always\_inline))}.\\
+	Da der Compiler bei Tests den "`inline"' Modifier mitunter ignorierte, erzwingen wir  Inlining per Compiler Attribut \texttt{\_\_attribute\_\_((always\_inline))}.\\
 	
-	\item[Optimierung der Ausgabe] \hfill \\
+	\item[Intrinsics] \hfill \\
+	Zur Berechnung des Durchschnitts verwenden wir ein eingebautes Intrinsic der Architektur (\texttt{intr12\_gp\_\_avg}).\\
+	
+	\item[Optimierung der Ausgabefunktion] \hfill \\
 	Da zunächst Kommuniziert wurde, dass die Ausgabe der Matrix Teil der Performance Messung sein muss, optimierten wir auch diese.
-	Es zeigte sich, dass bei der Optimierung der Ausgabe im Vergleich zur Berechnung ein viel größeres Potential besteht.
+	Es zeigte sich, dass bei der Ausgabefunktion im Vergleich zur Berechnung ein viel größeres Optimierungspotential besteht.\\
 	Nach der Optimierung mittels massivem loop-unrolling benötigte die Ausgabe der 24x24 Matrix bei unserer Lösung etwa 800 Taktzyklen.
-	Aufgrund der Komplexität des entstanden Codes fielen wir auf die unoptimierte Version zurück, als bekannt wurde, dass die Ausgabe keinen Einfluss auf die Messung haben würde.
+	Aufgrund der Komplexität des entstanden Codes fielen wir wieder auf eine unoptimierte Version zurück, als bekannt wurde, dass die Ausgabe nicht Teil der Messung ist.
 	
 \end{description}
 
